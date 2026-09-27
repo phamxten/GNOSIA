@@ -1,0 +1,58 @@
+/* App-level additions on top of the design package (tokens.css, base.css, components.css are copied verbatim).
+   Only helpers the mockups did not need live here. */
+
+/* Self-hosted fonts (fontsource) — same families as tokens.css, variable builds first. */
+:root {
+  --font-serif: 'Newsreader Variable', 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+#root { min-height: 100vh; }
+.spin { animation: spin 1s linear infinite; }
+.w-full.menu-item { width: 100%; text-align: left; }
+
+/* account button + menu in the top nav */
+.avatar-btn { position: relative; display: inline-grid; place-items: center; border-radius: 50%; }
+.avatar-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.unread-dot { position: absolute; top: -1px; right: -1px; width: 9px; height: 9px; border-radius: 50%; background: var(--uji-fill); box-shadow: 0 0 0 2px var(--bg); }
+.account-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: var(--z-dropdown); min-width: 220px; animation: rise var(--dur-320) var(--spring-gentle) both; }
+
+/* full-page loading / redirect placeholder */
+.boot { min-height: 60vh; display: grid; place-items: center; }
+
+/* code editor (CodeMirror) inside a code card, themed with the syntax tokens */
+.cm-host { background: var(--editor-bg); }
+.cm-host .cm-editor { font-family: var(--font-mono); font-size: 15px; line-height: 1.75; background: transparent; color: var(--syn-text); }
+.cm-host.is-sm .cm-editor { font-size: 14px; }
+.cm-host .cm-editor.cm-focused { outline: none; }
+.cm-host .cm-scroller { font-family: inherit; line-height: inherit; }
+.cm-host .cm-content { padding: 18px 0; caret-color: var(--ph-fill, var(--accent)); }
+.cm-host.is-sm .cm-content { padding: 14px 0; }
+.cm-host .cm-gutters { background: transparent; border: 0; color: var(--text-faint); font-size: 12px; padding-left: 12px; }
+.cm-host .cm-lineNumbers .cm-gutterElement { padding: 0 12px 0 4px; min-width: 24px; }
+.cm-host .cm-activeLine { background: color-mix(in srgb, var(--ph-soft, var(--accent-soft)) 45%, transparent); }
+.cm-host .cm-activeLineGutter { background: transparent; color: var(--text-muted); }
+.cm-host .cm-selectionBackground, .cm-host .cm-editor.cm-focused .cm-selectionBackground, .cm-host .cm-content ::selection { background: var(--editor-selection) !important; }
+.cm-host .cm-line.is-bad { background: var(--uji-soft); }
+.cm-host .cm-gutterElement.is-bad { color: var(--uji-ink); font-weight: 700; }
+.cm-host .cm-cursor { border-left-color: var(--ph-fill, var(--accent)); border-left-width: 2px; }
+.cm-host .cm-editor .cm-placeholder { color: var(--text-faint); }
+.cm-host.min-320 .cm-editor { min-height: 320px; }
+
+/* builder */
+.json-edit { font-family: var(--font-mono); font-size: 12px; line-height: 1.6; min-height: 220px; }
+.problems { margin: 0; padding-left: 18px; }
+.problems li { margin: 2px 0; }
+
+@media (max-width: 760px) {
+  .page { padding: var(--space-5) var(--space-4) var(--space-16); }
+}
+/* very narrow phones: long primary labels wrap instead of pushing the page sideways */
+.page-head > * { min-width: 0; }
+.big-serif { overflow-wrap: break-word; }
+@media (max-width: 480px) {
+  .btn-xl, .btn-lg { white-space: normal; height: auto; min-height: 44px; padding-top: 10px; padding-bottom: 10px; text-align: center; }
+  .welcome, .continue { padding: 24px 18px; }
+  .page-head { flex-wrap: wrap; }
+  .page-head h1.big-serif, main > .page-head h1, .greet h1.big-serif { font-size: 32px !important; }
+}

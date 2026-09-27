@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .kpi { padding: 18px 20px; border-radius: 18px; background: var(--surface); border: 1px solid var(--border); }
+  .kpi .stat-value { font-size: 36px; }
+  .spark { width: 100%; height: 36px; margin-top: 6px; }
+  .spark path { fill: none; stroke: var(--pahami-fill); stroke-width: 2; }
+  .two { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-top: 16px; }
+  .flag-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid var(--divider); }
+  .flag-row .fi { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--ph-soft); color: var(--ph-ink); }
+  .phase-dist { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .phase-dist div { padding: 14px; border-radius: 14px; background: var(--ph-soft); }
+  .phase-dist b { display: block; font-family: var(--font-serif); font-weight: 400; font-size: 28px; color: var(--ph-ink); }
+  @media (max-width: 1100px) { .kpis { grid-template-columns: 1fr 1fr; } .two { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-admin-sidebar data-active="admin"></aside>
+  <main class="main">
+    <div class="page page-wide">
+      <div class="page-head"><div><div class="eyebrow">Admin · SMK SIG</div><h1 class="big-serif mt-2" style="font-size:40px">Ringkasan <em>kurikulum</em></h1></div><div class="row gap-2"><button class="btn btn-secondary btn-press"><i data-lucide="download"></i>Ekspor</button><a class="btn btn-primary btn-press" href="builder.html"><i data-lucide="plus"></i>Bab baru</a></div></div>
+      <div class="kpis">
+        <div class="kpi"><span class="eyebrow">Siswa aktif (7 hari)</span><div class="stat-value mt-2">412</div><svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M0 24 L14 20 L28 22 L42 15 L56 16 L70 10 L84 12 L100 6"/></svg></div>
+        <div class="kpi"><span class="eyebrow">Bab terbit</span><div class="stat-value mt-2">38<small>/ 42</small></div><div class="t-xs t-faint mt-2">4 draft menunggu review</div></div>
+        <div class="kpi"><span class="eyebrow">Lulus gerbang Kuis</span><div class="stat-value mt-2">78<small>%</small></div><div class="t-xs t-faint mt-2">di percobaan pertama</div></div>
+        <div class="kpi"><span class="eyebrow">Rata-rata waktu per bab</span><div class="stat-value mt-2">31<small>mnt</small></div><div class="t-xs t-faint mt-2">target 25–35</div></div>
+      </div>
+
+      <div class="two">
+        <section class="card card-pad">
+          <div class="row between"><h2 class="t-h3">Konten yang perlu dicek</h2><span class="t-xs t-faint">dari data jawaban siswa</span></div>
+          <div class="mt-2">
+            <div class="flag-row" data-phase="perkuat"><span class="fi"><i data-lucide="bug" class="i-14"></i></span><div><div class="t-sm t-medium">Perkuat · Variabel · soal 5 “temukan bug const”</div><div class="t-xs t-faint">58% salah di percobaan 1, jauh di atas rata-rata 22%. Mungkin instruksinya ambigu.</div></div><a class="btn btn-secondary btn-sm btn-press" href="builder.html?state=soal">Buka</a></div>
+            <div class="flag-row" data-phase="pahami"><span class="fi"><i data-lucide="clapperboard" class="i-14"></i></span><div><div class="t-sm t-medium">Pahami · Array · scene 6</div><div class="t-xs t-faint">31% siswa berhenti di scene ini. Durasi rata-rata 4 menit (target 1 menit).</div></div><a class="btn btn-secondary btn-sm btn-press" href="builder.html">Buka</a></div>
+            <div class="flag-row" data-phase="kuis"><span class="fi"><i data-lucide="zap" class="i-14"></i></span><div><div class="t-sm t-medium">Kuis · Tipe Data · soal “typeof null”</div><div class="t-xs t-faint">91% salah. Terlalu sulit untuk trivia; pertimbangkan pindah ke Perkuat.</div></div><a class="btn btn-secondary btn-sm btn-press" href="builder.html?state=kuis">Buka</a></div>
+            <div class="flag-row" data-phase="uji"><span class="fi"><i data-lucide="flask-conical" class="i-14"></i></span><div><div class="t-sm t-medium">Challenge · Papan Skor · tes #4</div><div class="t-xs t-faint">12 laporan “output benar tapi gagal”. Spasi di akhir baris dianggap beda.</div></div><a class="btn btn-secondary btn-sm btn-press" href="builder.html?state=challenge">Buka</a></div>
+          </div>
+        </section>
+        <section class="card card-pad">
+          <h2 class="t-h3">Di mana siswa berada sekarang</h2>
+          <div class="phase-dist"><div data-phase="pahami"><b>84</b><span class="t-xs">Pahami</span></div><div data-phase="perkuat"><b>167</b><span class="t-xs">Perkuat</span></div><div data-phase="kuis"><b>96</b><span class="t-xs">Kuis</span></div><div data-phase="uji"><b>65</b><span class="t-xs">Uji</span></div></div>
+          <div class="eyebrow mt-6 mb-2">Status konten</div>
+          <div class="stack gap-2 t-sm">
+            <div class="row between"><span class="row gap-2"><span class="dot dot-success"></span>Terbit</span><span class="t-mono">38 bab · 1.204 soal</span></div>
+            <div class="row between"><span class="row gap-2"><span class="dot dot-warning"></span>Menunggu review</span><span class="t-mono">4 bab</span></div>
+            <div class="row between"><span class="row gap-2"><span class="dot"></span>Draft</span><span class="t-mono">9 soal</span></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card mt-4" style="overflow:hidden">
+        <div class="p-5 row between"><h2 class="t-h3">Bab terbaru diubah</h2><a class="link t-sm" href="builder.html">Buka builder</a></div>
+        <div style="overflow-x:auto"><table class="table"><thead><tr><th>Bab</th><th>Jalur</th><th>Isi</th><th>Status</th><th>Diubah</th></tr></thead><tbody>
+          <tr><td class="t-medium"><a href="builder.html">2 · Variabel</a></td><td>JavaScript Dasar</td><td class="t-sm t-muted">7 scene · 8 soal · 24 kuis · ulangan + challenge</td><td><span class="badge badge-success">Terbit</span></td><td class="t-sm t-muted">Sekar · 2 jam lalu</td></tr>
+          <tr><td class="t-medium">5 · Percabangan</td><td>JavaScript Dasar</td><td class="t-sm t-muted">5 scene · 6 soal · 12 kuis · challenge</td><td><span class="badge badge-warning">Review</span></td><td class="t-sm t-muted">Dimas · kemarin</td></tr>
+          <tr><td class="t-medium">1 · Tipe dasar</td><td>TypeScript</td><td class="t-sm t-muted">3 scene · draft</td><td><span class="badge">Draft</span></td><td class="t-sm t-muted">Sekar · 3 hari lalu</td></tr>
+        </tbody></table></div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

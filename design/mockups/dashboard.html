@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beranda · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .greet { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+  .continue { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 32px; padding: 32px; border-radius: 24px; background: var(--surface); border: 1px solid var(--border); position: relative; overflow: hidden; }
+  .continue::before { content: ""; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(closest-side, var(--perkuat-soft), transparent); pointer-events: none; }
+  .continue > * { position: relative; }
+  .widgets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .widget { padding: 22px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; gap: 12px; }
+  .goal-ring { width: 76px; height: 76px; position: relative; flex: none; }
+  .goal-ring svg { transform: rotate(-90deg); }
+  .goal-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+  .goal-ring .num { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-mono); font-weight: 700; font-size: 14px; }
+  .week { display: flex; gap: 6px; }
+  .week span { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--text-faint); }
+  .week i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-sunken); border: 1px solid var(--divider); }
+  .week i.on { background: var(--kuis-soft); border-color: var(--kuis-line); color: var(--kuis-ink); }
+  .week i.today { box-shadow: 0 0 0 2px var(--kuis-fill); }
+  .review-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .rcard { padding: 18px; border-radius: 18px; border: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; gap: 10px; }
+  .sec-title { display: flex; align-items: baseline; justify-content: space-between; margin: 44px 0 14px; }
+  .sec-title h2 { font-family: var(--font-serif); font-weight: 400; font-size: 26px; margin: 0; }
+  .two { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
+  .welcome { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: center; padding: 40px; border-radius: 28px; background: var(--surface); border: 1px solid var(--border); }
+  @media (max-width: 1000px) { .continue, .welcome { grid-template-columns: 1fr; } .widgets, .review-cards, .two { grid-template-columns: 1fr; } .greet { flex-direction: column; align-items: flex-start; } }
+</style>
+</head>
+<body>
+<header data-nav="learner" data-active="dashboard"></header>
+
+<main class="page">
+  <!-- RETURNING -->
+  <div data-show-in="default">
+    <div class="greet">
+      <div><div class="eyebrow">Sabtu, 27 September</div><h1 class="big-serif mt-2" style="font-size:44px">Selamat pagi, <em>Nadia</em>.</h1></div>
+      <div class="hint-row" style="margin:0"><div class="balloon" style="background:var(--surface);border-color:var(--border)">Tinggal <b>Perkuat</b> dan <b>Kuis</b>, lalu Variabel bisa kamu uji!</div><span class="nosi" data-mood="happy"></span></div>
+    </div>
+
+    <section class="continue" data-tilt aria-label="Lanjutkan belajar">
+      <div class="stack gap-4">
+        <div class="row gap-2"><span class="phase-tag" data-phase="perkuat">Sedang Perkuat</span><span class="t-sm t-faint">JavaScript Dasar · Bab 2</span></div>
+        <h2 class="big-serif" style="font-size:40px;margin:0">Variabel</h2>
+        <div class="phase-steps">
+          <a class="pstep is-done" data-phase="pahami" href="pahami.html"><span class="pnum">01 · selesai</span><span class="pname">Pahami</span><span class="bar"><span style="--v:100%"></span></span></a>
+          <a class="pstep is-now" data-phase="perkuat" href="perkuat.html"><span class="pnum">02 · 3/8 soal</span><span class="pname">Perkuat</span><span class="bar"><span style="--v:38%"></span></span></a>
+          <div class="pstep is-locked" data-phase="kuis"><span class="pnum">03 · terkunci</span><span class="pname">Kuis</span><span class="bar"><span></span></span></div>
+          <div class="pstep is-locked" data-phase="uji"><span class="pnum">04 · terkunci</span><span class="pname">Uji</span><span class="bar"><span></span></span></div>
+        </div>
+        <div class="row gap-3 mt-2 wrap"><a class="btn btn-ok btn-xl btn-press" href="perkuat.html">Lanjut Perkuat<i data-lucide="arrow-right"></i></a><span class="t-sm t-faint">±5 menit lagi</span></div>
+      </div>
+      <div class="stack center" style="align-items:center">
+        <span class="pring" data-ring="1,.38,0,0" data-size="180" data-stroke="12"><span class="pring-center"><div><div class="big-serif" style="font-size:42px">1<span class="t-faint" style="font-size:22px">/4</span></div><div class="t-xs t-faint">fase selesai</div></div></span></span>
+      </div>
+    </section>
+
+    <div class="widgets">
+      <div class="widget">
+        <div class="row between"><span class="eyebrow">Target harian</span><i data-lucide="target" class="t-faint"></i></div>
+        <div class="row gap-4"><div class="goal-ring"><svg width="76" height="76"><circle cx="38" cy="38" r="32" stroke="var(--viz-track)"/><circle cx="38" cy="38" r="32" stroke="var(--perkuat-fill)" stroke-dasharray="201" stroke-dashoffset="50" data-goal/></svg><span class="num">15/20</span></div><div><div class="t-h4">15 dari 20 menit</div><div class="t-sm t-muted mt-1">5 menit lagi untuk hari ini.</div></div></div>
+      </div>
+      <div class="widget">
+        <div class="row between"><span class="eyebrow">Streak</span><span class="row gap-1 t-mono t-semibold" style="color:var(--kuis-ink)"><svg class="flame" viewBox="0 0 24 24" style="width:22px;height:22px"><path fill="currentColor" d="M12 2c1 3.5 5 6 5 11a5 5 0 0 1-10 0c0-2.2 1-3.6 2.2-4.8.3 1.5 1 2.5 2 3C11 8.5 11.5 5 12 2z"/></svg>12 hari</span></div>
+        <div class="week"><span><i class="on"><i data-lucide="check" class="i-14"></i></i>Sn</span><span><i class="on"><i data-lucide="check" class="i-14"></i></i>Sl</span><span><i class="on"><i data-lucide="check" class="i-14"></i></i>Rb</span><span><i class="on"><i data-lucide="check" class="i-14"></i></i>Km</span><span><i class="on"><i data-lucide="check" class="i-14"></i></i>Jm</span><span><i class="today"></i>Sb</span><span><i></i>Mg</span></div>
+      </div>
+      <a class="widget" data-phase="kuis" href="kuis.html" style="background:var(--kuis-soft);border-color:var(--kuis-line)" data-tilt>
+        <div class="row between"><span class="eyebrow" style="color:var(--kuis-ink)">Kuis harian</span><i data-lucide="zap" style="color:var(--kuis-ink)"></i></div>
+        <div class="t-h3">5 soal acak dari bab yang sudah kamu pelajari</div>
+        <div class="row between"><span class="t-sm t-muted">±2 menit · +20 XP</span><span class="btn btn-phase btn-sm btn-press">Main</span></div>
+      </a>
+    </div>
+
+    <div class="sec-title"><h2>Perlu diulang</h2><span class="t-sm t-faint">dipilih dari jawaban salahmu</span></div>
+    <div class="review-cards">
+      <div class="rcard" data-tilt><div class="row between"><span class="t-h4">Salinan nilai</span><span class="phase-tag" data-phase="uji">dari Ulangan</span></div><p class="t-sm t-muted"><span class="t-mono">let b = a</span> menyalin nilai, bukan “mengikat”. Kamu menjawab 5, seharusnya 2.</p><a class="btn btn-secondary btn-sm btn-press" href="perkuat.html" style="align-self:flex-start"><i data-lucide="rotate-ccw"></i>Ulang · 3 menit</a></div>
+      <div class="rcard" data-tilt><div class="row between"><span class="t-h4">const vs let</span><span class="phase-tag" data-phase="perkuat">dari Perkuat</span></div><p class="t-sm t-muted">Salah 2× di soal “temukan bug”. Kotak mana yang digembok?</p><a class="btn btn-secondary btn-sm btn-press" href="pahami.html?scene=4" style="align-self:flex-start"><i data-lucide="book-open"></i>Lihat lagi scene-nya</a></div>
+      <div class="rcard" data-tilt><div class="row between"><span class="t-h4">Operator =</span><span class="phase-tag" data-phase="kuis">dari Kuis</span></div><p class="t-sm t-muted"><span class="t-mono">=</span> berarti memasukkan, <span class="t-mono">===</span> berarti membandingkan.</p><a class="btn btn-secondary btn-sm btn-press" href="kuis.html" style="align-self:flex-start"><i data-lucide="zap"></i>Kuis 3 soal</a></div>
+    </div>
+
+    <div class="two mt-12">
+      <section class="widget">
+        <div class="row between"><span class="eyebrow">Dari mentor</span><span class="badge badge-accent">1 baru</span></div>
+        <div class="row gap-3"><span class="avatar a2">DR</span><div><div class="t-sm t-medium">Dimas Rahardjo</div><div class="t-xs t-faint">2 jam lalu · Challenge Papan Skor</div></div></div>
+        <p style="line-height:1.6">“Bagus, kamu langsung sadar <span class="ic">skor</span> harus pakai <span class="ic">let</span>. Coba tantangan bonus: tambah variabel <span class="ic">namaLawan</span>.”</p>
+        <a class="link t-sm" href="proyek.html">Balas di proyek →</a>
+      </section>
+      <section class="widget">
+        <div class="row between"><span class="eyebrow">Proyek</span><a class="link t-sm" href="proyek.html">Semua</a></div>
+        <a class="row gap-3" href="proyek.html"><span class="pring" data-ring="1,1,.5,0" data-size="54" data-stroke="5"></span><div class="grow"><div class="t-h4">Kalkulator Uang Saku</div><div class="t-xs t-faint">milestone 2 dari 4 · review mentor</div></div><i data-lucide="chevron-right" class="t-faint"></i></a>
+        <a class="row gap-3" href="playground.html"><span style="width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:var(--surface-sunken)"><i data-lucide="notebook-pen" class="t-muted"></i></span><div class="grow"><div class="t-h4">Coretan · playground</div><div class="t-xs t-faint">ngoding bebas · kemarin</div></div><i data-lucide="chevron-right" class="t-faint"></i></a>
+      </section>
+    </div>
+  </div>
+
+  <!-- FIRST TIME -->
+  <div data-show-in="new" hidden>
+    <section class="welcome">
+      <span class="nosi nosi-xl" data-mood="cheer"></span>
+      <div>
+        <div class="eyebrow">Selamat datang di GNOSIA</div>
+        <h1 class="big-serif mt-2" style="font-size:44px">Halo Nadia, aku <em>Nosi</em>.</h1>
+        <p class="t-lg t-muted mt-3" style="max-width:52ch;line-height:1.6">Setiap bab punya 4 langkah: <b style="color:var(--pahami-ink)">Pahami</b> konsepnya, <b style="color:var(--perkuat-ink)">Perkuat</b> dengan latihan, <b style="color:var(--kuis-ink)">Kuis</b> singkat, lalu <b style="color:var(--uji-ink)">Uji</b>. Tidak ada yang dilompati.</p>
+        <div class="row gap-3 mt-6 wrap"><a class="btn btn-primary btn-xl btn-press" href="pahami.html">Mulai Bab 1 · Halo, JavaScript<i data-lucide="arrow-right"></i></a><a class="btn btn-ghost btn-lg" href="playground.html">Atau ngoding bebas dulu</a></div>
+      </div>
+    </section>
+    <div class="phase-steps mt-6">
+      <div class="pstep" data-phase="pahami"><span class="pnum">01</span><span class="pname">Pahami</span><span class="t-xs t-muted">Animasi dan kode hidup menjelaskan konsep</span></div>
+      <div class="pstep" data-phase="perkuat"><span class="pnum">02</span><span class="pname">Perkuat</span><span class="t-xs t-muted">Latihan interaktif yang menyesuaikan</span></div>
+      <div class="pstep" data-phase="kuis"><span class="pnum">03</span><span class="pname">Kuis</span><span class="t-xs t-muted">Trivia cepat, lulus 70%</span></div>
+      <div class="pstep" data-phase="uji"><span class="pnum">04</span><span class="pname">Uji</span><span class="t-xs t-muted">Ulangan atau challenge coding</span></div>
+    </div>
+    <div class="card mt-6"><div class="empty"><div class="empty-glyph"><i data-lucide="folder-kanban"></i></div><div class="t-h4">Belum ada proyek</div><p>Proyek pertamamu, Kalkulator Uang Saku, terbuka setelah Bab 4.</p></div></div>
+  </div>
+
+  <!-- LOADING -->
+  <div data-show-in="loading" hidden aria-busy="true">
+    <div class="skeleton" style="height:12px;width:150px"></div><div class="skeleton mt-3" style="height:44px;width:420px;max-width:100%"></div>
+    <div class="skeleton mt-8" style="height:280px;border-radius:24px"></div>
+    <div class="grid grid-3 mt-4"><div class="skeleton" style="height:140px;border-radius:20px"></div><div class="skeleton" style="height:140px;border-radius:20px"></div><div class="skeleton" style="height:140px;border-radius:20px"></div></div>
+  </div>
+</main>
+
+<div class="mock-states" data-page-states><span>state</span><button data-page-state="default">lanjutan</button><button data-page-state="new">pengguna baru</button><button data-page-state="loading">memuat</button></div>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>document.addEventListener('gnosia:ready', () => { const g = document.querySelector('[data-goal]'); if (g && G.motion !== 'off') g.animate([{ strokeDashoffset: 201 }, { strokeDashoffset: 50 }], { duration: 1100, easing: G.ease.gentle }); });</script>
+</body>
+</html>

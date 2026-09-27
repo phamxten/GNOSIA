@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Challenge · Papan Skor · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .cc-foot { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid var(--divider); background: var(--surface); }
+  .story-art svg { width: 100%; height: 100%; }
+  .brief-steps { counter-reset: s; display: grid; gap: 10px; margin-top: 16px; }
+  .brief-steps div { counter-increment: s; display: grid; grid-template-columns: 26px 1fr; gap: 10px; font-size: 14px; line-height: 1.5; }
+  .brief-steps div::before { content: counter(s); width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--ph-soft); color: var(--ph-ink); font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+  .lock-note { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--surface-sunken); font-size: 13px; color: var(--text-muted); margin-top: 18px; }
+  .done { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 86%, transparent); padding: 16px; animation: fade-in 300ms var(--ease-out); }
+  .done-card { width: min(600px, 100%); text-align: center; padding: 40px 36px 32px; border-radius: 28px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-modal); animation: rise 600ms var(--spring-bouncy) both; }
+  .badge-medal { width: 132px; height: 132px; margin: 0 auto; position: relative; display: grid; place-items: center; }
+  .badge-medal .pring { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div class="player" data-phase="uji">
+  <div class="aura" aria-hidden="true"><i></i><i></i></div>
+  <header class="player-top">
+    <a href="bab.html" class="btn btn-ghost btn-icon" aria-label="Keluar"><i data-lucide="x" class="i-20"></i></a>
+    <div class="phasebar">
+      <div class="seg is-done" data-phase="pahami"><span class="lbl"><i data-lucide="check"></i><span>1 · Pahami</span></span><div class="trk"><span style="--v:100%"></span></div></div>
+      <div class="seg is-done" data-phase="perkuat"><span class="lbl"><i data-lucide="check"></i><span>2 · Perkuat</span></span><div class="trk"><span style="--v:100%"></span></div></div>
+      <div class="seg is-done" data-phase="kuis"><span class="lbl"><i data-lucide="check"></i><span>3 · Kuis 80%</span></span><div class="trk"><span style="--v:100%"></span></div></div>
+      <div class="seg is-now" data-phase="uji"><span class="lbl"><i data-lucide="swords"></i><span>4 · Challenge</span></span><div class="trk"><span data-pbar style="--v:40%"></span></div></div>
+    </div>
+    <div class="row gap-3 pt-right"><span class="stat-chip"><i data-lucide="zap" style="color:var(--xp)"></i><span data-xp>525</span></span><span class="nosi nosi-sm" data-nosi></span></div>
+  </header>
+
+  <div class="focus">
+    <aside class="brief" aria-label="Brief challenge">
+      <div class="story-art" aria-hidden="true">
+        <svg viewBox="0 0 360 150" preserveAspectRatio="xMidYMid slice">
+          <rect x="95" y="28" width="170" height="92" rx="14" fill="var(--surface)" stroke="var(--uji-line)" stroke-width="2"/>
+          <rect x="95" y="28" width="170" height="26" rx="14" fill="var(--uji-fill)"/><rect x="95" y="44" width="170" height="10" fill="var(--uji-fill)"/>
+          <text x="180" y="46" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="700" fill="#fff">PAPAN SKOR</text>
+          <text x="120" y="96" font-family="JetBrains Mono, monospace" font-size="15" fill="var(--text)">Garuda</text>
+          <text x="238" y="100" text-anchor="end" font-family="Newsreader, serif" font-size="34" fill="var(--uji-ink)" data-art-score>6</text>
+          <circle cx="60" cy="110" r="8" fill="var(--kuis-fill)" opacity=".5"><animate attributeName="cy" values="110;100;110" dur="3s" repeatCount="indefinite"/></circle>
+          <circle cx="305" cy="40" r="6" fill="var(--pahami-fill)" opacity=".45"><animate attributeName="cy" values="40;50;40" dur="4s" repeatCount="indefinite"/></circle>
+          <rect x="290" y="96" width="14" height="14" rx="3" fill="var(--perkuat-fill)" opacity=".45" transform="rotate(20 297 103)"/>
+        </svg>
+      </div>
+      <div class="row gap-2"><span class="phase-tag">Challenge</span><span class="badge badge-mono">±10 menit</span><span class="badge badge-mono" data-attempt>percobaan 2</span></div>
+      <h1 class="big-serif mt-3" style="font-size:30px">Papan skor lomba</h1>
+      <p class="t-muted mt-2" style="line-height:1.6">Panitia lomba cerdas cermat butuh papan skor sederhana. Tulis programnya dengan variabel yang <b style="color:var(--text)">tepat</b>.</p>
+      <div class="brief-steps">
+        <div><span>Simpan nama tim <span class="ic">"Garuda"</span>. Nama ini tidak akan berubah.</span></div>
+        <div><span>Simpan skor awal <span class="ic">0</span>. Skor akan berubah.</span></div>
+        <div><span>Tim mencetak <b>3 poin</b>, dua kali.</span></div>
+        <div><span>Cetak persis: <span class="ic">Garuda: 6</span></span></div>
+      </div>
+      <div class="lock-note"><i data-lucide="lock" class="i-14"></i><span>Bantuan terkunci selama Uji. Baris error tetap ditandai (L1).</span></div>
+    </aside>
+
+    <section class="stack gap-4" style="min-width:0">
+      <div class="codecard">
+        <div class="cc-head"><span class="cc-file"><span class="lang">JS</span>papan-skor.js</span><span class="save-state t-xs t-faint" style="margin-left:auto" data-save><i data-lucide="cloud-check" class="i-14"></i>Tersimpan</span><button class="btn btn-ghost btn-sm" data-reset><i data-lucide="rotate-ccw"></i>Ulang</button></div>
+        <div class="editor2" style="background:var(--editor-bg)"><pre aria-hidden="true" data-hl></pre><textarea spellcheck="false" autocapitalize="off" aria-label="Editor kode papan-skor.js" data-code></textarea></div>
+        <div class="cc-out" data-out><span class="t-xs t-faint">Output muncul di sini setelah kamu menjalankan tes.</span></div>
+        <div class="cc-foot"><span class="kbdhint hide-sm"><kbd>⌘</kbd><kbd>↵</kbd> jalankan</span><span class="grow"></span><button class="btn btn-phase btn-xl btn-press" data-run><i data-lucide="play"></i>Jalankan tes</button></div>
+      </div>
+
+      <div>
+        <div class="row between mb-2"><span class="eyebrow">Robot penguji</span><span class="t-xs t-mono t-faint" data-rsum>0 / 4</span></div>
+        <div class="robots" data-robots>
+          <div class="robot"><span class="rb"><i data-lucide="bot"></i></span><span>Nama tim disimpan dengan <span class="t-mono">const</span></span><span class="rmeta">menunggu</span></div>
+          <div class="robot"><span class="rb"><i data-lucide="bot"></i></span><span>Skor disimpan dengan <span class="t-mono">let</span></span><span class="rmeta">menunggu</span></div>
+          <div class="robot"><span class="rb"><i data-lucide="bot"></i></span><span>Nilai akhir <span class="t-mono">skor</span> adalah 6</span><span class="rmeta">menunggu</span></div>
+          <div class="robot"><span class="rb"><i data-lucide="bot"></i></span><span>Output persis <span class="t-mono">Garuda: 6</span></span><span class="rmeta">menunggu</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="done" data-done hidden role="dialog" aria-modal="true">
+  <div class="done-card">
+    <div class="badge-medal"><span class="pring" data-ring="1,1,1,1" data-size="132" data-stroke="9"></span><span class="nosi nosi-lg" data-done-nosi data-mood="cheer" style="width:84px;height:84px"></span></div>
+    <div class="eyebrow mt-4">Bab 2 selesai · 4 dari 4 fase</div>
+    <h2 class="big-serif mt-2" style="font-size:44px">Variabel: <em>dikuasai</em>.</h2>
+    <p class="t-muted mt-3">Pahami → Perkuat → Kuis 80% → Challenge 4/4. Mentor kamu, Dimas, akan melihat kode ini.</p>
+    <div class="row center gap-6 mt-6"><div class="stat"><span class="t-label">XP bab ini</span><span class="stat-value" style="color:var(--xp)">+<span data-d-xp>0</span></span></div><div class="stat"><span class="t-label">Penguasaan</span><span class="stat-value"><span data-d-m>0</span><small>%</small></span></div></div>
+    <div class="row gap-2 mt-8"><a class="btn btn-secondary btn-xl btn-press grow" href="peta.html">Lihat peta</a><a class="btn btn-primary btn-xl btn-press grow" href="bab.html">Bab 3 · Tipe Data<i data-lucide="arrow-right"></i></a></div>
+  </div>
+</div>
+
+<div class="mock-states" data-page-states><span>state</span><button data-page-state="attempt">percobaan (bug)</button><button data-page-state="start">awal kosong</button><button data-page-state="solved">lulus</button></div>
+
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+/* Focus Coder (mockup). Code really runs in the browser here for demo purposes;
+   the real app sends it to the sandbox test-runner and streams results per test. */
+(function () {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const CODE = {
+    start: '// Papan skor lomba\n// 1. Simpan nama tim "Garuda" (tidak akan berubah)\n// 2. Simpan skor awal 0 (akan berubah)\n// 3. Tim mencetak 3 poin, dua kali\n// 4. Cetak: Garuda: 6\n\n',
+    attempt: '// Papan skor lomba\nconst namaTim = "Garuda";\nconst skor = 0;\n\nskor = skor + 3;\nskor = skor + 3;\n\nconsole.log(namaTim + ": " + skor);\n',
+    solved: '// Papan skor lomba\nconst namaTim = "Garuda";\nlet skor = 0;\n\nskor = skor + 3;\nskor = skor + 3;\n\nconsole.log(namaTim + ": " + skor);\n',
+  };
+  const ta = $('[data-code]'), pre = $('[data-hl]'), nosi = $('[data-nosi]');
+  const KW = /\b(const|let|var|function|return|if|else|for|while|new|typeof)\b/g;
+  function hl(src, bad) {
+    const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    return src.split('\n').map((line, i) => {
+      let h = esc(line);
+      if (/^\s*\/\//.test(line)) h = `<span class="c">${h}</span>`;
+      else h = h.replace(/("[^"]*"|'[^']*')|\b(\d+)\b|\b(const|let|var|function|return|if|else|for|while|new|typeof)\b|\b(console|Math)\b|\.(log|round)\b/g,
+        (m, s, n, k, o, f) => s ? `<span class="s">${s}</span>` : n ? `<span class="n">${n}</span>` : k ? `<span class="k">${k}</span>` : o ? `<span class="p">${o}</span>` : `.<span class="f">${f}</span>`);
+      return `<span class="gl${bad === i ? ' is-bad' : ''}" data-n="${i + 1}">${h || ' '}</span>`;
+    }).join('');
+  }
+  let badLine = -1;
+  const sync = () => { pre.innerHTML = hl(ta.value, badLine); pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft; };
+  ta.addEventListener('input', () => { badLine = -1; sync(); const s = $('[data-save]'); s.innerHTML = '<i data-lucide="loader-circle" class="i-14"></i>Menyimpan…'; window.gnosiaIcons(); clearTimeout(ta._t); ta._t = setTimeout(() => { s.innerHTML = '<i data-lucide="cloud-check" class="i-14"></i>Tersimpan'; window.gnosiaIcons(); }, 700); });
+  ta.addEventListener('scroll', sync);
+  ta.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); const p = ta.selectionStart; ta.setRangeText('  ', p, ta.selectionEnd, 'end'); sync(); } if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); run(); } });
+
+  function execute(src) {
+    const logs = []; const fakeConsole = { log: (...a) => logs.push(a.map(String).join(' ')) };
+    let vars = {}, err = null;
+    try { vars = new Function('console', src + '\n;return { namaTim: typeof namaTim !== "undefined" ? namaTim : undefined, skor: typeof skor !== "undefined" ? skor : undefined };')(fakeConsole); }
+    catch (e) { err = e; }
+    return { logs, vars, err };
+  }
+  function findBad(src, err) {
+    if (!err) return -1; const lines = src.split('\n');
+    if (/constant/.test(err.message)) { const consts = [...src.matchAll(/const\s+(\w+)/g)].map(m => m[1]); return lines.findIndex(l => consts.some(c => new RegExp(`^\\s*${c}\\s*=[^=]`).test(l))); }
+    return lines.findIndex(l => l.trim() && !l.trim().startsWith('//'));
+  }
+  async function run() {
+    const src = ta.value, res = execute(src), rows = $$('.robot'); const out = $('[data-out]');
+    badLine = findBad(src, res.err); sync();
+    out.innerHTML = ''; res.logs.forEach((l, i) => setTimeout(() => out.insertAdjacentHTML('beforeend', `<span class="out-bubble"><span class="p">›</span>${l.replace(/</g, '&lt;')}</span>`), 120 * i));
+    if (res.err) out.insertAdjacentHTML('beforeend', `<span class="out-bubble is-err"><i data-lucide="circle-x" class="i-14"></i>${res.err.name}: ${res.err.message}${badLine > -1 ? ` · baris ${badLine + 1}` : ''}</span>`);
+    if (!res.logs.length && !res.err) out.innerHTML = '<span class="t-xs t-faint">Program berjalan tanpa output.</span>';
+    const checks = [/const\s+namaTim\s*=/.test(src), /let\s+skor\s*=/.test(src), !res.err && res.vars.skor === 6, !res.err && res.logs[res.logs.length - 1] === 'Garuda: 6'];
+    const why = ['namaTim tidak dibuat dengan const', 'skor harus bisa diubah', res.err ? 'program berhenti karena error' : `skor akhir ${res.vars.skor}`, res.err ? 'tidak ada output' : `output "${res.logs.at(-1) ?? ''}"`];
+    rows.forEach(r => { r.className = 'robot'; $('.rmeta', r).textContent = 'antre'; const d = $('.rdiff', r); d && d.remove(); $('.rb', r).innerHTML = '<i data-lucide="bot"></i>'; });
+    window.gnosiaIcons(); $('[data-run]').classList.add('is-loading');
+    let pass = 0;
+    for (let i = 0; i < rows.length; i++) {
+      const r = rows[i]; r.classList.add('is-run'); $('.rb', r).innerHTML = '<i data-lucide="loader-circle"></i>'; $('.rmeta', r).textContent = 'mengecek…'; window.gnosiaIcons();
+      await new Promise(ok => setTimeout(ok, G.motion === 'off' ? 0 : 420));
+      r.classList.remove('is-run'); r.classList.add(checks[i] ? 'is-pass' : 'is-fail');
+      $('.rb', r).innerHTML = `<i data-lucide="${checks[i] ? 'check' : 'x'}"></i>`; $('.rmeta', r).textContent = checks[i] ? `${[4, 3, 2, 3][i]} ms` : 'gagal';
+      if (!checks[i]) r.insertAdjacentHTML('beforeend', `<span class="rdiff">${why[i]}</span>`); else pass++;
+      $('[data-rsum]').textContent = `${pass} / 4`; window.gnosiaIcons();
+    }
+    $('[data-run]').classList.remove('is-loading');
+    $('[data-pbar]').style.setProperty('--v', 40 + pass * 15 + '%');
+    if (pass === 4) { G.nosi(nosi, 'cheer'); G.burst($('[data-run]')); G.sound('ok'); setTimeout(finish, 700); }
+    else { G.nosi(nosi, 'oops'); G.sound('no'); G.shake($('.codecard')); }
+  }
+  function finish() {
+    const d = $('[data-done]'); d.hidden = false; $('[data-pbar]').style.setProperty('--v', '100%');
+    $$('.pring', d).forEach(G.ring); G.nosi($('[data-done-nosi]'), 'cheer'); G.confetti(); G.sound('done');
+    G.ticker($('[data-d-xp]'), 180, { from: 0, dur: 1300 }); G.ticker($('[data-d-m]'), 86, { from: 0, dur: 1300 });
+  }
+  function load(k) { ta.value = CODE[k]; badLine = -1; sync(); $('[data-done]').hidden = true; $('[data-attempt]').textContent = k === 'start' ? 'percobaan 1' : 'percobaan 2';
+    $('[data-out]').innerHTML = '<span class="t-xs t-faint">Output muncul di sini setelah kamu menjalankan tes.</span>';
+    $$('.robot').forEach(r => { r.className = 'robot'; $('.rmeta', r).textContent = 'menunggu'; const dd = $('.rdiff', r); dd && dd.remove(); });
+    $('[data-rsum]').textContent = '0 / 4'; }
+  document.addEventListener('gnosia:ready', () => {
+    $('[data-run]').addEventListener('click', run);
+    $('[data-reset]').addEventListener('click', () => load('start'));
+    document.addEventListener('gnosia:state', e => { load(e.detail); if (e.detail !== 'start') run(); });
+    const st = new URLSearchParams(location.search).get('state') || 'attempt'; load(st); if (st !== 'start') run();
+  });
+})();
+</script>
+</body>
+</html>

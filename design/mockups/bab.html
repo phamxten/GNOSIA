@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bab 2 · Variabel · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .bab-hero { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 40px; align-items: center; }
+  .journey { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 36px; position: relative; }
+  .jcard { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 22px; border: 1px solid var(--border); background: var(--surface); min-height: 280px; transition: transform var(--dur-320) var(--spring-gentle), box-shadow var(--dur-200); }
+  .jcard .jnum { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--ph-soft); color: var(--ph-ink); }
+  .jcard h3 { font-family: var(--font-serif); font-weight: 400; font-size: 28px; margin: 0; }
+  .jcard ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 13px; color: var(--text-muted); }
+  .jcard ul li { display: flex; gap: 8px; align-items: center; }
+  .jcard .jfoot { margin-top: auto; }
+  .jcard.is-done { background: var(--ph-soft); border-color: var(--ph-line); }
+  .jcard.is-now { border-color: var(--ph-fill); box-shadow: 0 0 0 4px var(--ph-soft), 0 20px 40px -24px rgba(31,30,27,.3); transform: translateY(-4px); }
+  .jcard.is-locked { background: transparent; border-style: dashed; }
+  .jcard.is-locked h3, .jcard.is-locked .jnum { color: var(--text-faint); } .jcard.is-locked .jnum { background: var(--surface-sunken); }
+  .connector { position: absolute; top: 42px; height: 2px; background: var(--border-strong); z-index: -1; left: 10%; right: 10%; }
+  .skills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .skill { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); font-size: 14px; }
+  .cheat { border-radius: 20px; border: 1px solid var(--pahami-line); background: var(--pahami-soft); padding: 22px; }
+  .cheat pre { margin: 12px 0 0; padding: 14px 16px; border-radius: 12px; background: var(--editor-bg); border: 1px solid var(--border); font-family: var(--font-mono); font-size: 13px; line-height: 1.7; overflow-x: auto; }
+  @media (max-width: 1000px) { .bab-hero { grid-template-columns: 1fr; } .journey { grid-template-columns: 1fr 1fr; } .skills { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .journey { grid-template-columns: 1fr; } .jcard { min-height: 0; } }
+</style>
+</head>
+<body>
+<header data-nav="learner" data-active="peta"></header>
+<main class="page">
+  <div class="crumbs t-sm t-muted mb-4"><a href="peta.html" class="link" style="font-weight:500">Peta · JavaScript Dasar</a> <span class="t-faint">/</span> Bab 2</div>
+  <section class="bab-hero">
+    <div>
+      <div class="eyebrow">Bab 2 dari 10 · Modul Fondasi</div>
+      <h1 class="big-serif mt-2" style="font-size:56px">Variabel</h1>
+      <p class="t-lg t-muted mt-3" style="max-width:56ch;line-height:1.6">Cara program menyimpan dan mengingat nilai: membuat kotak berlabel, mengganti isinya, menguncinya dengan <span class="ic">const</span>, dan memakainya dalam hitungan.</p>
+      <div class="row gap-3 mt-6 wrap"><a class="btn btn-ok btn-xl btn-press" href="perkuat.html">Lanjut Perkuat · soal 4<i data-lucide="arrow-right"></i></a><span class="t-sm t-faint">±25 menit total · sisa ±18 menit</span></div>
+    </div>
+    <div class="t-center"><span class="pring" data-ring="1,.38,0,0" data-size="220" data-stroke="14"><span class="pring-center"><span class="nosi nosi-lg" data-mood="happy" style="width:110px;height:110px"></span></span></span></div>
+  </section>
+
+  <section class="journey" aria-label="Empat fase bab ini">
+    <a class="jcard is-done" data-phase="pahami" href="pahami.html" data-tilt>
+      <div class="row between"><span class="jnum"><i data-lucide="book-open"></i></span><span class="badge badge-success"><i data-lucide="check"></i>Selesai</span></div>
+      <h3>Pahami</h3>
+      <ul><li><i data-lucide="clapperboard" class="i-14"></i>7 scene beranimasi</li><li><i data-lucide="code-xml" class="i-14"></i>2 kode hidup</li><li><i data-lucide="clock" class="i-14"></i>6 menit</li></ul>
+      <span class="jfoot link t-sm">Ulas kembali →</span>
+    </a>
+    <a class="jcard is-now" data-phase="perkuat" href="perkuat.html" data-tilt>
+      <div class="row between"><span class="jnum"><i data-lucide="dumbbell"></i></span><span class="phase-tag">Sekarang</span></div>
+      <h3>Perkuat</h3>
+      <ul><li><i data-lucide="list-checks" class="i-14"></i>8 latihan, 7 tipe</li><li><i data-lucide="repeat" class="i-14"></i>adaptif, soal serupa jika salah</li><li><i data-lucide="lightbulb" class="i-14"></i>petunjuk bertingkat</li></ul>
+      <div class="jfoot"><div class="pstep" style="padding:0;border:0;background:none"><span class="bar"><span style="--v:38%"></span></span></div><div class="t-xs t-mono t-faint mt-2">3 / 8 selesai</div></div>
+    </a>
+    <div class="jcard is-locked" data-phase="kuis">
+      <div class="row between"><span class="jnum"><i data-lucide="lock"></i></span><span class="t-xs t-faint">setelah Perkuat</span></div>
+      <h3>Kuis</h3>
+      <ul><li><i data-lucide="zap" class="i-14"></i>10 soal trivia</li><li><i data-lucide="timer" class="i-14"></i>20 detik per soal</li><li><i data-lucide="flag" class="i-14"></i>lulus ≥ 70% untuk membuka Uji</li></ul>
+    </div>
+    <div class="jcard is-locked" data-phase="uji">
+      <div class="row between"><span class="jnum"><i data-lucide="lock"></i></span><span class="t-xs t-faint">setelah Kuis</span></div>
+      <h3>Uji</h3>
+      <ul><li><i data-lucide="timer" class="i-14"></i><span><b>Ulangan</b> · 8 soal · 30 menit</span></li><li style="justify-content:center;color:var(--text-faint)">atau</li><li><i data-lucide="swords" class="i-14"></i><span><b>Challenge</b> · Papan Skor</span></li></ul>
+    </div>
+  </section>
+
+  <div class="grid grid-2 mt-12" style="gap:32px">
+    <section>
+      <h2 class="big-serif" style="font-size:26px">Yang akan kamu kuasai</h2>
+      <div class="skills mt-4">
+        <div class="skill"><span class="mastery" data-tier="4"><i></i><i></i><i></i><i></i><i></i></span>Membuat variabel</div>
+        <div class="skill"><span class="mastery" data-tier="3"><i></i><i></i><i></i><i></i><i></i></span>Mengganti nilai</div>
+        <div class="skill"><span class="mastery is-weak" data-tier="2"><i></i><i></i><i></i><i></i><i></i></span>let vs const</div>
+        <div class="skill"><span class="mastery" data-tier="1"><i></i><i></i><i></i><i></i><i></i></span>Variabel dalam hitungan</div>
+      </div>
+      <p class="t-xs t-faint mt-3">Penguasaan naik dari latihan, kuis, dan uji. Membaca saja hanya sampai tingkat “Dilihat”.</p>
+    </section>
+    <section class="cheat">
+      <div class="row between"><span class="eyebrow" style="color:var(--pahami-ink)">Catatan ringkas · dari Pahami</span><button class="btn btn-ghost btn-sm"><i data-lucide="copy"></i>Salin</button></div>
+<pre><span class="k">let</span> skor <span class="pn">=</span> <span class="n">10</span><span class="pn">;</span>        <span class="c">// kotak yang bisa diubah</span>
+skor <span class="pn">=</span> <span class="n">25</span><span class="pn">;</span>            <span class="c">// ganti isi (tanpa let)</span>
+<span class="k">const</span> sekolah <span class="pn">=</span> <span class="s">"SIG"</span><span class="pn">;</span> <span class="c">// dikunci</span>
+<span class="k">const</span> total <span class="pn">=</span> harga <span class="pn">*</span> jumlah<span class="pn">;</span></pre>
+    </section>
+  </div>
+</main>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

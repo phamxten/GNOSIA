@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proyek · Kalkulator Uang Saku · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .proj-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; }
+  .milestones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 28px; position: relative; }
+  .ms { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; padding: 0 8px; }
+  .ms::before { content: ""; position: absolute; top: 22px; left: -50%; right: 50%; height: 3px; background: var(--border); z-index: 0; }
+  .ms:first-child::before { display: none; }
+  .ms.is-done::before, .ms.is-now::before { background: var(--mode-project); }
+  .ms .dot2 { position: relative; z-index: 1; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 2px solid var(--border-strong); color: var(--text-faint); font-family: var(--font-mono); font-weight: 700; }
+  .ms.is-done .dot2 { background: var(--mode-project); border-color: var(--mode-project); color: #fff; }
+  .ms.is-now .dot2 { border-color: var(--mode-project); color: var(--mode-project); box-shadow: 0 0 0 6px color-mix(in srgb, var(--mode-project) 14%, transparent); }
+  .ms .t-sm { font-weight: 600; }
+  .proj { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 28px; margin-top: 36px; }
+  .thread { display: flex; flex-direction: column; gap: 12px; }
+  .msg { display: grid; grid-template-columns: 32px 1fr; gap: 10px; }
+  .msg .bub { padding: 12px 14px; border-radius: 4px 16px 16px 16px; background: var(--surface); border: 1px solid var(--border); font-size: 14px; line-height: 1.55; }
+  .msg.is-me .bub { background: var(--pahami-soft); border-color: var(--pahami-line); }
+  .line-cmt { margin: 6px 0 6px 52px; padding: 10px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--accent-line); border-left: 3px solid var(--accent); font-family: var(--font-sans); font-size: 13px; white-space: normal; display: flex; gap: 10px; animation: rise 500ms var(--spring-gentle) both; }
+  .gl.has-cmt::after { content: ""; position: absolute; left: -48px; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .portfolio { border-radius: 24px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+  .portfolio .shot { height: 220px; background: var(--surface-sunken); display: grid; place-items: center; border-bottom: 1px solid var(--border); }
+  .app-mock { width: 260px; padding: 18px; border-radius: 18px; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 20px 40px -24px rgba(0,0,0,.3); }
+  @media (max-width: 1000px) { .proj, .proj-head { grid-template-columns: 1fr; } .milestones { grid-template-columns: repeat(2, 1fr); row-gap: 20px; } .ms::before { display: none; } }
+</style>
+</head>
+<body>
+<header data-nav="learner" data-active="proyek"></header>
+<main class="page">
+  <div class="proj-head">
+    <div>
+      <div class="row gap-2"><span class="badge badge-mono">PROYEK 1</span><span class="t-sm t-faint">setelah Bab 1–4 · portofolio</span></div>
+      <h1 class="big-serif mt-3" style="font-size:48px">Kalkulator <em>Uang Saku</em></h1>
+      <p class="t-muted mt-2" style="max-width:60ch">Aplikasi kecil untuk mencatat pemasukan dan jajan, lalu menghitung sisa uang per minggu. Memakai variabel, operator, percabangan, dan fungsi.</p>
+    </div>
+    <div class="row gap-2"><button class="btn btn-secondary btn-lg btn-press" data-show-in="work feedback"><i data-lucide="eye"></i>Pratinjau</button><button class="btn btn-primary btn-lg btn-press" data-review-btn data-show-in="work"><i data-lucide="send"></i>Minta review mentor</button><span class="badge badge-accent" data-show-in="waiting" hidden style="height:36px;padding:0 14px;font-size:13px"><i data-lucide="hourglass"></i>Menunggu review Dimas</span></div>
+  </div>
+
+  <div class="milestones" aria-label="Milestone">
+    <div class="ms is-done"><span class="dot2"><i data-lucide="check" class="i-20"></i></span><span class="t-sm">Data uang saku</span><span class="t-xs t-faint">variabel · direview</span></div>
+    <div class="ms is-now"><span class="dot2">2</span><span class="t-sm">Hitung sisa</span><span class="t-xs t-faint">operator · sekarang</span></div>
+    <div class="ms"><span class="dot2">3</span><span class="t-sm">Peringatan boros</span><span class="t-xs t-faint">percabangan</span></div>
+    <div class="ms"><span class="dot2">4</span><span class="t-sm">Rapikan jadi fungsi</span><span class="t-xs t-faint">fungsi · terbit</span></div>
+  </div>
+
+  <div class="proj" data-show-in="work waiting feedback">
+    <aside class="stack gap-6">
+      <section class="card card-pad">
+        <div class="eyebrow">Milestone 2 · Hitung sisa</div>
+        <div class="stack gap-2 mt-3">
+          <div class="req done"><i data-lucide="circle-check"></i><span>Hitung total jajan dari 3 hari</span></div>
+          <div class="req done"><i data-lucide="circle-check"></i><span>Simpan <span class="t-mono">sisa</span> = uang saku − total</span></div>
+          <div class="req todo"><i data-lucide="circle"></i><span>Cetak laporan dengan format rupiah</span></div>
+        </div>
+        <div class="robots mt-4">
+          <div class="robot is-pass"><span class="rb"><i data-lucide="check"></i></span><span>total jajan = 57000</span><span class="rmeta">2 ms</span></div>
+          <div class="robot is-pass"><span class="rb"><i data-lucide="check"></i></span><span>sisa = 43000</span><span class="rmeta">1 ms</span></div>
+          <div class="robot"><span class="rb"><i data-lucide="bot"></i></span><span>format “Rp43.000”</span><span class="rmeta">belum</span></div>
+        </div>
+      </section>
+      <section>
+        <div class="row between mb-2"><span class="eyebrow">Diskusi dengan mentor</span><span class="badge badge-accent" data-show-in="feedback" hidden>2 komentar baru</span></div>
+        <div class="thread">
+          <div class="msg"><span class="avatar avatar-sm a2">DR</span><div class="bub"><b>Milestone 1 disetujui.</b> Nama variabelnya jelas sekali. Lanjut!</div></div>
+          <div class="msg is-me" data-show-in="waiting feedback" hidden><span class="avatar avatar-sm">NA</span><div class="bub">Kak, milestone 2 sudah. Format rupiahnya aku masih bingung.</div></div>
+          <div class="msg" data-show-in="feedback" hidden><span class="avatar avatar-sm a2">DR</span><div class="bub">Hitungannya sudah benar. Aku tinggalkan 2 catatan di baris kodenya, dan untuk rupiah coba lihat <span class="t-mono">toLocaleString("id-ID")</span>.</div></div>
+        </div>
+        <div class="row gap-2 mt-3"><input class="input" placeholder="Tulis pesan…" aria-label="Pesan untuk mentor"><button class="btn btn-secondary btn-icon btn-press" aria-label="Kirim"><i data-lucide="send"></i></button></div>
+      </section>
+    </aside>
+
+    <section class="stack gap-4" style="min-width:0">
+      <div class="codecard">
+        <div class="cc-head"><span class="cc-file"><span class="lang">JS</span>uang-saku.js</span><span class="save-state" style="margin-left:auto"><i data-lucide="cloud-check" class="i-14"></i>Tersimpan</span><button class="btn btn-phase btn-sm btn-press" data-phase="uji" data-run style="margin-left:8px"><i data-lucide="play"></i>Jalankan</button></div>
+        <div class="editor2" style="background:var(--editor-bg)"><pre aria-hidden="true" data-hl></pre><textarea spellcheck="false" aria-label="Kode proyek" data-code></textarea></div>
+        <div data-cmts></div>
+        <div class="cc-out" data-out></div>
+      </div>
+      <div class="callout callout-accent" data-show-in="waiting" hidden><i data-lucide="hourglass"></i><div class="t-sm"><b>Review diminta.</b> Dimas biasanya membalas dalam 1 hari. Kamu tetap bisa lanjut ke Bab 5 sambil menunggu.</div></div>
+    </section>
+  </div>
+
+  <section class="mt-12" data-show-in="portfolio" hidden>
+    <div class="portfolio">
+      <div class="shot"><div class="app-mock"><div class="t-label">Uang saku minggu ini</div><div class="big-serif mt-2" style="font-size:36px">Rp43.000</div><div class="progress progress-lg mt-3"><span style="--value:43%"></span></div><div class="row between t-xs t-faint mt-2"><span>sisa</span><span>dari Rp100.000</span></div><div class="callout callout-warning mt-3" style="padding:8px 10px"><i data-lucide="triangle-alert"></i><span class="t-xs">Jajan Rabu melebihi rata-rata</span></div></div></div>
+      <div class="p-6 row between wrap gap-4"><div><div class="t-h3">Kalkulator Uang Saku</div><div class="t-sm t-muted mt-1">Nadia Azzahra · 4 milestone · direview oleh Dimas Rahardjo</div></div><div class="row gap-2"><span class="badge badge-success"><i data-lucide="check"></i>Terbit di portofolio</span><button class="btn btn-secondary btn-sm btn-press"><i data-lucide="link"></i>Salin tautan</button></div></div>
+    </div>
+  </section>
+</main>
+<div class="mock-states" data-page-states><span>state</span><button data-page-state="work">mengerjakan</button><button data-page-state="waiting">menunggu review</button><button data-page-state="feedback">feedback diterima</button><button data-page-state="portfolio">portofolio</button></div>
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  const CODE = '// Milestone 2 · hitung sisa\nconst uangSaku = 100000;\nconst jajan = [15000, 30000, 12000];\n\nlet total = 0;\nfor (const j of jajan) {\n  total = total + j;\n}\n\nconst sisa = uangSaku - total;\nconsole.log("Total jajan:", total);\nconsole.log("Sisa:", sisa);';
+  const CMTS = { 6: 'Bagus! Nanti di Bab Array kamu akan kenal <span class="t-mono">reduce</span>, yang bisa menggantikan 3 baris ini.', 10: 'Tambahkan format rupiah di sini supaya milestone 2 lengkap.' };
+  const ta = $('[data-code]'), pre = $('[data-hl]'); ta.value = CODE;
+  function paint() {
+    const fb = document.body.dataset.state === 'feedback';
+    pre.innerHTML = G.highlight(ta.value);
+    if (fb) Object.entries(CMTS).forEach(([ln, txt]) => { const l = pre.querySelector(`[data-n="${ln}"]`); if (!l) return; l.classList.add('has-cmt'); l.insertAdjacentHTML('afterend', `<span class="line-cmt"><span class="avatar avatar-sm a2">DR</span><span>${txt}</span></span>`); });
+    ta.style.pointerEvents = fb ? 'none' : ''; ta.style.opacity = fb ? 0 : 1;
+  }
+  function run() { const r = G.runJS(ta.value), out = $('[data-out]'); out.innerHTML = ''; r.logs.forEach((l, i) => setTimeout(() => out.insertAdjacentHTML('beforeend', `<span class="out-bubble"><span class="p">›</span>${l}</span>`), i * 100)); if (r.err) out.insertAdjacentHTML('beforeend', `<span class="out-bubble is-err">${r.err.message}</span>`); }
+  document.addEventListener('gnosia:state', () => { paint(); if (document.body.dataset.state === 'portfolio') G.confetti(); });
+  document.addEventListener('gnosia:ready', () => {
+    ta.addEventListener('input', paint); paint(); run();
+    $('[data-run]').addEventListener('click', run);
+    $('[data-review-btn]').addEventListener('click', e => { G.burst(e.currentTarget); window.gnosiaToast({ kind: 'accent', icon: 'send', title: 'Review diminta', body: 'Dimas akan menerima notifikasi.' }); setTimeout(() => gnosiaState('waiting'), 500); });
+  });
+})();
+</script>
+</body>
+</html>

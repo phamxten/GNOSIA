@@ -1,0 +1,17 @@
+{
+  "_note": "Demo accounts created by `python -m app.seed`. All share the test password below. Change or delete them before a real deployment.",
+  "password": "gnosia123",
+  "org": "SMK SIG",
+  "staff": [
+    {"name": "Sekar Rahma", "email": "sekar@smksig.sch.id", "role": "admin", "avatar": "a3", "title": "Kurikulum · SMK SIG"},
+    {"name": "Dimas Rahardjo", "email": "dimas@smksig.sch.id", "role": "mentor", "avatar": "a2", "title": "Mentor RPL"}
+  ],
+  "learners": [
+    {"name": "Nadia Azzahra", "email": "nadia@smksig.sch.id", "avatar": "", "story": "nadia"},
+    {"name": "Alex Lim", "email": "alex@smksig.sch.id", "avatar": "a4", "story": "alex"},
+    {"name": "Rizky Saputra", "email": "rizky@smksig.sch.id", "avatar": "a3", "story": "rizky"},
+    {"name": "Maya Putri", "email": "maya@smksig.sch.id", "avatar": "a5", "story": "maya"},
+    {"name": "Bayu Yudha", "email": "bayu@smksig.sch.id", "avatar": "", "story": "bayu"},
+    {"name": "Salsa Putri", "email": "salsa@smksig.sch.id", "avatar": "a2", "story": "salsa"}
+  ]
+}

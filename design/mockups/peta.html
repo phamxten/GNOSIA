@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peta belajar · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; }
+  .map-wrap { position: relative; border-radius: 28px; border: 1px solid var(--border); background: var(--surface); overflow: hidden; }
+  .map-wrap::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 22px 22px; opacity: .7; }
+  .map { height: 1760px; }
+  .mod-label { position: absolute; left: 24px; transform: translateY(-50%); font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); display: flex; align-items: center; gap: 10px; }
+  .mod-label::after { content: ""; width: 60px; height: 1px; background: var(--border-strong); }
+  .pop { position: absolute; z-index: 5; width: 300px; transform: translate(-50%, 16px); background: var(--surface-raised); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow-modal); padding: 18px; animation: rise 360ms var(--spring-bouncy) both; }
+  .pop .phase-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+  .pop .phase-row span { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; border-radius: 12px; font-size: 11px; background: var(--surface-sunken); color: var(--text-faint); }
+  .pop .phase-row span.ok { background: var(--ph-soft); color: var(--ph-ink); }
+  .course-pick { display: grid; gap: 8px; }
+  .course-pick a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); }
+  .course-pick a[aria-current] { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .side { position: sticky; top: 88px; align-self: start; display: flex; flex-direction: column; gap: 28px; }
+  @media (max-width: 1000px) { .map-layout { grid-template-columns: 1fr; } .side { position: static; order: -1; } .mnode { width: 140px; } .mnode .disc { width: 80px; height: 80px; } .mnode .disc .icon { width: 46px; height: 46px; } .mod-label { display: none; } }
+</style>
+</head>
+<body>
+<header data-nav="learner" data-active="peta"></header>
+<main class="page" style="max-width:1280px">
+  <div class="page-head">
+    <div><div class="eyebrow">Peta belajar</div><h1 class="big-serif mt-2" style="font-size:44px">JavaScript <em>Dasar</em></h1><p class="t-muted mt-2">10 bab · setiap bab: Pahami → Perkuat → Kuis → Uji. Bab berikutnya terbuka setelah Uji lulus.</p></div>
+  </div>
+  <div class="map-layout">
+    <div class="map-wrap"><div class="map" data-map><svg class="route" data-route></svg></div></div>
+    <aside class="side">
+      <section>
+        <div class="eyebrow mb-2">Kemajuan jalur</div>
+        <div class="row gap-4"><span class="pring" data-ring="1,1,.9,.8" data-size="92" data-stroke="8"><span class="pring-center"><b class="big-serif" style="font-size:24px">14%</b></span></span><div class="t-sm t-muted">1 dari 10 bab selesai.<br>Bab 2 sedang di <b style="color:var(--perkuat-ink)">Perkuat</b>.</div></div>
+      </section>
+      <section>
+        <div class="eyebrow mb-2">Jalur lain</div>
+        <div class="course-pick">
+          <a aria-current="true" href="peta.html"><span class="badge badge-mono">JS</span><div class="grow t-sm t-medium">JavaScript Dasar</div><i data-lucide="check" class="i-14 t-accent"></i></a>
+          <a href="#"><span class="badge badge-mono">TS</span><div class="grow t-sm">TypeScript</div><span class="t-xs t-faint">setelah JS</span></a>
+          <a href="#" style="opacity:.6"><span class="badge badge-mono">PY</span><div class="grow t-sm">Python</div><span class="badge">2027</span></a>
+        </div>
+      </section>
+      <section>
+        <div class="eyebrow mb-2">Cara membaca cincin</div>
+        <div class="stack gap-2 t-sm">
+          <div class="row gap-2"><span class="dot" style="background:var(--pahami-fill)"></span>Pahami</div>
+          <div class="row gap-2"><span class="dot" style="background:var(--perkuat-fill)"></span>Perkuat</div>
+          <div class="row gap-2"><span class="dot" style="background:var(--kuis-fill)"></span>Kuis</div>
+          <div class="row gap-2"><span class="dot" style="background:var(--uji-fill)"></span>Uji</div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  // Chapters: [title, sub, icon, ring(4 phases), state, x%, module label?]
+  const CH = [
+    ['Halo, JavaScript', 'console.log, komentar', 'hand', [1, 1, 1, 1], 'done', 30, 'Modul 1 · Fondasi'],
+    ['Variabel', 'let, const, penamaan', 'box', [1, .38, 0, 0], 'now', 64],
+    ['Tipe Data', 'string, number, boolean', 'shapes', [0, 0, 0, 0], 'locked', 40],
+    ['Operator', 'aritmetika, perbandingan', 'plus-minus', [0, 0, 0, 0], 'locked', 72, 'Modul 2 · Logika'],
+    ['Percabangan', 'if, else, switch', 'git-branch', [0, 0, 0, 0], 'locked', 34],
+    ['Perulangan', 'for, while', 'repeat', [0, 0, 0, 0], 'locked', 58],
+    ['Fungsi', 'parameter, return', 'function-square', [0, 0, 0, 0], 'locked', 28, 'Modul 3 · Struktur'],
+    ['Proyek · Kalkulator Uang Saku', 'milestone + review mentor', 'folder-kanban', [0, 0, 0, 0], 'locked', 62],
+    ['Array', 'daftar, index, loop', 'layout-list', [0, 0, 0, 0], 'locked', 36],
+    ['Ujian Akhir Jalur', 'sertifikat', 'award', [0, 0, 0, 0], 'locked', 60],
+  ];
+  const map = document.querySelector('[data-map]'), svg = document.querySelector('[data-route]');
+  const STEP = 170, TOP = 110;
+  function draw() {
+    map.querySelectorAll('.mnode,.mod-label,.pop').forEach(n => n.remove());
+    const W = map.clientWidth, pts = CH.map((c, i) => [c[5] / 100 * W, TOP + i * STEP]);
+    CH.forEach((c, i) => {
+      const [title, sub, icon, ring, st] = c, [x, y] = pts[i];
+      if (c[6]) { const l = document.createElement('div'); l.className = 'mod-label'; l.style.top = y - 70 + 'px'; l.textContent = c[6]; map.appendChild(l); }
+      const n = document.createElement('button'); n.className = `mnode is-${st}`; n.style.left = x + 'px'; n.style.top = y + 'px'; n.dataset.i = i;
+      n.innerHTML = `${st === 'now' ? '<span class="here">Kamu di sini</span>' : ''}<span class="disc"><span class="pring" data-ring="${ring}" data-size="${innerWidth < 1000 ? 80 : 96}" data-stroke="6"></span><span class="icon"><i data-lucide="${st === 'locked' ? 'lock' : icon}"></i></span></span><span class="name">${i + 1}. ${title}</span><span class="sub">${sub}</span>`;
+      map.appendChild(n); G.ring(n.querySelector('.pring'));
+      n.style.opacity = 0; n.animate([{ opacity: 0, transform: 'translate(-50%,-50%) scale(.6)' }, { opacity: 1, transform: 'translate(-50%,-50%) scale(1)' }], { duration: 600, delay: 100 + i * 70, easing: G.ease.bouncy, fill: 'forwards' });
+    });
+    // Smooth route (Catmull-Rom → Bézier)
+    const d = pts.map((p, i) => { if (!i) return `M${p[0]} ${p[1]}`; const p0 = pts[i - 2] || pts[i - 1], p1 = pts[i - 1], p3 = pts[i + 1] || p; const c1 = [p1[0] + (p[0] - p0[0]) / 6, p1[1] + (p[1] - p0[1]) / 6], c2 = [p[0] - (p3[0] - p1[0]) / 6, p[1] - (p3[1] - p1[1]) / 6]; return `C${c1} ${c2} ${p}`; }).join(' ');
+    const done = pts.slice(0, 2).map((p, i) => i ? `L${p}` : `M${p}`).join(' ');
+    svg.setAttribute('viewBox', `0 0 ${W} ${map.clientHeight}`);
+    svg.innerHTML = `<path class="path-bg" d="${d}"/><path class="path-done" d="${d}" data-done/>`;
+    const pd = svg.querySelector('[data-done]'), total = pd.getTotalLength();
+    // Length along path up to node 2 (approximate by sampling)
+    let upto = 0; for (let s = 0; s <= total; s += 4) { const pt = pd.getPointAtLength(s); if (pt.y >= pts[1][1] - 2) { upto = s; break; } }
+    pd.style.strokeDasharray = `${upto} ${total}`;
+    if (G.motion !== 'off') pd.animate([{ strokeDasharray: `0 ${total}` }, { strokeDasharray: `${upto} ${total}` }], { duration: 1400, delay: 300, easing: G.ease.gentle });
+    window.gnosiaIcons();
+  }
+  function pop(i, node) {
+    map.querySelectorAll('.pop').forEach(p => p.remove());
+    const c = CH[i]; if (c[4] === 'locked') { G.shake(node); window.gnosiaToast({ kind: 'accent', icon: 'lock', title: `Bab ${i + 1} masih terkunci`, body: 'Selesaikan Uji di Bab 2 · Variabel untuk membukanya.' }); return; }
+    const p = document.createElement('div'); p.className = 'pop'; p.style.left = node.style.left; p.style.top = parseFloat(node.style.top) + 70 + 'px';
+    const names = ['Pahami', 'Perkuat', 'Kuis', 'Uji'], phs = ['pahami', 'perkuat', 'kuis', 'uji'];
+    p.innerHTML = `<div class="row between"><span class="t-h4">${i + 1}. ${c[0]}</span><button class="btn btn-ghost btn-icon btn-sm" aria-label="Tutup" data-x><i data-lucide="x"></i></button></div><div class="t-xs t-faint mt-1">${c[1]}</div>
+      <div class="phase-row">${names.map((nm, k) => `<span data-phase="${phs[k]}" class="${c[3][k] >= 1 ? 'ok' : ''}"><i data-lucide="${c[3][k] >= 1 ? 'check' : c[3][k] > 0 ? 'loader' : 'circle'}" class="i-14"></i>${nm}</span>`).join('')}</div>
+      <a class="btn btn-primary btn-lg btn-press w-full mt-4" href="bab.html">${c[4] === 'done' ? 'Ulas bab' : 'Masuk bab'}<i data-lucide="arrow-right"></i></a>`;
+    map.appendChild(p); p.querySelector('[data-x]').onclick = () => p.remove(); window.gnosiaIcons();
+  }
+  document.addEventListener('gnosia:ready', () => { draw(); map.addEventListener('click', e => { const n = e.target.closest('.mnode'); if (n) pop(+n.dataset.i, n); }); let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(draw, 200); });
+    if (new URLSearchParams(location.search).has('pop')) setTimeout(() => pop(1, map.querySelector('[data-i="1"]')), 900); });
+})();
+</script>
+</body>
+</html>

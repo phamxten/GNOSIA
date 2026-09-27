@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pengaturan · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .set { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; }
+  .set-nav { position: sticky; top: 88px; align-self: start; display: flex; flex-direction: column; gap: 2px; }
+  .set-nav a { padding: 8px 12px; border-radius: 10px; font-size: 14px; color: var(--text-muted); }
+  .set-nav a:hover { background: var(--surface-hover); color: var(--text); }
+  .set-nav a[aria-current] { background: var(--surface); box-shadow: inset 0 0 0 1px var(--border); color: var(--text); font-weight: 500; }
+  .set-sec { padding: 28px; border-radius: 22px; background: var(--surface); border: 1px solid var(--border); margin-bottom: 16px; }
+  .set-sec h2 { font-family: var(--font-serif); font-weight: 400; font-size: 26px; margin: 0 0 4px; }
+  .set-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 16px 0; border-top: 1px solid var(--divider); }
+  .set-row:first-of-type { border-top: 0; }
+  .theme-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+  .theme-card { border-radius: 16px; border: 1.5px solid var(--border); padding: 10px; text-align: left; transition: all var(--dur-200) var(--spring-bouncy); }
+  .theme-card[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+  .theme-card .prev { height: 70px; border-radius: 10px; margin-bottom: 8px; display: grid; grid-template-columns: 1fr 2fr; gap: 6px; padding: 8px; }
+  .theme-card .prev i { border-radius: 6px; }
+  .intensity { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+  .intensity button { padding: 16px; border-radius: 16px; border: 1.5px solid var(--border); border-bottom-width: 4px; text-align: left; display: flex; flex-direction: column; gap: 6px; transition: all var(--dur-200) var(--spring-bouncy); }
+  .intensity button[aria-pressed="true"] { border-color: var(--pahami-fill); background: var(--pahami-soft); }
+  .preview-zone { margin-top: 16px; padding: 22px; border-radius: 16px; background: var(--surface-sunken); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  @media (max-width: 900px) { .set { grid-template-columns: 1fr; } .set-nav { display: none; } .theme-cards, .intensity { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header data-nav="learner" data-active="settings"></header>
+<main class="page" style="max-width:1040px">
+  <div class="page-head"><div><div class="eyebrow">Pengaturan</div><h1 class="big-serif mt-2" style="font-size:44px">Atur GNOSIA <em>sesukamu</em>.</h1></div></div>
+  <div class="set">
+    <nav class="set-nav"><a href="#akun">Akun</a><a href="#tampilan" aria-current="true">Tampilan</a><a href="#motion">Animasi &amp; suara</a><a href="#belajar">Belajar</a><a href="#privasi">Privasi</a></nav>
+    <div>
+      <section class="set-sec" id="akun">
+        <h2>Akun</h2>
+        <div class="row gap-4 mt-4"><span class="avatar avatar-lg" style="width:64px;height:64px;font-size:20px">NA</span><div class="grow"><div class="t-h4">Nadia Azzahra</div><div class="t-sm t-muted">nadia@smksig.sch.id · XII RPL · SMK SIG</div></div><button class="btn btn-secondary btn-press">Ubah</button></div>
+      </section>
+
+      <section class="set-sec" id="tampilan">
+        <h2>Tampilan</h2><p class="t-sm t-muted">Tema berlaku untuk semua halaman dan kode.</p>
+        <div class="theme-cards" data-single>
+          <button class="theme-card" aria-pressed="true" data-set-theme="paper"><div class="prev" data-theme="paper" style="background:var(--bg);border:1px solid var(--border)"><i style="background:var(--surface-sunken)"></i><i style="background:var(--surface);border:1px solid var(--border)"></i></div><b class="t-sm">Paper</b><div class="t-xs t-faint">terang, hangat</div></button>
+          <button class="theme-card" aria-pressed="false" data-set-theme="ink"><div class="prev" data-theme="ink" style="background:var(--bg)"><i style="background:var(--surface-sunken)"></i><i style="background:var(--surface);border:1px solid var(--border)"></i></div><b class="t-sm">Ink</b><div class="t-xs t-faint">gelap, lembut</div></button>
+          <button class="theme-card" aria-pressed="false" data-set-theme="system"><div class="prev" style="background:linear-gradient(90deg,#F7F6F2 50%,#16171B 50%);border:1px solid var(--border)"></div><b class="t-sm">Ikuti perangkat</b><div class="t-xs t-faint">otomatis</div></button>
+        </div>
+      </section>
+
+      <section class="set-sec" id="motion">
+        <h2>Animasi &amp; suara</h2><p class="t-sm t-muted">Animasi di GNOSIA selalu menandakan sesuatu. Pilih seberapa ramai yang nyaman untukmu.</p>
+        <div class="intensity" data-single>
+          <button aria-pressed="true" data-intensity="full"><i data-lucide="sparkles" class="t-accent"></i><b>Penuh</b><span class="t-xs t-muted">Partikel, konfeti, tilt, Nosi bergerak</span></button>
+          <button aria-pressed="false" data-intensity="calm"><i data-lucide="wind" class="t-accent"></i><b>Kalem</b><span class="t-xs t-muted">Transisi halus saja, tanpa efek ramai</span></button>
+          <button aria-pressed="false" data-intensity="off"><i data-lucide="pause" class="t-accent"></i><b>Mati</b><span class="t-xs t-muted">Hanya warna dan teks. Mengikuti “kurangi gerakan”.</span></button>
+        </div>
+        <div class="preview-zone"><span class="nosi" data-prev-nosi data-mood="happy"></span><button class="btn btn-ok btn-lg btn-press" data-prev-ok>Coba: jawaban benar</button><button class="btn btn-secondary btn-lg btn-press" data-prev-no>Coba: jawaban salah</button><button class="btn btn-ghost btn-lg" data-prev-done>Coba: fase selesai</button></div>
+        <div class="set-row mt-2"><div><div class="t-h4">Suara efek</div><div class="t-sm t-muted">Bunyi pendek saat benar, salah, dan selesai.</div></div><label class="switch"><input type="checkbox" data-sound aria-label="Suara efek"></label></div>
+        <div class="set-row"><div><div class="t-h4">Tampilkan Nosi</div><div class="t-sm t-muted">Maskot di pelajaran. Petunjuk tetap tersedia walau Nosi disembunyikan.</div></div><label class="switch"><input type="checkbox" checked aria-label="Tampilkan Nosi"></label></div>
+      </section>
+
+      <section class="set-sec" id="belajar">
+        <h2>Belajar</h2>
+        <div class="set-row"><div><div class="t-h4">Target harian</div><div class="t-sm t-muted">Dipakai untuk streak dan pengingat.</div></div><div class="segmented"><button aria-pressed="false">10 mnt</button><button aria-pressed="true">20 mnt</button><button aria-pressed="false">30 mnt</button></div></div>
+        <div class="set-row"><div><div class="t-h4">Bahasa antarmuka</div><div class="t-sm t-muted">Kode dan istilah teknis tetap dalam bahasa aslinya.</div></div><select class="select" style="width:180px"><option>Bahasa Indonesia</option><option>English</option></select></div>
+        <div class="set-row"><div><div class="t-h4">Pengingat belajar</div><div class="t-sm t-muted">Notifikasi pukul 19.00 jika target belum tercapai.</div></div><label class="switch"><input type="checkbox" checked aria-label="Pengingat"></label></div>
+      </section>
+
+      <section class="set-sec" id="privasi">
+        <h2>Privasi</h2>
+        <div class="set-row"><div><div class="t-h4">Mentor dapat melihat jawaban salah</div><div class="t-sm t-muted">Membantu mentor tahu di mana kamu macet.</div></div><label class="switch"><input type="checkbox" checked aria-label="Mentor melihat jawaban"></label></div>
+        <div class="set-row"><div><div class="t-h4" style="color:var(--danger)">Hapus akun</div><div class="t-sm t-muted">Progres, proyek, dan notebook dihapus permanen.</div></div><button class="btn btn-danger">Hapus…</button></div>
+      </section>
+    </div>
+  </div>
+</main>
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
+  document.addEventListener('gnosia:ready', () => {
+    const t = document.documentElement.dataset.theme; $$('[data-set-theme]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.setTheme === t)));
+    $$('[data-intensity]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.intensity === G.motion)));
+    let snd = 'off'; try { snd = localStorage.getItem('gnosia-sound') || 'off'; } catch (_) {} $('[data-sound]').checked = snd === 'on';
+    document.addEventListener('click', e => {
+      const th = e.target.closest('[data-set-theme]'); if (th) { const v = th.dataset.setTheme === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'paper') : th.dataset.setTheme; document.documentElement.dataset.theme = v; try { localStorage.setItem('gnosia-theme', v); } catch (_) {} }
+      const it = e.target.closest('[data-intensity]'); if (it) { G.setMotion(it.dataset.intensity); window.gnosiaToast({ kind: 'accent', icon: 'wind', title: 'Intensitas animasi: ' + it.querySelector('b').textContent, body: 'Coba tombol di bawah untuk merasakannya.' }); }
+      if (e.target.closest('[data-prev-ok]')) { const b = $('[data-prev-ok]'); G.burst(b); G.pop(b); G.nosi($('[data-prev-nosi]'), 'happy'); G.xpFloat(b, '+10 XP'); G.sound('ok'); }
+      if (e.target.closest('[data-prev-no]')) { G.shake($('[data-prev-no]')); G.nosi($('[data-prev-nosi]'), 'oops'); G.sound('no'); }
+      if (e.target.closest('[data-prev-done]')) { G.confetti(); G.nosi($('[data-prev-nosi]'), 'cheer'); G.sound('done'); }
+    });
+    $('[data-sound]').addEventListener('change', e => { try { localStorage.setItem('gnosia-sound', e.target.checked ? 'on' : 'off'); } catch (_) {} if (e.target.checked) G.sound('ok'); });
+  });
+})();
+</script>
+</body>
+</html>

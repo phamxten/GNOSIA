@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alex Lim · Mentor · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .st-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; }
+  .st-head { display: flex; gap: 20px; align-items: center; }
+  .attempt { display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding: 16px 0; border-top: 1px solid var(--divider); }
+  .attempt .mini { display: flex; flex-direction: column; gap: 4px; }
+  .attempt .mini div { font-family: var(--font-mono); font-size: 12px; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); }
+  .attempt .mini div.bad { border-color: var(--uji-line); background: var(--uji-soft); color: var(--uji-ink); }
+  .attempt .mini div.ok { border-color: var(--perkuat-line); background: var(--perkuat-soft); color: var(--perkuat-ink); }
+  .review-code { font-family: var(--font-mono); font-size: 14px; line-height: 1.8; background: var(--editor-bg); padding: 14px 0; }
+  .rline { display: grid; grid-template-columns: 48px 1fr 36px; align-items: center; padding: 0 10px 0 0; cursor: pointer; white-space: pre; }
+  .rline .ln-no { text-align: right; padding-right: 14px; color: var(--text-faint); font-size: 12px; }
+  .rline .add { opacity: 0; width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); transition: opacity var(--dur-120), transform var(--dur-200) var(--spring-bouncy); }
+  .rline:hover { background: var(--surface-hover); } .rline:hover .add { opacity: 1; }
+  .rline.is-bad { background: var(--uji-soft); }
+  .cbox { margin: 6px 16px 10px 48px; padding: 12px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--accent-line); border-left: 3px solid var(--accent); font-family: var(--font-sans); white-space: normal; animation: rise 400ms var(--spring-gentle) both; }
+  .tl2 { position: relative; padding-left: 28px; }
+  .tl2::before { content: ""; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+  .tl2 .ev { position: relative; padding-bottom: 18px; }
+  .tl2 .ev::before { content: ""; position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--ph-fill); box-shadow: 0 0 0 4px var(--surface); }
+  @media (max-width: 1000px) { .st-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header data-nav="mentor" data-active="siswa"></header>
+<main class="page page-wide">
+  <a class="link t-sm" href="mentor.html">← Kelas XII RPL</a>
+  <div class="st-head mt-4">
+    <span class="avatar a4" style="width:72px;height:72px;font-size:22px">AL</span>
+    <div class="grow"><h1 class="big-serif" style="font-size:40px">Alex Lim</h1><div class="row gap-2 mt-1 wrap"><span class="t-sm t-muted">XII RPL · bergabung 12 Agu</span><span class="phase-tag" data-phase="perkuat">Bab 4 · Array · Perkuat 2/8</span><span class="badge badge-danger">salah 4× di soal yang sama</span></div></div>
+    <div class="row gap-2 hide-sm"><button class="btn btn-secondary btn-lg btn-press"><i data-lucide="message-circle"></i>Pesan</button><button class="btn btn-primary btn-lg btn-press" data-toast="success|clipboard-check|Tugas diberikan|Perkuat mini: urutan baris · 4 soal">Beri tugas</button></div>
+  </div>
+
+  <div class="st-grid mt-8">
+    <div>
+      <div class="tabs" role="tablist"><button class="tab" role="tab" data-tab="st:wrong" aria-selected="true">Jawaban salah <span class="count">7</span></button><button class="tab" role="tab" data-tab="st:review" aria-selected="false" id="review">Review kode <span class="count">1</span></button><button class="tab" role="tab" data-tab="st:tl" aria-selected="false">Timeline</button></div>
+
+      <section data-tab-panel="st:wrong" class="mt-4">
+        <div class="card card-pad">
+          <div class="row between"><div><div class="eyebrow">Perkuat · Array · soal 5 · susun baris</div><div class="t-h3 mt-1">Hitung total nilai dari array</div></div><span class="attempts"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
+          <div class="attempt"><div class="t-xs t-faint">Jawaban benar</div><div class="mini"><div class="ok">let total = 0;</div><div class="ok">for (const n of nilai) {</div><div class="ok">&nbsp;&nbsp;total = total + n;</div><div class="ok">}</div></div></div>
+          <div class="attempt"><div class="t-xs t-faint">Percobaan 1–4<br><span class="t-danger">pola sama</span></div><div class="mini"><div class="bad">for (const n of nilai) {</div><div class="bad">&nbsp;&nbsp;let total = 0;</div><div>&nbsp;&nbsp;total = total + n;</div><div>}</div></div></div>
+          <div class="callout callout-accent mt-2"><i data-lucide="stethoscope"></i><div class="t-sm"><b>Diagnosis:</b> Alex menaruh <span class="t-mono">let total = 0</span> <i>di dalam</i> loop, sehingga total direset setiap putaran. Ini miskonsepsi <b>scope &amp; urutan</b>, bukan sintaks. Saran: scene Pahami “Loop mengulang isi kurung” + 3 soal Perkuat mini.</div></div>
+          <div class="row gap-2 mt-4"><button class="btn btn-primary btn-press" data-toast="success|send|Terkirim|Scene + 3 soal ditugaskan ke Alex">Tugaskan scene + 3 soal</button><button class="btn btn-ghost">Tulis pesan sendiri</button></div>
+        </div>
+        <div class="card card-pad mt-3"><div class="row between"><div><div class="eyebrow">Kuis · Array · soal 7</div><div class="t-sm mt-1">“Berapa panjang <span class="t-mono">[1, 2, 3]</span>?” · dijawab <span class="t-mono t-danger">2</span></div></div><span class="badge">1× salah</span></div></div>
+      </section>
+
+      <section data-tab-panel="st:review" class="mt-4" hidden>
+        <div class="card" style="overflow:hidden">
+          <div class="p-5 row between wrap gap-2"><div><div class="eyebrow">Challenge · Bab 3 · Rapor kecil</div><div class="t-h3 mt-1">rapor.js · percobaan 2 · 3/4 tes lulus</div></div><div class="row gap-2"><button class="btn btn-secondary btn-press" data-toast="accent|rotate-ccw|Diminta perbaikan|Alex menerima 2 komentar">Minta perbaikan</button><button class="btn btn-ok btn-press" data-approve>Setujui</button></div></div>
+          <div class="review-code" data-review>
+          </div>
+          <div class="p-5" style="border-top:1px solid var(--divider)"><div class="field"><label class="field-label" for="sum">Ringkasan feedback</label><textarea id="sum" class="textarea" placeholder="Apa yang sudah bagus? Apa satu hal yang perlu dicoba berikutnya?">Logikanya sudah benar. Satu hal: ganti nama variabel `x` supaya jelas isinya.</textarea></div>
+            <div class="row gap-2 mt-3" data-single><button class="chip" aria-pressed="false">+ “Nama variabel lebih jelas”</button><button class="chip" aria-pressed="false">+ “Coba pecah jadi fungsi”</button><button class="chip" aria-pressed="false">+ “Kerja bagus!”</button></div></div>
+        </div>
+      </section>
+
+      <section data-tab-panel="st:tl" class="mt-4" hidden>
+        <div class="card card-pad tl2">
+          <div class="ev" data-phase="perkuat"><b>Perkuat · Array</b> <span class="t-muted">· soal 5 salah 4×</span><div class="t-xs t-faint">hari ini 09.12</div></div>
+          <div class="ev" data-phase="pahami"><b>Pahami · Array</b> <span class="t-muted">· selesai 8 scene, 11 menit</span><div class="t-xs t-faint">hari ini 08.55</div></div>
+          <div class="ev" data-phase="uji"><b>Uji · Tipe Data</b> <span class="t-muted">· challenge 3/4 · minta review</span><div class="t-xs t-faint">kemarin</div></div>
+          <div class="ev" data-phase="kuis"><b>Kuis · Tipe Data</b> <span class="t-muted">· 80% · lulus</span><div class="t-xs t-faint">kemarin</div></div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="stack gap-4">
+      <section class="card card-pad"><div class="eyebrow">Posisi di jalur</div><div class="row gap-4 mt-3"><span class="pring" data-ring="1,.25,0,0" data-size="84" data-stroke="7"></span><div class="t-sm">Bab 4 dari 10<br><span class="t-muted">Penguasaan rata-rata 64%</span></div></div></section>
+      <section class="card card-pad"><div class="eyebrow">Konsep lemah</div>
+        <div class="stack gap-2 mt-3 t-sm"><div class="row between"><span>Urutan &amp; scope loop</span><span class="mastery is-weak" data-tier="1"><i></i><i></i><i></i><i></i><i></i></span></div><div class="row between"><span>Panjang array</span><span class="mastery is-weak" data-tier="2"><i></i><i></i><i></i><i></i><i></i></span></div><div class="row between"><span>const vs let</span><span class="mastery" data-tier="4"><i></i><i></i><i></i><i></i><i></i></span></div></div></section>
+      <section class="card card-pad"><div class="eyebrow">Pengaturan bantuan untuk Alex</div>
+        <div class="set-row" style="display:flex;justify-content:space-between;padding-top:12px"><span class="t-sm">Batas petunjuk</span><select class="select" style="width:110px"><option>L6 (penuh)</option><option selected>L4</option><option>L2</option></select></div>
+        <p class="t-xs t-faint mt-2">Berlaku di Perkuat dan Playground. Kuis dan Uji selalu terkunci.</p></section>
+    </aside>
+  </div>
+</main>
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  const CODE = ['const nama = "Alex";', 'const x = [80, 72, 91];', 'let total = 0;', 'for (const n of x) {', '  total = total + n;', '}', 'const rata = total / 3;', 'console.log(nama, rata);'];
+  const CM = { 2: 'Nama <span class="t-mono">x</span> kurang jelas. Coba <span class="t-mono">nilai</span> atau <span class="t-mono">skorUjian</span>.', 7: 'Angka 3 ditulis manual. Apa jadinya kalau nilainya ada 4? Coba pakai <span class="t-mono">x.length</span>.' };
+  function render() {
+    $('[data-review]').innerHTML = CODE.map((l, i) => `<div class="rline ${i === 6 ? 'is-bad' : ''}" data-l="${i + 1}"><span class="ln-no">${i + 1}</span><span>${G.highlight(l).replace(/class="gl"[^>]*>/, 'class="gl-inline">')}</span><span class="add" title="Tambah komentar"><i data-lucide="plus" class="i-14"></i></span></div>${CM[i + 1] ? `<div class="cbox"><div class="row gap-2"><span class="avatar avatar-sm a2">DR</span><span class="t-sm">${CM[i + 1]}</span></div></div>` : ''}`).join('');
+    window.gnosiaIcons();
+  }
+  document.addEventListener('click', e => {
+    const l = e.target.closest('.rline'); if (l && !l.nextElementSibling?.classList.contains('cbox-new')) { document.querySelectorAll('.cbox-new').forEach(x => x.remove()); l.insertAdjacentHTML('afterend', `<div class="cbox cbox-new"><textarea class="textarea" style="min-height:64px" placeholder="Komentar untuk baris ${l.dataset.l}…"></textarea><div class="row gap-2 mt-2"><button class="btn btn-primary btn-sm btn-press" data-save-c>Simpan</button><button class="btn btn-ghost btn-sm" onclick="this.closest('.cbox').remove()">Batal</button></div></div>`); l.nextElementSibling.querySelector('textarea').focus(); }
+    if (e.target.closest('[data-save-c]')) { const b = e.target.closest('.cbox'); const t = b.querySelector('textarea').value || 'Komentar baru'; b.outerHTML = `<div class="cbox"><div class="row gap-2"><span class="avatar avatar-sm a2">DR</span><span class="t-sm">${t.replace(/</g, '&lt;')}</span></div></div>`; }
+    if (e.target.closest('[data-approve]')) { G.burst(e.target.closest('[data-approve]')); G.confetti(); window.gnosiaToast({ kind: 'success', icon: 'check', title: 'Challenge disetujui', body: 'Alex mendapat +30 XP dan feedback-mu.' }); }
+  });
+  document.addEventListener('gnosia:ready', () => { render(); if (location.hash === '#review') document.querySelector('[data-tab="st:review"]').click(); });
+})();
+</script>
+</body>
+</html>

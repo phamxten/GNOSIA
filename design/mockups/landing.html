@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GNOSIA · Pahami dulu, baru ngoding</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .lp { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  .mnav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 90%, transparent); border-bottom: 1px solid transparent; transition: border-color var(--dur-fast); }
+  .mnav.is-scrolled { border-bottom-color: var(--border); }
+  .mnav .lp { height: 68px; display: flex; align-items: center; gap: 28px; }
+  .mnav nav { display: flex; gap: 22px; font-size: 14px; color: var(--text-muted); }
+  .mnav nav a:hover { color: var(--text); }
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 540px); gap: 56px; align-items: center; padding-top: 72px; padding-bottom: 40px; }
+  .hero h1 { font-size: clamp(46px, 6vw, 78px); }
+  .hero-phases { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  /* Demo */
+  .demo { position: relative; border-radius: 28px; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 30px 80px -40px rgba(31,30,27,.45); overflow: hidden; }
+  .demo-tabs { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--divider); }
+  .demo-tab { position: relative; padding: 14px 8px 12px; font-size: 13px; font-weight: 600; color: var(--text-faint); display: flex; flex-direction: column; align-items: center; gap: 4px; transition: color var(--dur-200), background var(--dur-200); }
+  .demo-tab:hover { color: var(--text); }
+  .demo-tab[aria-selected="true"] { color: var(--ph-ink); background: var(--ph-soft); }
+  .demo-tab .tprog { position: absolute; left: 0; bottom: -1px; height: 3px; width: 0; background: var(--ph-fill); }
+  .demo-body { padding: 28px; min-height: 380px; position: relative; }
+  .demo-pane { animation: scene-in var(--dur-600) var(--spring-gentle) both; }
+  .demo-foot { display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--divider); background: var(--surface-sunken); font-size: 12px; color: var(--text-faint); }
+  .sec { padding-top: 130px; }
+  .sec h2 { font-size: clamp(34px, 4.4vw, 54px); max-width: 18ch; }
+  .lead-lg { font-size: 18px; line-height: 1.6; color: var(--text-muted); max-width: 58ch; margin-top: 16px; }
+  /* Scrollytelling */
+  .story { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-top: 56px; }
+  .story-sticky { position: sticky; top: 110px; align-self: start; height: 460px; border-radius: 28px; border: 1px solid var(--border); background: var(--ph-soft); display: grid; place-items: center; overflow: hidden; transition: background var(--dur-600) var(--ease-out); }
+  .story-sticky .big-ic { width: 120px; height: 120px; border-radius: 36px; display: grid; place-items: center; background: var(--surface); color: var(--ph-ink); box-shadow: 0 20px 40px -24px rgba(31,30,27,.4); transition: transform var(--dur-600) var(--spring-bouncy); }
+  .story-sticky .big-ic svg.lucide { width: 52px; height: 52px; stroke-width: 1.5; }
+  .story-sticky .big-num { position: absolute; left: 28px; top: 20px; font-family: var(--font-serif); font-size: 120px; line-height: 1; color: var(--ph-fill); opacity: .25; }
+  .story-sticky .nosi { position: absolute; right: 28px; bottom: 24px; }
+  .story-steps { display: flex; flex-direction: column; gap: 44vh; padding: 12vh 0 30vh; }
+  .sstep { opacity: .35; transition: opacity var(--dur-320); }
+  .sstep.is-on { opacity: 1; }
+  .sstep h3 { font-family: var(--font-serif); font-weight: 400; font-size: 40px; margin: 12px 0 10px; }
+  .sstep p { font-size: 17px; line-height: 1.65; color: var(--text-muted); }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 44px; }
+  .vs > div { padding: 26px; border-radius: 22px; border: 1px solid var(--border); background: var(--surface); }
+  .vs .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; font-size: 13px; }
+  .vs .flow span { padding: 6px 12px; border-radius: 999px; background: var(--surface-sunken); }
+  .moods { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 28px; }
+  .moods button { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); padding: 14px; border-radius: 18px; border: 1px solid var(--border); background: var(--surface); transition: transform var(--dur-320) var(--spring-bouncy); }
+  .moods button:hover { transform: translateY(-4px); }
+  .roles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px; }
+  .role { padding: 26px; border-radius: 22px; border: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; gap: 10px; }
+  .foot { margin-top: 140px; border-top: 1px solid var(--border); padding: 36px 0 80px; font-size: 13px; color: var(--text-muted); }
+  [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 700ms var(--ease-out), transform 700ms var(--spring-gentle); }
+  [data-reveal].is-in { opacity: 1; transform: none; }
+  html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; }
+  @media (max-width: 1000px) { .hero, .story, .vs, .roles { grid-template-columns: 1fr; } .story-sticky { position: relative; top: 0; height: 280px; } .story-steps { gap: 60px; padding: 20px 0; } .sstep { opacity: 1; } .mnav nav { display: none; } .lp { padding: 0 16px; } .hero { padding-top: 36px; } .sec { padding-top: 90px; } }
+</style>
+</head>
+<body>
+<header class="mnav" data-mnav><div class="lp">
+  <a class="logo" href="landing.html"><span class="logo-glyph"></span><span class="logo-word">gnosia</span></a>
+  <nav><a href="#cara">Cara belajar</a><a href="#beda">Bedanya</a><a href="#nosi">Nosi</a><a href="#sekolah">Untuk sekolah</a></nav>
+  <div class="grow"></div>
+  <button class="btn btn-ghost btn-icon" data-theme-toggle aria-label="Ganti tema"><i data-lucide="sun-moon"></i></button>
+  <a class="btn btn-ghost hide-sm" href="login.html">Masuk</a>
+  <a class="btn btn-primary btn-press" href="login.html?state=register">Mulai gratis</a>
+</div></header>
+
+<main>
+  <section class="lp hero">
+    <div>
+      <div class="eyebrow">Belajar ngoding · JavaScript untuk pemula</div>
+      <h1 class="big-serif mt-4">Pahami dulu.<br><em>Baru</em> ngoding.</h1>
+      <p class="lead-lg">Di GNOSIA, setiap konsep dijelaskan dengan animasi dan kode hidup, lalu diperkuat dengan latihan, diuji lewat kuis singkat, dan terakhir dibuktikan lewat ulangan atau challenge.</p>
+      <div class="hero-phases"><span class="phase-tag" data-phase="pahami">1 · Pahami</span><span class="phase-tag" data-phase="perkuat">2 · Perkuat</span><span class="phase-tag" data-phase="kuis">3 · Kuis</span><span class="phase-tag" data-phase="uji">4 · Uji</span></div>
+      <div class="row gap-3 mt-8 wrap"><a class="btn btn-primary btn-xl btn-press" href="login.html?state=register">Mulai Bab 1, gratis<i data-lucide="arrow-right"></i></a><a class="btn btn-ghost btn-xl" href="#cara">Lihat caranya</a></div>
+      <p class="t-sm t-faint mt-4">Tanpa instalasi. Langsung di browser, juga di HP.</p>
+    </div>
+
+    <!-- Playable mini-lesson -->
+    <div class="demo" data-demo data-phase="pahami" aria-label="Coba mini-lesson">
+      <div class="demo-tabs" role="tablist">
+        <button class="demo-tab" role="tab" data-dt="pahami" aria-selected="true"><i data-lucide="book-open" class="i-14"></i>Pahami<span class="tprog"></span></button>
+        <button class="demo-tab" role="tab" data-dt="perkuat" aria-selected="false"><i data-lucide="dumbbell" class="i-14"></i>Perkuat<span class="tprog"></span></button>
+        <button class="demo-tab" role="tab" data-dt="kuis" aria-selected="false"><i data-lucide="zap" class="i-14"></i>Kuis<span class="tprog"></span></button>
+        <button class="demo-tab" role="tab" data-dt="uji" aria-selected="false"><i data-lucide="swords" class="i-14"></i>Uji<span class="tprog"></span></button>
+      </div>
+      <div class="demo-body" data-demo-body></div>
+      <div class="demo-foot"><span class="nosi nosi-sm" data-demo-nosi></span><span data-demo-say>Ini contoh asli dari Bab 2 · Variabel. Coba klik!</span></div>
+    </div>
+  </section>
+
+  <!-- HOW: scrollytelling -->
+  <section class="lp sec" id="cara">
+    <div class="eyebrow" data-reveal>Cara belajar di GNOSIA</div>
+    <h2 class="big-serif mt-3" data-reveal>Empat langkah, selalu berurutan.</h2>
+    <p class="lead-lg" data-reveal>Kamu tidak dilempar ke soal sebelum paham. Kamu juga tidak diuji sebelum sempat berlatih.</p>
+    <div class="story">
+      <div class="story-sticky" data-story data-phase="pahami"><span class="big-num" data-story-num>1</span><span class="big-ic" data-story-ic><i data-lucide="book-open"></i></span><span class="nosi nosi-lg" data-story-nosi data-mood="think"></span></div>
+      <div class="story-steps">
+        <div class="sstep is-on" data-sstep="pahami" data-n="1" data-ic="book-open" data-mood="think"><span class="phase-tag" data-phase="pahami">Pahami</span><h3>Konsep dijelaskan, bukan ditebak.</h3><p>Satu ide per layar. Animasi menunjukkan apa yang terjadi di dalam program, misalnya nilai masuk ke kotak variabel. Angka di kode bisa kamu geser, dan hasilnya langsung berubah.</p></div>
+        <div class="sstep" data-sstep="perkuat" data-n="2" data-ic="dumbbell" data-mood="happy"><span class="phase-tag" data-phase="perkuat">Perkuat</span><h3>Latihan yang menyesuaikan.</h3><p>Susun baris kode, isi bagian kosong, ketuk baris yang bug. Kalau salah, kamu dapat petunjuk bertingkat dan satu soal serupa. Tidak ada nyawa yang hilang.</p></div>
+        <div class="sstep" data-sstep="kuis" data-n="3" data-ic="zap" data-mood="cheer"><span class="phase-tag" data-phase="kuis">Kuis</span><h3>Trivia cepat sebagai gerbang.</h3><p>10 soal, 20 detik per soal, dengan combo. Nilai 70% membuka tahap terakhir. Pembahasan selalu muncul di akhir.</p></div>
+        <div class="sstep" data-sstep="uji" data-n="4" data-ic="swords" data-mood="happy"><span class="phase-tag" data-phase="uji">Uji</span><h3>Buktikan: ulangan atau challenge.</h3><p>Pilih ulangan berwaktu, atau challenge coding sungguhan yang dicek robot penguji satu per satu. Mentor kamu bisa melihat hasil dan kodenya.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFFERENCE -->
+  <section class="lp sec" id="beda">
+    <div class="eyebrow" data-reveal>Bedanya</div>
+    <h2 class="big-serif mt-3" data-reveal>Latihan tanpa fondasi itu menebak-nebak.</h2>
+    <div class="vs">
+      <div data-reveal><div class="t-label">Kebanyakan platform</div><div class="flow"><span>Soal</span><i data-lucide="arrow-right" class="i-14 t-faint"></i><span>Salah</span><i data-lucide="arrow-right" class="i-14 t-faint"></i><span>Lihat jawaban</span><i data-lucide="arrow-right" class="i-14 t-faint"></i><span>Lupa</span></div><p class="t-sm t-muted mt-4">Praktik dulu tanpa pemahaman. Jawabannya bisa dihafal, tapi konsepnya tidak ikut.</p></div>
+      <div data-reveal style="border-color:var(--pahami-line)"><div class="t-label" style="color:var(--pahami-ink)">GNOSIA</div><div class="flow"><span data-phase="pahami" style="background:var(--pahami-soft);color:var(--pahami-ink)">Pahami</span><i data-lucide="arrow-right" class="i-14 t-faint"></i><span style="background:var(--perkuat-soft);color:var(--perkuat-ink)">Perkuat</span><i data-lucide="arrow-right" class="i-14 t-faint"></i><span style="background:var(--kuis-soft);color:var(--kuis-ink)">Kuis</span><i data-lucide="arrow-right" class="i-14 t-faint"></i><span style="background:var(--uji-soft);color:var(--uji-ink)">Uji</span></div><p class="t-sm t-muted mt-4">Fondasi dulu, lalu penguatan, lalu pembuktian. Setiap langkah menyiapkan langkah berikutnya.</p></div>
+    </div>
+  </section>
+
+  <!-- NOSI -->
+  <section class="lp sec" id="nosi">
+    <div class="row gap-12 wrap" style="align-items:center">
+      <span class="nosi" data-nosi-big style="width:220px;height:220px" data-reveal></span>
+      <div class="grow" style="min-width:280px">
+        <div class="eyebrow" data-reveal>Teman belajar</div>
+        <h2 class="big-serif mt-3" data-reveal>Ini <em>Nosi</em>. Sayapnya dari kurung kurawal.</h2>
+        <p class="lead-lg" data-reveal>Nosi ikut bereaksi saat kamu belajar dan memberi petunjuk kalau kamu minta. Nosi tidak pernah langsung memberi jawaban.</p>
+        <div class="moods" data-reveal>
+          <button data-try-mood="think"><span class="nosi nosi-sm" data-mood="think"></span>Mikir</button>
+          <button data-try-mood="happy"><span class="nosi nosi-sm" data-mood="happy"></span>Senang</button>
+          <button data-try-mood="cheer"><span class="nosi nosi-sm" data-mood="cheer"></span>Semangat</button>
+          <button data-try-mood="oops"><span class="nosi nosi-sm" data-mood="oops"></span>Ups</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section class="lp sec" id="sekolah">
+    <div class="eyebrow" data-reveal>Untuk guru &amp; sekolah</div>
+    <h2 class="big-serif mt-3" data-reveal>Guru melihat siapa yang macet, dan di fase mana.</h2>
+    <div class="roles">
+      <div class="role" data-reveal data-tilt><i data-lucide="graduation-cap" class="i-20 t-accent"></i><div class="t-h3">Siswa</div><p class="t-sm t-muted">Jalur belajar bertahap, playground bebas, proyek portofolio.</p></div>
+      <div class="role" data-reveal data-tilt><i data-lucide="users" class="i-20" style="color:var(--perkuat-ink)"></i><div class="t-h3">Mentor</div><p class="t-sm t-muted">“Alex salah 4× di Perkuat: Array” lebih berguna daripada “42 siswa terdaftar”.</p><a class="link t-sm" href="mentor.html">Lihat dashboard mentor →</a></div>
+      <div class="role" data-reveal data-tilt><i data-lucide="blocks" class="i-20" style="color:var(--uji-ink)"></i><div class="t-h3">Admin kurikulum</div><p class="t-sm t-muted">Susun bab, scene animasi, bank soal, dan challenge tanpa menulis kode frontend.</p><a class="link t-sm" href="builder.html">Lihat builder →</a></div>
+    </div>
+  </section>
+
+  <section class="lp sec t-center">
+    <h2 class="big-serif" style="margin:0 auto" data-reveal>Baris kode pertamamu tinggal <em>90 detik</em> lagi.</h2>
+    <div class="row center gap-3 mt-8" data-reveal><a class="btn btn-primary btn-xl btn-press" href="login.html?state=register">Mulai gratis</a><a class="btn btn-ghost btn-xl" href="peta.html">Lihat peta belajar</a></div>
+  </section>
+
+  <footer class="lp foot"><div class="row between wrap gap-6"><a class="logo" href="landing.html"><span class="logo-glyph"></span><span class="logo-word">gnosia</span></a><div class="row gap-6 wrap"><a href="#cara">Cara belajar</a><a href="#sekolah">Sekolah</a><a href="styleguide.html">Design system</a><a href="#">Privasi</a></div><span class="t-faint">© 2026 GNOSIA</span></div></footer>
+</main>
+
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const demo = $('[data-demo]'), body = $('[data-demo-body]'), say = $('[data-demo-say]'), nosi = $('[data-demo-nosi]');
+  const ORDER = ['pahami', 'perkuat', 'kuis', 'uji']; let cur = 'pahami', auto = true, timer = null, prog = null;
+  const PANES = {
+    pahami: () => `<div class="demo-pane"><div class="phase-tag">Pahami</div><h3 class="big-serif mt-3" style="font-size:28px">Variabel adalah kotak berlabel.</h3>
+      <div class="row between mt-6 wrap gap-4" style="align-items:center"><div class="t-mono" style="font-size:22px"><span class="k">let</span> skor <span class="pn">=</span> <span class="n" data-d-val style="display:inline-block">10</span><span class="pn">;</span></div>
+      <div class="vbox"><span class="tag">skor</span><div class="box" data-d-box><span class="val" data-d-in style="opacity:0">10</span></div></div></div>
+      <button class="btn btn-phase btn-lg btn-press mt-6" data-d-play><i data-lucide="play"></i>Putar animasi</button></div>`,
+    perkuat: () => `<div class="demo-pane"><div class="phase-tag">Perkuat</div><h3 class="big-serif mt-3" style="font-size:24px">Skor akan bertambah. Baris mana yang tepat?</h3>
+      <div class="choices" data-d-choices><button class="choice" data-ok="0"><span class="key">1</span><span class="code">const skor = 0;</span></button><button class="choice" data-ok="1"><span class="key">2</span><span class="code">let skor = 0;</span></button></div></div>`,
+    kuis: () => `<div class="demo-pane"><div class="row between"><span class="phase-tag">Kuis</span><div class="qtimer" style="width:48px;height:48px"><svg width="48" height="48"><circle class="t-trk" cx="24" cy="24" r="20"/><circle class="t-arc" cx="24" cy="24" r="20" stroke-dasharray="125.6" data-d-arc/></svg><span class="t-num" data-d-t style="font-size:14px">20</span></div></div>
+      <h3 class="big-serif mt-3" style="font-size:24px">JavaScript pertama dibuat dalam…</h3>
+      <div class="choices cols-2" data-d-choices><button class="choice" data-ok="1"><span class="key">A</span>10 hari</button><button class="choice" data-ok="0"><span class="key">B</span>2 tahun</button></div></div>`,
+    uji: () => `<div class="demo-pane"><div class="phase-tag">Uji · Challenge</div>
+      <div class="codecard mt-4"><div class="cc-body" style="font-size:13px"><div class="cc-line"><span class="k">const</span> tim <span class="pn">=</span> <span class="s">"Garuda"</span><span class="pn">;</span></div><div class="cc-line"><span class="k">let</span> skor <span class="pn">=</span> <span class="n">3</span> <span class="pn">+</span> <span class="n">3</span><span class="pn">;</span></div><div class="cc-line"><span class="p">console</span>.<span class="f">log</span>(tim <span class="pn">+</span> <span class="s">": "</span> <span class="pn">+</span> skor);</div></div></div>
+      <div class="robots mt-4" data-d-robots><div class="robot"><span class="rb"><i data-lucide="bot"></i></span><span>tim memakai const</span><span class="rmeta"></span></div><div class="robot"><span class="rb"><i data-lucide="bot"></i></span><span>output “Garuda: 6”</span><span class="rmeta"></span></div></div>
+      <button class="btn btn-phase btn-lg btn-press mt-4" data-d-run><i data-lucide="play"></i>Jalankan tes</button></div>`,
+  };
+  const SAY = { pahami: 'Klik “Putar” dan lihat nilainya masuk ke kotak.', perkuat: 'Pilih satu. Kalau salah, kamu dapat petunjuk, bukan hukuman.', kuis: 'Cepat! Jawaban cepat memberi combo.', uji: 'Robot penguji mengecek kodemu satu per satu.' };
+  function go(ph, manual) {
+    cur = ph; if (manual) auto = false; demo.dataset.phase = ph;
+    $$('[data-dt]').forEach(t => { const on = t.dataset.dt === ph; t.setAttribute('aria-selected', on); t.dataset.phase = t.dataset.dt; const p = $('.tprog', t); p.getAnimations().forEach(a => a.cancel()); p.style.width = ORDER.indexOf(t.dataset.dt) < ORDER.indexOf(ph) && auto ? '100%' : '0'; });
+    body.innerHTML = PANES[ph](); say.textContent = SAY[ph]; G.nosi(nosi, 'think'); window.gnosiaIcons(); wire(ph);
+    clearTimeout(timer); clearInterval(prog);
+    if (auto && G.motion !== 'off') { const p = $(`[data-dt="${ph}"] .tprog`); p.animate([{ width: '0%' }, { width: '100%' }], { duration: 7000, easing: 'linear', fill: 'forwards' }); timer = setTimeout(() => go(ORDER[(ORDER.indexOf(ph) + 1) % 4]), 7000); }
+  }
+  function wire(ph) {
+    if (ph === 'pahami') { const play = () => { const v = $('[data-d-val]'), inn = $('[data-d-in]'); inn.style.opacity = 0; G.flyTo(v, $('[data-d-box]')).then(() => { inn.style.opacity = 1; G.pop($('[data-d-box]')); G.nosi(nosi, 'happy'); }); }; $('[data-d-play]').onclick = () => { auto = false; play(); }; if (auto) setTimeout(play, 1200); }
+    if (ph === 'perkuat' || ph === 'kuis') $$('[data-d-choices] .choice').forEach(c => (c.onclick = () => { auto = false; clearTimeout(timer); const ok = c.dataset.ok === '1'; c.classList.add(ok ? 'is-right' : 'is-wrong'); if (ok) { G.burst(c); G.nosi(nosi, 'happy'); say.textContent = 'Tepat! Begitu rasanya di Perkuat dan Kuis.'; } else { G.shake(c); G.nosi(nosi, 'oops'); say.textContent = ph === 'perkuat' ? 'Petunjuk: nilainya akan berubah. Kotak mana yang tidak digembok?' : 'Hampir! Jawabannya sekitar 10 hari.'; } }));
+    if (ph === 'kuis') { let t = 20; const arc = $('[data-d-arc]'); prog = setInterval(() => { if (!$('[data-d-t]')) return clearInterval(prog); t = Math.max(0, t - 1); $('[data-d-t]').textContent = t; arc.setAttribute('stroke-dashoffset', 125.6 * (1 - t / 20)); }, 1000); }
+    if (ph === 'uji') { const run = async () => { const rows = $$('[data-d-robots] .robot'); for (const r of rows) { r.classList.add('is-run'); $('.rb', r).innerHTML = '<i data-lucide="loader-circle"></i>'; window.gnosiaIcons(); await new Promise(o => setTimeout(o, 450)); r.classList.remove('is-run'); r.classList.add('is-pass'); $('.rb', r).innerHTML = '<i data-lucide="check"></i>'; $('.rmeta', r).textContent = 'lulus'; window.gnosiaIcons(); } G.nosi(nosi, 'cheer'); G.burst($('[data-d-run]')); say.textContent = 'Lulus! Di aplikasi, momen ini diikuti konfeti dan bab selesai.'; }; $('[data-d-run]').onclick = () => { auto = false; clearTimeout(timer); run(); }; if (auto) setTimeout(run, 1500); }
+  }
+  // Scrollytelling
+  function initStory() {
+    const box = $('[data-story]'); const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const s = e.target; $$('.sstep').forEach(x => x.classList.toggle('is-on', x === s));
+      box.dataset.phase = s.dataset.sstep; $('[data-story-num]').textContent = s.dataset.n; $('[data-story-ic]').innerHTML = `<i data-lucide="${s.dataset.ic}"></i>`; window.gnosiaIcons(); G.pop($('[data-story-ic]')); G.nosi($('[data-story-nosi]'), s.dataset.mood); }), { rootMargin: '-45% 0px -45% 0px' });
+    $$('.sstep').forEach(s => io.observe(s));
+  }
+  function initReveal() { const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { threshold: .15 }); $$('[data-reveal]').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 80 + 'ms'; io.observe(el); }); }
+  document.addEventListener('gnosia:ready', () => {
+    $$('[data-dt]').forEach(t => (t.onclick = () => go(t.dataset.dt, true))); go('pahami');
+    initStory(); initReveal(); G.nosi($('[data-nosi-big]'), 'happy');
+    $$('[data-try-mood]').forEach(b => b.addEventListener('click', () => G.nosi($('[data-nosi-big]'), b.dataset.tryMood)));
+    addEventListener('scroll', () => $('[data-mnav]').classList.toggle('is-scrolled', scrollY > 4), { passive: true });
+  });
+})();
+</script>
+</body>
+</html>

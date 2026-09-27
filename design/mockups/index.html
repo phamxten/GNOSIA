@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GNOSIA · Semua layar</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .ix { max-width: 1160px; margin: 0 auto; padding: 48px 32px 120px; }
+  .flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-top: 16px; }
+  .scr { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 18px; border-radius: 18px; border: 1px solid var(--border); background: var(--surface); transition: border-color var(--dur-200), transform var(--dur-320) var(--spring-gentle); }
+  .scr:hover { border-color: var(--ph-line, var(--border-strong)); transform: translateY(-3px); }
+  .scr .num { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
+  .scr .nm { font-family: var(--font-serif); font-size: 22px; line-height: 1.15; }
+  .scr .star { position: absolute; top: 14px; right: 14px; }
+  .scr .states { font-size: 12px; color: var(--text-faint); }
+  .grp { margin-top: 56px; }
+  .grp h2 { font-family: var(--font-serif); font-weight: 400; font-size: 30px; margin: 0; }
+  .docs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 16px; }
+  .doc { display: flex; gap: 10px; align-items: center; padding: 14px 16px; border-radius: 14px; border: 1px dashed var(--border-strong); font-family: var(--font-mono); font-size: 13px; }
+  @media (max-width: 700px) { .ix { padding: 28px 16px 80px; } }
+</style>
+</head>
+<body>
+<main class="ix">
+  <div class="row between wrap gap-4">
+    <a class="logo" href="landing.html"><span class="logo-glyph"></span><span class="logo-word">gnosia</span></a>
+    <button class="btn btn-secondary btn-press" data-theme-toggle><i data-lucide="sun-moon"></i>Tema: <span data-theme-label></span></button>
+  </div>
+  <h1 class="big-serif mt-8" style="font-size:56px">Semua layar <em>GNOSIA</em>.</h1>
+  <p class="t-lg t-muted mt-3" style="max-width:64ch;line-height:1.6">Mockup HTML interaktif untuk desain v2 “Jalan Pemahaman”: <b style="color:var(--pahami-ink)">Pahami</b> → <b style="color:var(--perkuat-ink)">Perkuat</b> → <b style="color:var(--kuis-ink)">Kuis</b> → <b style="color:var(--uji-ink)">Uji</b>. Tiap halaman punya tombol state di pojok (khusus mockup) dan navigasi alur di bawah.</p>
+  <div class="row gap-2 mt-6 wrap"><a class="btn btn-primary btn-lg btn-press" href="styleguide.html"><i data-lucide="palette"></i>Design system</a><a class="btn btn-secondary btn-lg btn-press" href="pahami.html"><i data-lucide="play"></i>Mulai dari lesson player</a></div>
+
+  <section class="grp"><div class="row between"><h2>Siswa · inti belajar</h2><span class="phase-tag">★ flagship</span></div>
+    <div class="flow">
+      <a class="scr" data-phase="pahami" href="pahami.html"><span class="star phase-tag">★</span><span class="num">06 · pahami.html</span><span class="nm">Pahami</span><span class="t-sm t-muted">7 scene beranimasi: token yang bisa diklik, angka yang bisa digeser, let vs const, selebrasi fase.</span><span class="states">?scene=1–7 · ?state=done</span></a>
+      <a class="scr" data-phase="perkuat" href="perkuat.html"><span class="star phase-tag">★</span><span class="num">07 · perkuat.html</span><span class="nm">Perkuat</span><span class="t-sm t-muted">7 tipe soal (pilih, lengkapi, tebak output, susun, bug, slider, pasangkan), adaptif, petunjuk bertingkat.</span><span class="states">q1 · q2 · q4 · q5 · q6 · q7 · done</span></a>
+      <a class="scr" data-phase="kuis" href="kuis.html"><span class="star phase-tag">★</span><span class="num">08 · kuis.html</span><span class="nm">Kuis</span><span class="t-sm t-muted">Ronde trivia 10 soal: hitung mundur, timer, combo, hasil, gerbang 70%, pembahasan.</span><span class="states">intro · play · pass · fail</span></a>
+      <a class="scr" data-phase="uji" href="ulangan.html"><span class="num">09 · ulangan.html</span><span class="nm">Uji · Ulangan</span><span class="t-sm t-muted">Countdown, navigasi soal, tandai, konfirmasi kirim, hasil 85.</span><span class="states">work · low · offline · result</span></a>
+      <a class="scr" data-phase="uji" href="challenge.html"><span class="star phase-tag">★</span><span class="num">10 · challenge.html</span><span class="nm">Uji · Challenge</span><span class="t-sm t-muted">Focus Coder: kode benar-benar dijalankan, robot penguji, baris error ditandai, bab selesai.</span><span class="states">attempt · start · solved</span></a>
+    </div></section>
+
+  <section class="grp"><h2>Siswa · sekitar belajar</h2>
+    <div class="flow">
+      <a class="scr" href="landing.html"><span class="num">01 · landing.html</span><span class="nm">Landing</span><span class="t-sm t-muted">Demo mini-lesson yang bisa dimainkan, scrollytelling 4 fase, Nosi.</span></a>
+      <a class="scr" href="login.html"><span class="num">02 · login.html</span><span class="nm">Masuk &amp; onboarding</span><span class="t-sm t-muted">Masuk, daftar (error), tujuan, cek penempatan, target harian.</span><span class="states">login · register · goal · level · time</span></a>
+      <a class="scr" href="dashboard.html"><span class="num">03 · dashboard.html</span><span class="nm">Beranda</span><span class="t-sm t-muted">Lanjutkan dengan cincin fase, target, streak, kuis harian, perlu diulang, mentor.</span><span class="states">default · new · loading</span></a>
+      <a class="scr" href="peta.html"><span class="num">04 · peta.html</span><span class="nm">Peta belajar</span><span class="t-sm t-muted">Jalur berkelok, node bab dengan cincin, popover, bab terkunci.</span><span class="states">?pop=1</span></a>
+      <a class="scr" href="bab.html"><span class="num">05 · bab.html</span><span class="nm">Bab</span><span class="t-sm t-muted">4 kartu fase, yang akan dikuasai, catatan ringkas.</span></a>
+      <a class="scr" href="playground.html"><span class="num">11 · playground.html</span><span class="nm">Playground</span><span class="t-sm t-muted">Notebook sel yang bisa dijalankan, diagnostik Nosi, lampirkan bab.</span><span class="states">default · empty</span></a>
+      <a class="scr" href="proyek.html"><span class="num">12 · proyek.html</span><span class="nm">Proyek</span><span class="t-sm t-muted">Milestone, robot, diskusi mentor, komentar per baris, portofolio.</span><span class="states">work · waiting · feedback · portfolio</span></a>
+      <a class="scr" href="progress.html"><span class="num">13 · progress.html</span><span class="nm">Progres</span><span class="t-sm t-muted">Konstelasi konsep, tren, per bab per fase.</span></a>
+      <a class="scr" href="settings.html"><span class="num">14 · settings.html</span><span class="nm">Pengaturan</span><span class="t-sm t-muted">Tema, intensitas animasi (bisa dicoba), suara, Nosi, privasi.</span></a>
+    </div></section>
+
+  <section class="grp"><h2>Mentor &amp; Admin</h2>
+    <div class="flow">
+      <a class="scr" href="mentor.html"><span class="num">15 · mentor.html</span><span class="nm">Ringkasan kelas</span><span class="t-sm t-muted">“Perlu perhatian sekarang”, posisi kelas per fase, konsep tersulit.</span></a>
+      <a class="scr" href="siswa.html"><span class="num">16 · siswa.html</span><span class="nm">Detail siswa</span><span class="t-sm t-muted">Pola jawaban salah + diagnosis, review kode per baris, timeline.</span><span class="states">#review</span></a>
+      <a class="scr" href="admin.html"><span class="num">17 · admin.html</span><span class="nm">Admin</span><span class="t-sm t-muted">Konten yang perlu dicek dari data, distribusi fase, status konten.</span></a>
+      <a class="scr" href="builder.html"><span class="num">18 · builder.html</span><span class="nm">Builder</span><span class="t-sm t-muted">Editor scene + langkah animasi, soal Perkuat, bank Kuis, challenge, pratinjau langsung.</span><span class="states">scene · soal · kuis · challenge</span></a>
+    </div></section>
+
+  <section class="grp"><h2>Dokumen serah-terima</h2><p class="t-sm t-muted mt-2">Di folder <span class="t-mono">gnosia-design/</span>, satu tingkat di atas mockups.</p>
+    <div class="docs"><span class="doc"><i data-lucide="file-text" class="i-14"></i>README.md</span><span class="doc"><i data-lucide="file-text" class="i-14"></i>CONCEPT.md</span><span class="doc"><i data-lucide="file-text" class="i-14"></i>DESIGN-SYSTEM.md</span><span class="doc"><i data-lucide="file-text" class="i-14"></i>MOTION.md</span><span class="doc"><i data-lucide="file-text" class="i-14"></i>COMPONENTS.md</span><span class="doc"><i data-lucide="file-text" class="i-14"></i>INFORMATION-ARCHITECTURE.md</span><span class="doc"><i data-lucide="file-text" class="i-14"></i>SCREENS.md</span><span class="doc"><i data-lucide="file-text" class="i-14"></i>STATES.md</span><span class="doc"><i data-lucide="braces" class="i-14"></i>tokens.css · tokens.json</span></div></section>
+</main>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

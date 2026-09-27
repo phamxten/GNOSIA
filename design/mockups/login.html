@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masuk · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .auth { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .auth-left { display: flex; flex-direction: column; padding: 28px 40px; }
+  .auth-form { width: 100%; max-width: 420px; margin: auto; padding: 40px 0; }
+  .auth-right { position: relative; margin: 16px; border-radius: 28px; background: var(--pahami-soft); border: 1px solid var(--pahami-line); display: grid; place-items: center; overflow: hidden; transition: background var(--dur-600), border-color var(--dur-600); }
+  .auth-right[data-phase="perkuat"] { background: var(--perkuat-soft); border-color: var(--perkuat-line); }
+  .auth-right[data-phase="kuis"] { background: var(--kuis-soft); border-color: var(--kuis-line); }
+  .auth-right[data-phase="uji"] { background: var(--uji-soft); border-color: var(--uji-line); }
+  .orbit { position: relative; width: 360px; height: 360px; display: grid; place-items: center; }
+  .orbit .pring { position: absolute; inset: 0; }
+  .orbit-cap { position: absolute; bottom: 44px; left: 0; right: 0; text-align: center; }
+  .oauth { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sep { display: flex; align-items: center; gap: 12px; color: var(--text-faint); font-size: 12px; margin: 22px 0; } .sep::before, .sep::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .goal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+  .goal { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: 16px; border: 1.5px solid var(--border); border-bottom-width: 4px; background: var(--surface); cursor: pointer; text-align: left; transition: all var(--dur-200) var(--spring-bouncy); }
+  .goal:hover { transform: translateY(-2px); }
+  .goal[aria-pressed="true"] { border-color: var(--pahami-fill); background: var(--pahami-soft); }
+  .goal svg.lucide { width: 22px; height: 22px; color: var(--pahami-ink); }
+  .onb-dots { display: flex; gap: 6px; } .onb-dots i { width: 28px; height: 6px; border-radius: 3px; background: var(--viz-track); } .onb-dots i.on { background: var(--pahami-fill); }
+  .minutes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 20px; }
+  @media (max-width: 900px) { .auth { grid-template-columns: 1fr; } .auth-right { display: none; } .auth-left { padding: 20px 16px; } }
+</style>
+</head>
+<body>
+<div class="auth">
+  <div class="auth-left">
+    <div class="row between"><a class="logo" href="landing.html"><span class="logo-glyph"></span><span class="logo-word">gnosia</span></a><button class="btn btn-ghost btn-icon" data-theme-toggle aria-label="Ganti tema"><i data-lucide="sun-moon"></i></button></div>
+
+    <!-- LOGIN -->
+    <form class="auth-form" data-show-in="login" onsubmit="event.preventDefault();location.href='dashboard.html'">
+      <h1 class="big-serif" style="font-size:40px">Selamat datang <em>kembali</em>.</h1>
+      <p class="t-muted mt-2">Lanjutkan dari fase terakhirmu.</p>
+      <div class="oauth mt-8"><button type="button" class="btn btn-secondary btn-lg btn-press"><i data-lucide="chrome"></i>Google</button><button type="button" class="btn btn-secondary btn-lg btn-press"><i data-lucide="school"></i>Akun sekolah</button></div>
+      <div class="sep">atau dengan email</div>
+      <div class="stack gap-4">
+        <div class="field"><label class="field-label" for="em">Email</label><input id="em" class="input input-lg" type="email" value="nadia@smksig.sch.id" autocomplete="email"></div>
+        <div class="field"><div class="row between"><label class="field-label" for="pw">Kata sandi</label><a class="link t-xs" href="#">Lupa?</a></div><input id="pw" class="input input-lg" type="password" value="rahasia123" autocomplete="current-password"></div>
+        <button class="btn btn-primary btn-xl btn-press w-full mt-2" type="submit">Masuk<i data-lucide="arrow-right"></i></button>
+      </div>
+      <p class="t-sm t-muted mt-6 t-center">Belum punya akun? <a class="link" href="?state=register" data-go="register">Daftar gratis</a></p>
+    </form>
+
+    <!-- REGISTER -->
+    <form class="auth-form" data-show-in="register" hidden onsubmit="event.preventDefault();gnosiaState('goal')">
+      <h1 class="big-serif" style="font-size:40px">Mulai perjalananmu.</h1>
+      <p class="t-muted mt-2">Gratis untuk Bab 1–3. Tidak perlu kartu.</p>
+      <div class="oauth mt-8"><button type="button" class="btn btn-secondary btn-lg btn-press"><i data-lucide="chrome"></i>Google</button><button type="button" class="btn btn-secondary btn-lg btn-press"><i data-lucide="school"></i>Akun sekolah</button></div>
+      <div class="sep">atau</div>
+      <div class="stack gap-4">
+        <div class="field"><label class="field-label" for="nm">Nama panggilan</label><input id="nm" class="input input-lg" value="Nadia"></div>
+        <div class="field"><label class="field-label" for="em2">Email</label><input id="em2" class="input input-lg" type="email" placeholder="kamu@email.com"></div>
+        <div class="field"><label class="field-label" for="pw2">Kata sandi</label><input id="pw2" class="input input-lg is-invalid" type="password" value=""><span class="field-error"><i data-lucide="circle-alert" class="i-14"></i>Kata sandi tidak boleh kosong.</span></div>
+        <button class="btn btn-primary btn-xl btn-press w-full mt-2" type="submit">Buat akun<i data-lucide="arrow-right"></i></button>
+      </div>
+      <p class="t-sm t-muted mt-6 t-center">Sudah punya akun? <a class="link" href="?state=login" data-go="login">Masuk</a></p>
+    </form>
+
+    <!-- ONBOARDING 1: goal -->
+    <div class="auth-form" data-show-in="goal" hidden>
+      <div class="onb-dots"><i class="on"></i><i></i><i></i></div>
+      <h1 class="big-serif mt-6" style="font-size:36px">Apa tujuanmu belajar ngoding?</h1>
+      <div class="goal-grid" data-single>
+        <button class="goal" aria-pressed="true"><i data-lucide="school"></i><b>Tugas sekolah</b><span class="t-xs t-muted">Materi RPL / informatika</span></button>
+        <button class="goal" aria-pressed="false"><i data-lucide="briefcase"></i><b>Karier</b><span class="t-xs t-muted">Jadi web developer</span></button>
+        <button class="goal" aria-pressed="false"><i data-lucide="gamepad-2"></i><b>Bikin sesuatu</b><span class="t-xs t-muted">Game, bot, web sendiri</span></button>
+        <button class="goal" aria-pressed="false"><i data-lucide="sparkles"></i><b>Penasaran saja</b><span class="t-xs t-muted">Coba dulu</span></button>
+      </div>
+      <button class="btn btn-primary btn-xl btn-press w-full mt-8" onclick="gnosiaState('level')">Lanjut</button>
+    </div>
+
+    <!-- ONBOARDING 2: placement -->
+    <div class="auth-form" data-show-in="level" hidden>
+      <div class="onb-dots"><i class="on"></i><i class="on"></i><i></i></div>
+      <h1 class="big-serif mt-6" style="font-size:36px">Cek kecil: sudah pernah lihat ini?</h1>
+      <p class="t-muted mt-2">Tidak dinilai. Jawabanmu hanya menentukan dari bab mana kamu mulai.</p>
+      <div class="codecard mt-6"><div class="cc-body"><div class="cc-line"><span class="k">let</span> x <span class="pn">=</span> <span class="n">4</span><span class="pn">;</span></div><div class="cc-line">x <span class="pn">=</span> x <span class="pn">*</span> <span class="n">2</span><span class="pn">;</span></div></div></div>
+      <div class="choices" data-place>
+        <button class="choice"><span class="key">A</span>x bernilai 8</button>
+        <button class="choice"><span class="key">B</span>x bernilai 4</button>
+        <button class="choice"><span class="key">C</span>Belum pernah lihat kode seperti ini</button>
+      </div>
+      <p class="t-sm mt-4" data-place-msg aria-live="polite"></p>
+      <button class="btn btn-primary btn-xl btn-press w-full mt-4" onclick="gnosiaState('time')">Lanjut</button>
+    </div>
+
+    <!-- ONBOARDING 3: daily goal -->
+    <div class="auth-form" data-show-in="time" hidden>
+      <div class="onb-dots"><i class="on"></i><i class="on"></i><i class="on"></i></div>
+      <h1 class="big-serif mt-6" style="font-size:36px">Berapa menit sehari?</h1>
+      <div class="minutes" data-single><button class="chip" aria-pressed="false" style="height:56px;justify-content:center;border-radius:14px">5</button><button class="chip" aria-pressed="false" style="height:56px;justify-content:center;border-radius:14px">10</button><button class="chip" aria-pressed="true" style="height:56px;justify-content:center;border-radius:14px">20</button><button class="chip" aria-pressed="false" style="height:56px;justify-content:center;border-radius:14px">30</button></div>
+      <p class="t-sm t-muted mt-3">Satu fase biasanya 5–10 menit. Target bisa diubah kapan saja.</p>
+      <div class="callout callout-accent mt-6"><i data-lucide="map"></i><div class="t-sm">Kamu mulai dari <b>Bab 2 · Variabel</b>. Bab 1 ditandai selesai karena kamu sudah mengenal <span class="t-mono">console.log</span>.</div></div>
+      <a class="btn btn-primary btn-xl btn-press w-full mt-6" href="dashboard.html">Masuk ke Beranda<i data-lucide="arrow-right"></i></a>
+    </div>
+    <p class="t-xs t-faint">Dengan melanjutkan, kamu setuju dengan Ketentuan dan Kebijakan Privasi.</p>
+  </div>
+
+  <aside class="auth-right" data-orbit data-phase="pahami" aria-hidden="true">
+    <div class="orbit"><span class="pring" data-ring="1,0,0,0" data-size="360" data-stroke="14" data-orbit-ring></span><span class="nosi" style="width:170px;height:170px" data-orbit-nosi data-mood="happy"></span></div>
+    <div class="orbit-cap"><div class="eyebrow" data-orbit-k>Fase 1</div><div class="big-serif mt-2" style="font-size:34px" data-orbit-t>Pahami dulu.</div></div>
+  </aside>
+</div>
+<div class="mock-states" data-page-states><span>state</span><button data-page-state="login">masuk</button><button data-page-state="register">daftar + error</button><button data-page-state="goal">onboarding 1</button><button data-page-state="level">2</button><button data-page-state="time">3</button></div>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
+  const STEPS = [['pahami', 'Fase 1', 'Pahami dulu.', '1,0,0,0', 'think'], ['perkuat', 'Fase 2', 'Perkuat pelan-pelan.', '1,1,0,0', 'happy'], ['kuis', 'Fase 3', 'Kuis sebentar.', '1,1,1,0', 'cheer'], ['uji', 'Fase 4', 'Lalu buktikan.', '1,1,1,1', 'cheer']];
+  let k = 0;
+  function cycle() { const [ph, key, t, ring, mood] = STEPS[k % 4]; const o = $('[data-orbit]'); o.dataset.phase = ph; $('[data-orbit-k]').textContent = key; const tt = $('[data-orbit-t]'); tt.textContent = t; G.rise(tt); const r = $('[data-orbit-ring]'); r.dataset.ring = ring; G.ring(r); G.nosi($('[data-orbit-nosi]'), mood); k++; }
+  document.addEventListener('gnosia:ready', () => {
+    cycle(); if (G.motion !== 'off') setInterval(cycle, 3200);
+    document.addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) { e.preventDefault(); gnosiaState(g.dataset.go); } });
+    $$('[data-place] .choice').forEach((c, i) => c.addEventListener('click', () => { $$('[data-place] .choice').forEach(x => x.classList.toggle('is-picked', x === c)); G.pop(c); $('[data-place-msg]').innerHTML = i === 0 ? '<span class="t-success">Mantap.</span> <span class="t-muted">Kamu akan mulai sedikit lebih jauh.</span>' : '<span class="t-muted">Tidak apa-apa. Kita mulai dari dasar.</span>'; }));
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playground · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .pg { display: grid; grid-template-columns: 240px minmax(0, 820px); gap: 40px; justify-content: center; }
+  .nb-list { position: sticky; top: 88px; align-self: start; display: flex; flex-direction: column; gap: 4px; }
+  .nb-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; font-size: 14px; color: var(--text-muted); }
+  .nb-item:hover { background: var(--surface-hover); color: var(--text); }
+  .nb-item[aria-current] { background: var(--surface); color: var(--text); box-shadow: inset 0 0 0 1px var(--border); font-weight: 500; }
+  .ctx-chip { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border-radius: 999px; border: 1.5px dashed var(--border-strong); color: var(--text-muted); font-size: 13px; transition: all var(--dur-200) var(--spring-bouncy); }
+  .ctx-chip:hover { border-color: var(--pahami-fill); color: var(--pahami-ink); }
+  .ctx-chip.is-attached { border-style: solid; border-color: var(--pahami-line); background: var(--pahami-soft); color: var(--pahami-ink); }
+  .nb-title { font-family: var(--font-serif); font-size: 40px; border: 0; background: none; outline: none; width: 100%; color: var(--text); letter-spacing: -0.015em; }
+  .cell .codecard { width: 100%; }
+  .cell .cc-out:empty { display: none; }
+  .diag { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-top: 1px dashed var(--kuis-line); background: var(--kuis-soft); }
+  .note-edit { padding: 6px 4px; font-size: 16px; line-height: 1.7; color: var(--text-muted); outline: none; border-radius: 10px; }
+  .note-edit:focus { background: var(--surface); box-shadow: 0 0 0 1px var(--border); padding: 6px 12px; }
+  @media (max-width: 1000px) { .pg { grid-template-columns: 1fr; } .nb-list { display: none; } }
+</style>
+</head>
+<body>
+<header data-nav="learner" data-active="playground"></header>
+<main class="page" style="max-width:1160px">
+  <div class="pg">
+    <aside class="nb-list" aria-label="Notebook">
+      <button class="btn btn-primary btn-lg btn-press mb-4" data-new><i data-lucide="plus"></i>Notebook baru</button>
+      <a class="nb-item" aria-current="page" href="#"><i data-lucide="notebook-pen" class="i-14"></i>Coretan uang saku</a>
+      <a class="nb-item" href="#"><i data-lucide="notebook" class="i-14"></i>Eksperimen string</a>
+      <a class="nb-item" href="#"><i data-lucide="notebook" class="i-14"></i>Tebak angka (game)</a>
+      <div class="eyebrow mt-6" style="padding:0 12px">Tentang playground</div>
+      <p class="t-xs t-faint mt-2" style="padding:0 12px;line-height:1.6">Ngoding bebas tanpa nilai. Semua bantuan Nosi terbuka. Kamu bisa melampirkan bab kalau ingin petunjuk yang nyambung.</p>
+    </aside>
+
+    <section data-show-in="default">
+      <div class="row between wrap gap-3">
+        <button class="ctx-chip" data-ctx aria-pressed="false"><i data-lucide="link" class="i-14"></i><span data-ctx-t>Tidak ada bab dilampirkan · lampirkan</span></button>
+        <span class="save-state" data-save><i data-lucide="cloud-check" class="i-14"></i>Tersimpan otomatis</span>
+      </div>
+      <input class="nb-title mt-4" value="Coretan uang saku" aria-label="Judul notebook">
+
+      <div class="cell is-note mt-6"><div class="gut"><i data-lucide="text" class="t-faint i-14"></i></div><div class="note-edit" contenteditable="true">Minggu ini aku mau hitung sisa uang saku setelah jajan. Pakai <b>variabel</b> dari Bab 2.</div></div>
+      <div class="add-cell"><button class="btn btn-ghost btn-sm" data-add="code"><i data-lucide="code-xml"></i>Kode</button><button class="btn btn-ghost btn-sm" data-add="note"><i data-lucide="text"></i>Catatan</button></div>
+
+      <div data-cells></div>
+    </section>
+
+    <section data-show-in="empty" hidden>
+      <input class="nb-title" value="Notebook tanpa judul" aria-label="Judul notebook">
+      <div class="card mt-6"><div class="empty" style="padding:56px 24px"><span class="nosi nosi-lg" data-mood="happy"></span><div class="t-h3 mt-3">Kertas kosong. Mau coba apa?</div><p>Tulis kode apa saja lalu tekan jalankan. Tidak ada nilai, tidak ada yang salah.</p>
+        <div class="row gap-2 mt-4 wrap center"><button class="btn btn-secondary btn-press" onclick="gnosiaState('default')"><i data-lucide="code-xml"></i>Sel kode pertama</button><button class="btn btn-ghost">Mulai dari contoh: tebak angka</button></div></div></div>
+    </section>
+  </div>
+</main>
+<div class="mock-states" data-page-states><span>state</span><button data-page-state="default">notebook</button><button data-page-state="empty">kosong</button></div>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const START = [
+    'const uangSaku = 50000;\nlet jajan = 12000 + 8000;\nlet sisa = uangSaku - jajan;\nconsole.log("Sisa:", sisa);',
+    'const hari = ["Sen", "Sel", "Rab"];\nfor (const h of hari) {\n  console.log(h, "hemat", sisa / 3);\n}',
+    '// sengaja salah ketik untuk lihat diagnostik\nconsole.log("Total jajan:", jajn);',
+  ];
+  let count = 0; const box = $('[data-cells]');
+  function addCell(code = '', autorun = false) {
+    count++; const n = count; const cell = document.createElement('div'); cell.className = 'cell';
+    cell.innerHTML = `<div class="gut"><button class="run" aria-label="Jalankan sel ${n}" title="Jalankan (⇧↵)"><i data-lucide="play" class="i-14"></i></button><span class="cnt">[${n}]</span></div>
+      <div class="codecard"><div class="editor2 is-sm" style="background:var(--editor-bg)"><pre aria-hidden="true"></pre><textarea spellcheck="false" aria-label="Sel kode ${n}"></textarea></div><div class="cc-out"></div></div>`;
+    box.appendChild(cell);
+    const add = document.createElement('div'); add.className = 'add-cell'; add.innerHTML = '<button class="btn btn-ghost btn-sm" data-add="code"><i data-lucide="code-xml"></i>Kode</button><button class="btn btn-ghost btn-sm" data-add="note"><i data-lucide="text"></i>Catatan</button>'; box.appendChild(add);
+    const ta = $('textarea', cell), pre = $('pre', cell); ta.value = code;
+    const sync = (bad = -1) => { pre.innerHTML = G.highlight(ta.value, bad); };
+    ta.addEventListener('input', () => { sync(); saving(); });
+    ta.addEventListener('focus', () => { $$('.cell').forEach(c => c.classList.toggle('is-active', c === cell)); });
+    ta.addEventListener('keydown', e => { if (e.shiftKey && e.key === 'Enter') { e.preventDefault(); run(); } if (e.key === 'Tab') { e.preventDefault(); ta.setRangeText('  ', ta.selectionStart, ta.selectionEnd, 'end'); sync(); } });
+    const run = () => {
+      // Notebook semantics: cells share scope by running all previous code cells first
+      const cells = $$('.cell:not(.is-note) textarea'); const idx = cells.indexOf(ta);
+      const prelude = cells.slice(0, idx).map(t => t.value).join('\n'); const before = G.runJS(prelude).logs.length;
+      const res = G.runJS(prelude + '\n' + ta.value); const out = $('.cc-out', cell); out.innerHTML = '';
+      res.logs.slice(before).forEach((l, i) => setTimeout(() => out.insertAdjacentHTML('beforeend', `<span class="out-bubble"><span class="p">›</span>${l.replace(/</g, '&lt;')}</span>`), i * 90));
+      const old = $('.diag', cell); old && old.remove(); sync();
+      if (res.err) {
+        const m = /(\w+) is not defined/.exec(res.err.message); const lines = ta.value.split('\n'); const bad = m ? lines.findIndex(l => new RegExp(`\\b${m[1]}\\b`).test(l)) : -1; sync(bad);
+        out.insertAdjacentHTML('beforeend', `<span class="out-bubble is-err"><i data-lucide="circle-x" class="i-14"></i>${res.err.name}: ${res.err.message}</span>`);
+        const guess = m && /jajn/.test(m[1]) ? '<span class="t-mono">jajan</span>' : 'nama yang sudah dibuat';
+        $('.codecard', cell).insertAdjacentHTML('beforeend', `<div class="diag"><span class="nosi nosi-sm" data-mood="think"></span><div class="t-sm"><span class="eyebrow" style="color:var(--kuis-ink)">Nosi · penjelasan (L2)</span><div class="mt-1">Variabel <span class="t-mono">${m ? m[1] : '?'}</span> belum pernah dibuat, jadi JavaScript tidak tahu isinya. Mungkin maksudmu ${guess}?</div><div class="row gap-2 mt-2"><button class="btn btn-secondary btn-sm btn-press" data-fix>Perbaiki jadi jajan</button><button class="btn btn-ghost btn-sm">Petunjuk saja</button></div></div></div>`);
+        G.nosi($('.diag .nosi', cell), 'think'); G.shake($('.codecard', cell));
+        const fx = $('[data-fix]', cell); fx && (fx.onclick = () => { ta.value = ta.value.replace(/\bjajn\b/g, 'jajan'); run(); });
+      } else if (res.logs.length > before) G.pop($('.run', cell));
+      window.gnosiaIcons();
+    };
+    $('.run', cell).onclick = run; sync(); window.gnosiaIcons();
+    if (autorun) run();
+    return ta;
+  }
+  function saving() { const s = $('[data-save]'); s.innerHTML = '<i data-lucide="loader-circle" class="i-14"></i>Menyimpan…'; window.gnosiaIcons(); clearTimeout(s._t); s._t = setTimeout(() => { s.innerHTML = '<i data-lucide="cloud-check" class="i-14"></i>Tersimpan otomatis'; window.gnosiaIcons(); }, 700); }
+  document.addEventListener('gnosia:ready', () => {
+    START.forEach(c => addCell(c, true));
+    document.addEventListener('click', e => {
+      const a = e.target.closest('[data-add]'); if (a) { if (a.dataset.add === 'code') { const ta = addCell(''); ta.focus(); } else { const n = document.createElement('div'); n.className = 'cell is-note'; n.innerHTML = '<div class="gut"><i data-lucide="text" class="t-faint i-14"></i></div><div class="note-edit" contenteditable="true">Catatan baru…</div>'; box.appendChild(n); window.gnosiaIcons(); } }
+      const c = e.target.closest('[data-ctx]'); if (c) { const on = c.getAttribute('aria-pressed') !== 'true'; c.setAttribute('aria-pressed', on); c.classList.toggle('is-attached', on); $('[data-ctx-t]').textContent = on ? 'Bab 2 · Variabel · petunjuk mengikuti bab ini' : 'Tidak ada bab dilampirkan · lampirkan'; G.pop(c); }
+      if (e.target.closest('[data-new]')) gnosiaState('empty');
+    });
+  });
+})();
+</script>
+</body>
+</html>

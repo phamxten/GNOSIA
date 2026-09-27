@@ -1,0 +1,213 @@
+﻿/* =========================================================================
+   GNOSIA — Design Tokens  (v2.0 · "Soft Playful Intellect")
+   Single source of truth. Components must reference SEMANTIC tokens only
+   (never raw hex). Two first-class themes:
+     • Paper  — light, default           → :root
+     • Ink    — dark, warm neutrals      → :root[data-theme="ink"]
+   Theme resolution (see README): saved preference → prefers-color-scheme → Paper.
+   Any element can be a theme "island": <div data-theme="ink"> … </div>.
+   Learning phases (Pahami · Perkuat · Kuis · Uji) each get -ink/-fill/-soft/-line;
+   components read them through --ph-* scoped by [data-phase] (components.css).
+   ========================================================================= */
+
+
+:root,
+[data-theme="paper"] {  /* also usable as a "paper island" */
+  color-scheme: light;
+
+  /* ---- Surfaces ------------------------------------------------------- */
+  --bg: #F7F6F2;               /* app canvas — warm paper */
+  --surface: #FFFFFF;          /* panels, cards, inputs */
+  --surface-raised: #FFFFFF;   /* popovers, palette, modals (+ shadow) */
+  --surface-sunken: #F0EEE8;   /* wells, code blocks in prose, table headers */
+  --surface-hover: #F3F1EC;    /* row / item hover */
+  --surface-active: #ECE9E2;   /* pressed / selected-neutral */
+  --overlay: #1F1E1B;          /* modal scrim, used at 32% */
+
+  /* ---- Lines ---------------------------------------------------------- */
+  --border: #E6E3DB;
+  --border-strong: #D3CFC4;
+  --divider: #EDEBE5;
+
+  /* ---- Text ----------------------------------------------------------- */
+  --text: #1F1E1B;             /* ink — never pure black */
+  --text-muted: #5C5A53;
+  --text-faint: #8A877E;       /* meta only, ≥3:1 — never body copy */
+  --text-inverse: #F7F6F2;
+
+  /* ---- Accent: Ink Indigo -------------------------------------------- */
+  --accent: #3E4C8A;
+  --accent-hover: #34417A;
+  --accent-soft: #E7E9F4;
+  --accent-line: #C5CBE6;
+  --on-accent: #FFFFFF;
+
+  /* ---- Semantic ------------------------------------------------------- */
+  --success: #36704B;  --success-soft: #E5EFE8;  --success-line: #BFD6C6;   /* sage  */
+  --warning: #8F6414;  --warning-soft: #F6EEDC;  --warning-line: #E4D0A4;   /* ochre — also Hints */
+  --danger:  #B0452E;  --danger-soft:  #F7E7E1;  --danger-line:  #E6C2B6;   /* clay  */
+  --info: var(--accent); --info-soft: var(--accent-soft);
+
+
+  /* ---- Learning phases: Pahami → Perkuat → Kuis → Uji ------------------
+     -ink  : text/icons on surface or -soft (≥4.5:1)
+     -fill : rings, bars, big shapes (≥3:1 on surface)
+     -soft : tinted backgrounds · -line : tinted borders */
+  --pahami-ink: #3E4C8A;  --pahami-fill: #5563C9;  --pahami-soft: #EAECF8;  --pahami-line: #C9CEEE;
+  --perkuat-ink: #2F6843; --perkuat-fill: #4A9265; --perkuat-soft: #E3F0E7; --perkuat-line: #BCD9C4;
+  --kuis-ink: #83550A;    --kuis-fill: #B7790C;    --kuis-soft: #FAF0DB;    --kuis-line: #EDD6A6;
+  --uji-ink: #A23E28;     --uji-fill: #D0603F;     --uji-soft: #FBE9E3;     --uji-line: #F0C6B9;
+  --xp: #B7790C;          /* XP, streak flame — shares Kuis amber */
+
+  /* ---- Project accent (slate teal) ------------------------------------ */
+  --mode-project: #2F6773;
+
+  /* ---- Code cards + syntax ("Gnosia Paper") --------------------------- */
+  --editor-bg: #FDFCFA;
+  --editor-selection: #DCE0F2;
+  --syn-text: #2A2925;
+  --syn-keyword: #3E4C8A;
+  --syn-string: #36704B;
+  --syn-number: #8F6414;
+  --syn-function: #A2442C;
+  --syn-property: #2F6773;
+  --syn-comment: #858279;
+  --syn-punct: #6B6860;
+
+  /* ---- Data viz (categorical, in order) ------------------------------- */
+  --viz-1: #3E4C8A; --viz-2: #3F7A55; --viz-3: #B0822A; --viz-4: #B0452E; --viz-5: #2F6773;
+  --viz-track: #ECE9E2;
+
+  /* ---- Focus ---------------------------------------------------------- */
+  --focus-ring: #3E4C8A;
+
+  /* ---- Elevation (borders first; shadow only for floating layers) ----- */
+  --shadow-none: none;
+  --shadow-pop: 0 1px 2px rgba(31, 30, 27, .04), 0 8px 24px -6px rgba(31, 30, 27, .10);
+  --shadow-modal: 0 2px 4px rgba(31, 30, 27, .04), 0 24px 48px -12px rgba(31, 30, 27, .18);
+
+  /* =====================================================================
+     Theme-independent scales
+     ===================================================================== */
+
+  /* Typography */
+  --font-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --fs-11: 11px;  --fs-12: 12px;  --fs-13: 13px;  --fs-14: 14px;  --fs-16: 16px;
+  --fs-18: 18px;  --fs-22: 22px;  --fs-28: 28px;  --fs-36: 36px;  --fs-48: 48px;  --fs-64: 64px;
+
+  --lh-tight: 1.15;   /* display */
+  --lh-snug: 1.3;     /* headings */
+  --lh-ui: 1.45;      /* UI text */
+  --lh-prose: 1.65;   /* lesson reading */
+  --lh-code: 1.6;     /* editor: 13px / 20.8px */
+
+  --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600;
+  --tracking-display: -0.02em;
+  --tracking-label: 0.06em;  /* mono uppercase labels */
+  --measure: 68ch;
+
+  /* Spacing — 4px base */
+  --space-0: 0;     --space-0-5: 2px; --space-1: 4px;  --space-1-5: 6px; --space-2: 8px;
+  --space-3: 12px;  --space-4: 16px;  --space-5: 20px; --space-6: 24px;  --space-8: 32px;
+  --space-10: 40px; --space-12: 48px; --space-16: 64px; --space-24: 96px;
+
+  /* Radius */
+  --radius-xs: 4px;   /* chips, kbd, badges */
+  --radius-sm: 6px;   /* buttons, inputs, tabs */
+  --radius-md: 8px;   /* panels, cards, menus */
+  --radius-lg: 12px;  /* modals, palette */
+  --radius-xl: 16px;  /* lesson cards, code cards */
+  --radius-2xl: 20px; /* lesson stage, hero cards */
+  --radius-full: 999px;
+
+  /* Sizing */
+  --control-sm: 28px; --control-md: 32px; --control-lg: 40px; /* + .btn-lg 44 · .btn-xl 52 in components.css */
+  --sidebar-w: 248px;     /* admin sidebar */
+  --topbar-h: 64px;       /* learner/mentor top nav */
+
+  /* Motion */
+  --dur-instant: 80ms;   /* press */
+  --dur-fast: 120ms;     /* hover, color */
+  --dur-base: 180ms;     /* tabs, panels, collapse */
+  --dur-slow: 240ms;     /* overlays, palette, toasts */
+  --dur-fill: 400ms;     /* progress & test-count fills */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-exit: cubic-bezier(.4, 0, 1, 1);
+  /* Springs (CSS approximations; real app uses motion springs — see MOTION.md) */
+  --spring-gentle: cubic-bezier(.34, 1.25, .64, 1);   /* stiffness 170, damping 22 */
+  --spring-bouncy: cubic-bezier(.34, 1.56, .64, 1);   /* stiffness 300, damping 14 */
+  --spring-snappy: cubic-bezier(.2, .9, .3, 1.08);    /* stiffness 500, damping 30 */
+  --dur-120: 120ms; --dur-200: 200ms; --dur-320: 320ms; --dur-600: 600ms;
+
+  /* Z-index */
+  --z-base: 0; --z-sticky: 10; --z-dropdown: 30; --z-overlay: 40; --z-modal: 50; --z-palette: 60; --z-toast: 70;
+}
+
+:root[data-theme="ink"],
+[data-theme="ink"] {  /* also usable as an "ink island" on any element */
+  color-scheme: dark;
+
+  --bg: #16171B;
+  --surface: #1C1D22;
+  --surface-raised: #23242A;
+  --surface-sunken: #121316;
+  --surface-hover: #222329;
+  --surface-active: #292A31;
+  --overlay: #000000;
+
+  --border: #2B2D34;
+  --border-strong: #3A3C44;
+  --divider: #25272D;
+
+  --text: #E9E7E2;
+  --text-muted: #A6A39B;
+  --text-faint: #7C7A73;
+  --text-inverse: #16171B;
+
+  --accent: #9AA6E6;
+  --accent-hover: #AEB8EC;
+  --accent-soft: #262A40;
+  --accent-line: #3A4170;
+  --on-accent: #16171B;
+
+  --success: #7DBB8E;  --success-soft: #1E2B23;  --success-line: #2F4A38;
+  --warning: #D9A955;  --warning-soft: #2F2717;  --warning-line: #4F4020;
+  --danger:  #E58268;  --danger-soft:  #34201B;  --danger-line:  #573228;
+
+  --mode-project: #7FB8C2;
+
+  --pahami-ink: #A9B3F0;  --pahami-fill: #7F8CE6;  --pahami-soft: #23274A;  --pahami-line: #3A4178;
+  --perkuat-ink: #8CCB9F; --perkuat-fill: #5FAF79; --perkuat-soft: #1C2E23; --perkuat-line: #2F4D39;
+  --kuis-ink: #EBBC62;    --kuis-fill: #D9A13A;    --kuis-soft: #33280F;    --kuis-line: #56431C;
+  --uji-ink: #F29479;     --uji-fill: #E0704F;     --uji-soft: #3A221B;     --uji-line: #5E3427;
+  --xp: #D9A13A;
+
+  --editor-bg: #18191D;
+  --editor-selection: #2E3452;
+  --syn-text: #DAD7D0;
+  --syn-keyword: #9AA6E6;
+  --syn-string: #8CC49B;
+  --syn-number: #DDB05F;
+  --syn-function: #E8907A;
+  --syn-property: #7FB8C2;
+  --syn-comment: #7C7A73;
+  --syn-punct: #9A978F;
+
+  --viz-1: #9AA6E6; --viz-2: #7DBB8E; --viz-3: #D9A955; --viz-4: #E58268; --viz-5: #7FB8C2;
+  --viz-track: #2B2D34;
+
+  --focus-ring: #9AA6E6;
+
+  --shadow-pop: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px -6px rgba(0, 0, 0, .5);
+  --shadow-modal: 0 2px 4px rgba(0, 0, 0, .3), 0 24px 48px -12px rgba(0, 0, 0, .6);
+}
+
+[data-theme="ink"]:not(:root), [data-theme="paper"]:not(:root) { color: var(--text); }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-instant: 0ms; --dur-fast: 0ms; --dur-base: 0ms; --dur-slow: 0ms; --dur-fill: 0ms; --dur-120: 0ms; --dur-200: 0ms; --dur-320: 0ms; --dur-600: 0ms; }
+}

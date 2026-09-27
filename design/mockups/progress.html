@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Progres · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kpi { padding: 20px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); }
+  .kpi .stat-value { font-size: 42px; }
+  .const-wrap { position: relative; margin-top: 16px; }
+  .star-tip { position: absolute; z-index: 5; pointer-events: none; transform: translate(-50%, calc(-100% - 16px)); padding: 10px 12px; border-radius: 12px; background: var(--surface-raised); border: 1px solid var(--border); box-shadow: var(--shadow-pop); font-size: 12px; white-space: nowrap; }
+  .two { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; margin-top: 16px; }
+  .chart { width: 100%; height: 220px; }
+  .chart .grid-l { stroke: var(--divider); }
+  .chart .ln { fill: none; stroke: var(--pahami-fill); stroke-width: 2.5; stroke-linecap: round; }
+  .chart .ar { fill: var(--pahami-soft); opacity: .7; }
+  .chart text { font-family: var(--font-mono); font-size: 10px; fill: var(--text-faint); }
+  .ph-cell { display: inline-flex; align-items: center; justify-content: center; min-width: 52px; height: 26px; padding: 0 8px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; background: var(--ph-soft); color: var(--ph-ink); }
+  .ph-cell.is-none { background: var(--surface-sunken); color: var(--text-faint); font-weight: 400; }
+  @media (max-width: 1000px) { .kpis { grid-template-columns: 1fr 1fr; } .two { grid-template-columns: 1fr; } .tbl-wrap { overflow-x: auto; } }
+</style>
+</head>
+<body>
+<header data-nav="learner" data-active="progress"></header>
+<main class="page">
+  <div class="page-head"><div><div class="eyebrow">Progres &amp; penguasaan</div><h1 class="big-serif mt-2" style="font-size:44px">Langit <em>pengetahuanmu</em>.</h1><p class="t-muted mt-2">Setiap bintang adalah satu konsep. Makin kamu kuasai, makin terang bintangnya.</p></div>
+    <div class="segmented"><button aria-pressed="true">Semua</button><button aria-pressed="false">30 hari</button><button aria-pressed="false">7 hari</button></div></div>
+
+  <div class="kpis">
+    <div class="kpi" data-rise="0"><span class="eyebrow">Penguasaan rata-rata</span><div class="stat-value mt-2"><span data-tick="71">0</span><small>%</small></div><div class="t-xs t-success mt-1">▲ 6 minggu ini</div></div>
+    <div class="kpi" data-rise="1"><span class="eyebrow">Bab selesai</span><div class="stat-value mt-2"><span data-tick="1">0</span><small>/ 10</small></div><div class="t-xs t-faint mt-1">Bab 2 di fase Perkuat</div></div>
+    <div class="kpi" data-rise="2"><span class="eyebrow">Akurasi Perkuat</span><div class="stat-value mt-2"><span data-tick="84">0</span><small>%</small></div><div class="t-xs t-faint mt-1">benar di percobaan pertama</div></div>
+    <div class="kpi" data-rise="3"><span class="eyebrow">Total XP</span><div class="stat-value mt-2" style="color:var(--xp)"><span data-tick="1840">0</span></div><div class="t-xs t-faint mt-1">streak 12 hari</div></div>
+  </div>
+
+  <section class="card card-pad mt-6">
+    <div class="row between"><h2 class="t-h3">Konstelasi · JavaScript Dasar</h2><div class="row gap-4 t-xs t-muted hide-sm"><span class="row gap-1"><span class="dot" style="background:var(--pahami-fill)"></span>dikuasai</span><span class="row gap-1"><span class="dot" style="background:var(--kuis-fill)"></span>perlu diulang</span><span class="row gap-1"><span class="dot" style="background:var(--border-strong)"></span>belum dibuka</span></div></div>
+    <div class="const-wrap"><div class="constellation" data-const><svg viewBox="0 0 1000 480" data-const-svg></svg></div><div class="star-tip" data-tip hidden></div></div>
+  </section>
+
+  <div class="two">
+    <section class="card card-pad">
+      <div class="row between"><h2 class="t-h3">Tren penguasaan</h2><span class="t-xs t-faint">8 minggu</span></div>
+      <svg class="chart mt-4" viewBox="0 0 600 220" preserveAspectRatio="none" data-chart></svg>
+    </section>
+    <section class="card card-pad" id="feedback">
+      <div class="row between"><h2 class="t-h3">Perlu diulang</h2><span class="badge badge-warning">3</span></div>
+      <div class="list mt-2">
+        <a class="list-row is-clickable" href="perkuat.html" style="padding:12px 0"><span class="mastery is-weak" data-tier="2"><i></i><i></i><i></i><i></i><i></i></span><div class="grow"><div class="t-sm t-medium">Salinan nilai</div><div class="meta">salah di Ulangan · soal 4</div></div><i data-lucide="chevron-right" class="i-14 t-faint"></i></a>
+        <a class="list-row is-clickable" href="pahami.html?scene=4" style="padding:12px 0"><span class="mastery is-weak" data-tier="2"><i></i><i></i><i></i><i></i><i></i></span><div class="grow"><div class="t-sm t-medium">let vs const</div><div class="meta">2× salah di Perkuat</div></div><i data-lucide="chevron-right" class="i-14 t-faint"></i></a>
+        <a class="list-row is-clickable" href="kuis.html" style="padding:12px 0"><span class="mastery" data-tier="3"><i></i><i></i><i></i><i></i><i></i></span><div class="grow"><div class="t-sm t-medium">Operator =</div><div class="meta">jawaban lambat di Kuis</div></div><i data-lucide="chevron-right" class="i-14 t-faint"></i></a>
+      </div>
+      <div class="eyebrow mt-6 mb-2">Feedback mentor terakhir</div>
+      <div class="row-top gap-3"><span class="avatar avatar-sm a2">DR</span><p class="t-sm" style="line-height:1.55">“Konsisten sekali 12 hari. Minggu ini fokus ke <b>salinan nilai</b>, ya.”</p></div>
+    </section>
+  </div>
+
+  <section class="card mt-6 tbl-wrap" style="overflow:hidden">
+    <div class="p-5 row between"><h2 class="t-h3">Per bab, per fase</h2><span class="t-xs t-faint">skor terakhir</span></div>
+    <table class="table">
+      <thead><tr><th>Bab</th><th>Pahami</th><th>Perkuat</th><th>Kuis</th><th>Uji</th><th>Penguasaan</th></tr></thead>
+      <tbody>
+        <tr><td class="t-medium">1 · Halo, JavaScript</td><td><span class="ph-cell" data-phase="pahami">selesai</span></td><td><span class="ph-cell" data-phase="perkuat">92%</span></td><td><span class="ph-cell" data-phase="kuis">90%</span></td><td><span class="ph-cell" data-phase="uji">Ch · 4/4</span></td><td><span class="mastery" data-tier="5"><i></i><i></i><i></i><i></i><i></i></span></td></tr>
+        <tr><td class="t-medium">2 · Variabel</td><td><span class="ph-cell" data-phase="pahami">selesai</span></td><td><span class="ph-cell" data-phase="perkuat">3/8</span></td><td><span class="ph-cell is-none">–</span></td><td><span class="ph-cell is-none">–</span></td><td><span class="mastery" data-tier="3"><i></i><i></i><i></i><i></i><i></i></span></td></tr>
+        <tr><td class="t-muted">3 · Tipe Data</td><td><span class="ph-cell is-none">terkunci</span></td><td><span class="ph-cell is-none">–</span></td><td><span class="ph-cell is-none">–</span></td><td><span class="ph-cell is-none">–</span></td><td><span class="mastery" data-tier="0"><i></i><i></i><i></i><i></i><i></i></span></td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  // [name, x, y, mastery 0..1, state]
+  const S = [['console.log', 120, 110, .95, 'on'], ['komentar', 220, 220, .9, 'on'], ['let', 360, 120, .8, 'on'], ['const', 430, 250, .55, 'weak'], ['penamaan', 300, 330, .75, 'on'], ['salinan nilai', 560, 170, .4, 'weak'], ['string', 650, 320, 0, 'off'], ['number', 720, 150, 0, 'off'], ['boolean', 820, 260, 0, 'off'], ['if / else', 880, 110, 0, 'off'], ['operator =', 520, 380, .6, 'weak'], ['for', 930, 390, 0, 'off']];
+  const E = [[0, 1], [0, 2], [2, 3], [2, 4], [2, 5], [3, 5], [4, 10], [5, 7], [7, 6], [7, 8], [8, 9], [9, 11], [10, 6]];
+  function drawConst() {
+    const svg = $('[data-const-svg]'); const c = n => n.state === 'off' ? 'var(--border-strong)' : n.state === 'weak' ? 'var(--kuis-fill)' : 'var(--pahami-fill)';
+    let h = E.map(([a, b]) => `<line class="edge ${S[a][4] !== 'off' && S[b][4] !== 'off' ? 'is-lit' : ''}" x1="${S[a][1]}" y1="${S[a][2]}" x2="${S[b][1]}" y2="${S[b][2]}"/>`).join('');
+    h += S.map(([n, x, y, m, st], i) => { const r = 6 + m * 10, col = c({ state: st });
+      return `<g class="star" data-i="${i}" style="opacity:0">${st !== 'off' ? `<circle class="star-glow" cx="${x}" cy="${y}" r="${r + 10}" fill="${col}" opacity=".18" style="animation-delay:${i * .3}s"/>` : ''}<circle cx="${x}" cy="${y}" r="${r}" fill="${st === 'off' ? 'var(--surface)' : col}" stroke="${col}" stroke-width="2" ${st === 'off' ? 'stroke-dasharray="3 3"' : ''}/><text x="${x}" y="${y + r + 18}" text-anchor="middle">${n}</text></g>`; }).join('');
+    svg.innerHTML = h;
+    svg.querySelectorAll('.star').forEach((g, i) => g.animate([{ opacity: 0, transform: 'scale(.3)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 600, delay: 200 + i * 80, easing: G.ease.bouncy, fill: 'forwards' }));
+    svg.querySelectorAll('.edge').forEach((l, i) => { const len = Math.hypot(l.x2.baseVal.value - l.x1.baseVal.value, l.y2.baseVal.value - l.y1.baseVal.value); l.style.strokeDasharray = len; l.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: 800, delay: 400 + i * 60, easing: G.ease.out, fill: 'both' }); });
+    const tip = $('[data-tip]'), wrap = $('[data-const]');
+    svg.addEventListener('pointerover', e => { const g = e.target.closest('.star'); if (!g) { tip.hidden = true; return; } const [n, x, y, m, st] = S[+g.dataset.i]; const r = wrap.getBoundingClientRect(); tip.hidden = false; tip.style.left = (x / 1000) * r.width + 'px'; tip.style.top = (y / 480) * r.height + 'px'; tip.innerHTML = `<b>${n}</b> · ${st === 'off' ? 'belum dibuka' : Math.round(m * 100) + '% dikuasai'}${st === 'weak' ? '<br><span style="color:var(--kuis-ink)">perlu diulang</span>' : ''}`; });
+    svg.addEventListener('pointerleave', () => (tip.hidden = true));
+  }
+  function drawChart() {
+    const v = [22, 30, 34, 41, 48, 55, 65, 71], W = 600, H = 220, pad = 24; const x = i => pad + i * (W - pad * 2) / (v.length - 1), y = n => H - pad - n / 100 * (H - pad * 2);
+    const d = v.map((n, i) => `${i ? 'L' : 'M'}${x(i)} ${y(n)}`).join(' ');
+    const svg = $('[data-chart]');
+    svg.innerHTML = [0, 25, 50, 75, 100].map(g => `<line class="grid-l" x1="${pad}" x2="${W - pad}" y1="${y(g)}" y2="${y(g)}"/><text x="0" y="${y(g) + 3}">${g}</text>`).join('') + `<path class="ar" d="${d} L${x(v.length - 1)} ${H - pad} L${pad} ${H - pad}Z"/><path class="ln" d="${d}" data-ln/>` + v.map((n, i) => `<circle cx="${x(i)}" cy="${y(n)}" r="${i === v.length - 1 ? 6 : 3.5}" fill="var(--surface)" stroke="var(--pahami-fill)" stroke-width="2.5"/>`).join('');
+    const ln = svg.querySelector('[data-ln]'), L = ln.getTotalLength(); ln.style.strokeDasharray = L; if (G.motion !== 'off') ln.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 1400, easing: G.ease.gentle });
+  }
+  document.addEventListener('gnosia:ready', () => { drawConst(); drawChart(); document.querySelectorAll('[data-tick]').forEach(el => G.ticker(el, +el.dataset.tick, { from: 0, dur: 1200 })); });
+})();
+</script>
+</body>
+</html>

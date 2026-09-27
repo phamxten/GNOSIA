@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perkuat · Variabel · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .q-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .type-chip { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; font-size: 12px; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--divider); }
+  .type-chip svg.lucide { width: 13px; height: 13px; }
+  .slider-box { margin-top: 24px; padding: 22px; border-radius: 16px; background: var(--surface-sunken); border: 1px solid var(--divider); }
+  .slider-readout { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; font-family: var(--font-mono); }
+  .slider-readout .big { font-size: 34px; font-weight: 600; }
+  .target-line { font-size: 13px; color: var(--text-muted); }
+  .similar-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--kuis-ink); background: var(--kuis-soft); border: 1px solid var(--kuis-line); border-radius: 999px; height: 24px; padding: 0 10px; }
+  .done { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 86%, transparent); padding: 16px; animation: fade-in 300ms var(--ease-out); }
+  .done-card { width: min(560px, 100%); text-align: center; padding: 40px 36px 32px; border-radius: 28px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-modal); animation: rise 600ms var(--spring-bouncy) both; }
+  .done-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; }
+  .done-stats div { padding: 12px; border-radius: 14px; background: var(--surface-sunken); }
+  .done-stats b { display: block; font-family: var(--font-serif); font-size: 30px; font-weight: 400; }
+</style>
+</head>
+<body>
+<div class="player" data-phase="perkuat">
+  <div class="aura" aria-hidden="true"><i></i><i></i></div>
+  <header class="player-top">
+    <a href="bab.html" class="btn btn-ghost btn-icon" aria-label="Keluar"><i data-lucide="x" class="i-20"></i></a>
+    <div class="phasebar">
+      <div class="seg is-done" data-phase="pahami"><span class="lbl"><i data-lucide="check"></i><span>1 · Pahami</span></span><div class="trk"><span style="--v:100%"></span></div></div>
+      <div class="seg is-now" data-phase="perkuat"><span class="lbl"><i data-lucide="dumbbell"></i><span>2 · Perkuat</span></span><div class="trk"><span data-pbar style="--v:0%"></span></div></div>
+      <div class="seg" data-phase="kuis"><span class="lbl"><i data-lucide="lock"></i><span>3 · Kuis</span></span><div class="trk"><span></span></div></div>
+      <div class="seg" data-phase="uji"><span class="lbl"><i data-lucide="lock"></i><span>4 · Uji</span></span><div class="trk"><span></span></div></div>
+    </div>
+    <div class="row gap-3 pt-right"><span class="stat-chip"><svg class="flame" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c1 3.5 5 6 5 11a5 5 0 0 1-10 0c0-2.2 1-3.6 2.2-4.8.3 1.5 1 2.5 2 3C11 8.5 11.5 5 12 2z"/></svg>12</span><span class="stat-chip"><i data-lucide="zap" style="color:var(--xp)"></i><span data-xp>390</span></span><span class="nosi nosi-sm" data-nosi></span></div>
+  </header>
+
+  <main class="stage-wrap"><div class="stage">
+
+    <!-- Q1 · Choice -->
+    <section class="scene" data-q data-type="choice" data-answer="1">
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="type-chip"><i data-lucide="list"></i>Pilih jawaban</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Nilai <b>skor</b> akan bertambah selama permainan. Baris mana yang tepat?</h2>
+      <div class="choices" role="radiogroup">
+        <button class="choice" role="radio"><span class="key">1</span><span class="code">const skor = 0;</span></button>
+        <button class="choice" role="radio"><span class="key">2</span><span class="code">let skor = 0;</span></button>
+        <button class="choice" role="radio"><span class="key">3</span><span class="code">skor let = 0;</span></button>
+        <button class="choice" role="radio"><span class="key">4</span><span class="code">let 0 = skor;</span></button>
+      </div>
+      <template data-hint="1">Nilainya <b>akan berubah</b>. Kotak mana yang tidak digembok?</template>
+      <template data-explain>Nilainya berubah, jadi pakai <span class="t-mono">let</span>. <span class="t-mono">const</span> akan error saat skor ditambah.</template>
+    </section>
+
+    <!-- Q2 · Token fill -->
+    <section class="scene" data-q data-type="fill" data-expected="let,=" hidden>
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="type-chip"><i data-lucide="puzzle"></i>Lengkapi kode</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Lengkapi supaya umur bisa diganti di baris 2.</h2>
+      <p class="q-help">Seret potongan ke kotak kosong, atau ketuk potongan untuk mengisi kotak berikutnya.</p>
+      <div class="slot-code mt-6"><span class="t-faint">1</span>  <span class="slot" data-slot></span> umur <span class="slot" data-slot></span> <span class="n">16</span><span class="pn">;</span>
+<span class="t-faint">2</span>  umur <span class="pn">=</span> <span class="n">17</span><span class="pn">;</span></div>
+      <div class="token-tray" data-tray>
+        <span class="token" data-val="const">const</span><span class="token" data-val="=">=</span><span class="token" data-val="let">let</span><span class="token" data-val="==">==</span><span class="token" data-val="var">:</span>
+      </div>
+      <template data-hint="1">Baris 2 <b>mengganti</b> isi umur. Jadi kotaknya harus bisa diubah.</template>
+      <template data-explain><span class="t-mono">let umur = 16;</span> lalu <span class="t-mono">umur = 17;</span>. Tanda <span class="t-mono">=</span> berarti “masukkan”, bukan <span class="t-mono">==</span>.</template>
+    </section>
+
+    <!-- Q3 · Predict output -->
+    <section class="scene" data-q data-type="choice" data-answer="1" hidden>
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="type-chip"><i data-lucide="terminal"></i>Tebak output</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Apa yang dicetak?</h2>
+      <div class="codecard mt-6"><div class="cc-body">
+        <div class="cc-line"><span class="cc-ln">1</span><span class="k">let</span> a <span class="pn">=</span> <span class="n">5</span><span class="pn">;</span></div>
+        <div class="cc-line"><span class="cc-ln">2</span>a <span class="pn">=</span> a <span class="pn">+</span> <span class="n">2</span><span class="pn">;</span></div>
+        <div class="cc-line"><span class="cc-ln">3</span><span class="p">console</span><span class="pn">.</span><span class="f">log</span><span class="pn">(</span>a<span class="pn">);</span></div>
+      </div></div>
+      <div class="choices cols-2">
+        <button class="choice"><span class="key">1</span><span class="code">5</span></button>
+        <button class="choice"><span class="key">2</span><span class="code">7</span></button>
+        <button class="choice"><span class="key">3</span><span class="code">a + 2</span></button>
+        <button class="choice"><span class="key">4</span><span class="code">52</span></button>
+      </div>
+      <template data-hint="1">Baris 2 dibaca dari <b>kanan</b>: hitung <span class="t-mono">a + 2</span> dulu, lalu simpan ke <span class="t-mono">a</span>.</template>
+      <template data-explain>Kanan dihitung dulu: <span class="t-mono">5 + 2 = 7</span>, lalu 7 dimasukkan ke <span class="t-mono">a</span>.</template>
+    </section>
+
+    <!-- Q4 · Parsons -->
+    <section class="scene" data-q data-type="parsons" hidden>
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="type-chip"><i data-lucide="arrow-down-up"></i>Susun baris</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Susun baris supaya program mencetak total belanja.</h2>
+      <p class="q-help">Seret baris naik atau turun. Pakai keyboard: fokus, lalu <kbd>Alt</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd>.</p>
+      <div class="parsons" data-parsons>
+        <div class="pblock" tabindex="0" data-id="4"><span class="grip"><i data-lucide="grip-vertical"></i></span><span class="pcode"><span class="p">console</span>.<span class="f">log</span>(total);</span></div>
+        <div class="pblock" tabindex="0" data-id="1"><span class="grip"><i data-lucide="grip-vertical"></i></span><span class="pcode"><span class="k">const</span> harga = <span class="n">3000</span>;</span></div>
+        <div class="pblock" tabindex="0" data-id="3"><span class="grip"><i data-lucide="grip-vertical"></i></span><span class="pcode"><span class="k">const</span> total = harga * jumlah;</span></div>
+        <div class="pblock" tabindex="0" data-id="2"><span class="grip"><i data-lucide="grip-vertical"></i></span><span class="pcode"><span class="k">let</span> jumlah = <span class="n">2</span>;</span></div>
+      </div>
+      <template data-hint="1">Sebuah variabel harus <b>dibuat dulu</b> sebelum dipakai.</template>
+      <template data-explain>Buat <span class="t-mono">harga</span> dan <span class="t-mono">jumlah</span> dulu, hitung <span class="t-mono">total</span>, baru cetak.</template>
+    </section>
+
+    <!-- Q5 · Tap the bug -->
+    <section class="scene" data-q data-type="bug" data-answer="2" data-similar="1" hidden>
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="type-chip"><i data-lucide="bug"></i>Temukan bug</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Program ini error. Ketuk baris penyebabnya.</h2>
+      <div class="bugcode" role="listbox">
+        <div class="bugline" role="option"><span class="ln-no">1</span><span><span class="k">const</span> nyawa <span class="pn">=</span> <span class="n">3</span><span class="pn">;</span></span></div>
+        <div class="bugline" role="option"><span class="ln-no">2</span><span>nyawa <span class="pn">=</span> nyawa <span class="pn">-</span> <span class="n">1</span><span class="pn">;</span></span></div>
+        <div class="bugline" role="option"><span class="ln-no">3</span><span><span class="p">console</span><span class="pn">.</span><span class="f">log</span><span class="pn">(</span><span class="s">"Sisa:"</span><span class="pn">,</span> nyawa<span class="pn">);</span></span></div>
+      </div>
+      <div class="out-bubble is-err mt-4"><i data-lucide="circle-x" class="i-14"></i>TypeError: Assignment to constant variable.</div>
+      <template data-hint="1">Pesan errornya menyebut <b>constant</b>. Di mana isi sebuah <span class="t-mono">const</span> diganti?</template>
+      <template data-explain>Baris 2 mengganti isi <span class="t-mono">const</span>. Perbaikannya: ubah baris 1 menjadi <span class="t-mono">let nyawa = 3;</span>.</template>
+    </section>
+
+    <!-- Q5b · Similar (adaptive, inserted after a wrong Q5) -->
+    <section class="scene" data-q data-type="bug" data-answer="3" data-adaptive hidden>
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="similar-chip"><i data-lucide="repeat" class="i-14"></i>Soal serupa</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Satu lagi yang mirip. Baris mana yang error?</h2>
+      <div class="bugcode">
+        <div class="bugline"><span class="ln-no">1</span><span><span class="k">const</span> kota <span class="pn">=</span> <span class="s">"Bandung"</span><span class="pn">;</span></span></div>
+        <div class="bugline"><span class="ln-no">2</span><span><span class="k">let</span> suhu <span class="pn">=</span> <span class="n">24</span><span class="pn">;</span></span></div>
+        <div class="bugline"><span class="ln-no">3</span><span>kota <span class="pn">=</span> <span class="s">"Bogor"</span><span class="pn">;</span></span></div>
+        <div class="bugline"><span class="ln-no">4</span><span>suhu <span class="pn">=</span> <span class="n">22</span><span class="pn">;</span></span></div>
+      </div>
+      <template data-hint="1">Cari variabel yang dibuat dengan <span class="t-mono">const</span>, lalu cari di mana isinya diganti.</template>
+      <template data-explain><span class="t-mono">kota</span> adalah <span class="t-mono">const</span>, jadi baris 3 error. <span class="t-mono">suhu</span> memakai <span class="t-mono">let</span>, jadi baris 4 aman.</template>
+    </section>
+
+    <!-- Q6 · Slider -->
+    <section class="scene" data-q data-type="slider" data-target="5" hidden>
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="type-chip"><i data-lucide="sliders-horizontal"></i>Atur nilai</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Geser <span class="ic">jumlah</span> sampai <span class="ic">total</span> tepat <b>20000</b>.</h2>
+      <div class="codecard mt-6"><div class="cc-body">
+        <div class="cc-line"><span class="cc-ln">1</span><span class="k">const</span> harga <span class="pn">=</span> <span class="n">4000</span><span class="pn">;</span></div>
+        <div class="cc-line is-lit"><span class="cc-ln">2</span><span class="k">let</span> jumlah <span class="pn">=</span> <span class="n" data-sl-code>2</span><span class="pn">;</span></div>
+        <div class="cc-line"><span class="cc-ln">3</span><span class="k">const</span> total <span class="pn">=</span> harga <span class="pn">*</span> jumlah<span class="pn">;</span></div>
+      </div></div>
+      <div class="slider-box">
+        <div class="slider-readout"><span>jumlah = <span class="big" data-sl-v>2</span></span><span>total = <span class="big" data-sl-t>8000</span></span></div>
+        <input class="range" type="range" min="1" max="10" value="2" data-slider aria-label="jumlah" style="--p:11%">
+        <div class="row between mt-2 target-line"><span>1</span><span>target 20000</span><span>10</span></div>
+      </div>
+      <template data-hint="1">20000 dibagi 4000 berapa?</template>
+      <template data-explain>4000 × 5 = 20000. Mengubah satu variabel mengubah semua hitungan yang memakainya.</template>
+    </section>
+
+    <!-- Q7 · Match -->
+    <section class="scene" data-q data-type="match" hidden>
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="type-chip"><i data-lucide="link"></i>Pasangkan</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Pasangkan maksud dengan kodenya.</h2>
+      <div class="match" data-match>
+        <svg class="links" data-links></svg>
+        <div class="stack gap-2"><div class="mitem" data-m="a">Buat kotak yang bisa diubah</div><div class="mitem" data-m="b">Buat kotak yang dikunci</div><div class="mitem" data-m="c">Ganti isi kotak</div><div class="mitem" data-m="d">Tampilkan isi kotak</div></div>
+        <div class="stack gap-2"><div class="mitem code" data-m="c">x = 5</div><div class="mitem code" data-m="d">console.log(x)</div><div class="mitem code" data-m="a">let x = 1</div><div class="mitem code" data-m="b">const y = 2</div></div>
+      </div>
+      <template data-hint="1">Mulai dari yang paling yakin. Salah pasang tidak mengurangi apa pun.</template>
+      <template data-explain>Semua pasangan tepat.</template>
+    </section>
+
+    <!-- Q8 · Choice (concept) -->
+    <section class="scene" data-q data-type="choice" data-answer="2" hidden>
+      <div class="q-meta"><span class="phase-tag">Perkuat</span><span class="type-chip"><i data-lucide="list"></i>Pilih jawaban</span><span class="t-faint t-sm" data-qcount></span></div>
+      <h2 class="q-title">Nama variabel mana yang <b>paling baik</b> untuk menyimpan jumlah siswa di kelas?</h2>
+      <div class="choices">
+        <button class="choice"><span class="key">1</span><span class="code">x</span></button>
+        <button class="choice"><span class="key">2</span><span class="code">jumlah siswa</span></button>
+        <button class="choice"><span class="key">3</span><span class="code">jumlahSiswa</span></button>
+        <button class="choice"><span class="key">4</span><span class="code">2siswa</span></button>
+      </div>
+      <template data-hint="1">Nama harus valid <b>dan</b> menjelaskan isinya.</template>
+      <template data-explain><span class="t-mono">jumlahSiswa</span> valid dan jelas. <span class="t-mono">x</span> valid tapi tidak menjelaskan apa-apa.</template>
+    </section>
+
+    <!-- Hint area (shared) -->
+    <div class="hint-row" data-hint-row hidden><span class="nosi" data-mood="think"></span><div class="balloon" data-balloon></div></div>
+  </div></main>
+
+  <footer class="player-foot" data-foot>
+    <div class="inner">
+      <button class="btn btn-ghost btn-lg" data-hint-btn><i data-lucide="lightbulb"></i><span class="hide-sm">Petunjuk</span><span class="hint-ladder hide-sm" data-hl><i></i><i></i><i></i></span></button>
+      <div class="fb-idle"><span class="kbdhint hide-sm"><kbd>1</kbd>–<kbd>4</kbd> pilih · <kbd>↵</kbd> periksa</span></div>
+      <div class="fb fb-ok"><span class="fb-icon"><i data-lucide="check"></i></span><div class="grow"><div class="fb-title" data-ok-title>Mantap!</div><div class="fb-body t-muted" data-ok-body></div></div></div>
+      <div class="fb fb-no"><span class="fb-icon"><i data-lucide="rotate-ccw"></i></span><div class="grow"><div class="fb-title">Belum tepat, tidak apa-apa.</div><div class="fb-body t-muted" data-no-body></div></div></div>
+      <button class="btn btn-ok btn-xl btn-press" data-check disabled style="min-width:180px">Periksa</button>
+    </div>
+  </footer>
+</div>
+
+<div class="done" data-done hidden role="dialog" aria-modal="true">
+  <div class="done-card">
+    <span class="nosi nosi-xl" data-done-nosi data-mood="cheer"></span>
+    <div class="eyebrow mt-4">Fase 2 dari 4 selesai</div>
+    <h2 class="big-serif mt-2" style="font-size:44px">Pemahamanmu <em style="color:var(--perkuat-ink)">makin kuat</em>.</h2>
+    <div class="done-stats"><div><b data-d-acc>0</b><span class="t-xs t-faint">% tepat</span></div><div><b data-d-first>0</b><span class="t-xs t-faint">benar di coba 1</span></div><div><b style="color:var(--xp)">+<span data-d-xp>0</span></b><span class="t-xs t-faint">XP</span></div></div>
+    <div class="gate mt-6" data-gate style="text-align:left"><span class="lock"><i data-lucide="lock"></i></span><div class="grow"><div class="t-h4">Kuis · 10 soal trivia</div><div class="t-xs t-faint" data-gate-text>terkunci</div></div><span class="phase-tag" data-phase="kuis">Fase 3</span></div>
+    <a class="btn btn-phase btn-xl btn-press w-full mt-6" data-phase="kuis" href="kuis.html">Mulai Kuis<i data-lucide="zap"></i></a>
+  </div>
+</div>
+
+<div class="mock-states" data-page-states><span>lompat ke</span><button data-page-state="q1">pilih</button><button data-page-state="q2">lengkapi</button><button data-page-state="q4">susun</button><button data-page-state="q5">bug</button><button data-page-state="q6">slider</button><button data-page-state="q7">pasang</button><button data-page-state="done">selesai</button></div>
+
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+/* Perkuat engine (mockup). Real app: <ExerciseRunner items=[…] adaptive /> — see COMPONENTS.md */
+(function () {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const foot = $('[data-foot]'), btn = $('[data-check]'), nosi = $('[data-nosi]'), xpEl = $('[data-xp]');
+  let qs = $$('[data-q]:not([data-adaptive])'); const adaptive = $('[data-adaptive]');
+  let i = 0, phase = 'answer', hintLvl = 0, attempts = 0, firstTry = 0, correctCount = 0, inserted = false;
+  const q = () => qs[i];
+
+  function show(n) {
+    qs.forEach((s, k) => (s.hidden = k !== n)); if (adaptive && !qs.includes(adaptive)) adaptive.hidden = true;
+    i = n; const s = q(); s.classList.remove('scene-enter'); void s.offsetWidth; s.classList.add('scene-enter');
+    phase = 'answer'; hintLvl = 0; attempts = 0; G.resetFoot(foot); $('[data-hint-row]').hidden = true; setHL();
+    btn.textContent = 'Periksa'; btn.className = 'btn btn-ok btn-xl btn-press'; btn.disabled = true;
+    $$('[data-qcount]', s).forEach(c => (c.textContent = `Soal ${n + 1} dari ${qs.length}`));
+    $('[data-pbar]').style.setProperty('--v', Math.round((n / qs.length) * 100) + '%');
+    G.nosi(nosi, 'think'); setup(s); window.gnosiaIcons(); scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  const ready = ok => { if (phase === 'answer') btn.disabled = !ok; };
+  function setHL() { $$('[data-hl] i').forEach((x, k) => x.classList.toggle('on', k < hintLvl)); }
+
+  /* ---- per-type setup ---- */
+  function setup(s) {
+    const t = s.dataset.type; s.dataset.pick = '';
+    if (t === 'choice') $$('.choice', s).forEach((c, k) => { c.className = 'choice'; c.onclick = () => { if (phase !== 'answer') return; $$('.choice', s).forEach(x => x.classList.toggle('is-picked', x === c)); s.dataset.pick = k; G.pop(c); ready(true); }; });
+    if (t === 'bug') $$('.bugline', s).forEach((c, k) => { c.className = 'bugline'; c.onclick = () => { if (phase !== 'answer') return; $$('.bugline', s).forEach(x => x.classList.toggle('is-picked', x === c)); s.dataset.pick = k + 1; ready(true); }; });
+    if (t === 'fill') setupFill(s);
+    if (t === 'parsons') setupParsons(s);
+    if (t === 'slider') { const r = $('[data-slider]', s); const upd = () => { const v = +r.value; r.style.setProperty('--p', ((v - 1) / 9) * 100 + '%'); $('[data-sl-v]', s).textContent = v; $('[data-sl-code]', s).textContent = v; const tt = $('[data-sl-t]', s); tt.textContent = v * 4000; tt.style.color = v * 4000 === 20000 ? 'var(--perkuat-ink)' : ''; ready(true); }; r.oninput = upd; upd(); btn.disabled = true; }
+    if (t === 'match') setupMatch(s);
+  }
+  function setupFill(s) {
+    const slots = $$('[data-slot]', s), tray = $('[data-tray]', s);
+    const place = (tok, slot) => { if (!slot) slot = slots.find(x => !x.dataset.v); if (!slot) return; if (slot.dataset.v) clearSlot(slot);
+      slot.dataset.v = tok.dataset.val; slot.innerHTML = `<span class="token">${tok.textContent}</span>`; slot.classList.add('is-filled'); tok.classList.add('is-used'); slot._src = tok; G.pop(slot); ready(slots.every(x => x.dataset.v)); };
+    const clearSlot = slot => { if (slot._src) slot._src.classList.remove('is-used'); slot.dataset.v = ''; slot.innerHTML = ''; slot.classList.remove('is-filled', 'is-right', 'is-wrong'); ready(false); };
+    slots.forEach(sl => (sl.onclick = () => phase === 'answer' && clearSlot(sl)));
+    $$('.token', tray).forEach(tok => { if (tok._init) return; tok._init = 1;
+      G.draggable(tok, { targets: () => slots, onDrop: (el, target, ev, _, moved) => { if (phase !== 'answer') return; if (!moved) place(el, null); else if (target) place(el, target); } }); });
+  }
+  function setupParsons(s) {
+    const box = $('[data-parsons]', s);
+    const flip = mutate => { const els = [...box.children]; const f = new Map(els.map(e => [e, e.offsetTop])); mutate(); els.forEach(e => { if (e.classList.contains('is-drag')) return; const d = f.get(e) - e.offsetTop; if (d) e.animate([{ transform: `translateY(${d}px)` }, { transform: 'none' }], { duration: 280, easing: G.ease.gentle }); }); };
+    $$('.pblock', box).forEach(b => { b.classList.remove('is-right', 'is-wrong'); if (b._init) return; b._init = 1;
+      b.addEventListener('pointerdown', e => { if (phase !== 'answer') return; e.preventDefault(); b.setPointerCapture(e.pointerId); b.classList.add('is-drag'); const sy = e.clientY, base = b.offsetTop;
+        const mv = ev => { const y = ev.clientY; const sibs = [...box.children].filter(x => x !== b);
+          const tgt = sibs.find(x => { const r = x.getBoundingClientRect(); return y < r.top + r.height / 2; });
+          if ((tgt || null) !== b.nextElementSibling) flip(() => box.insertBefore(b, tgt || null));
+          b.style.transform = `translateY(${ev.clientY - sy - (b.offsetTop - base)}px)`; };
+        const up = () => { b.classList.remove('is-drag'); b.style.transform = ''; b.removeEventListener('pointermove', mv); b.removeEventListener('pointerup', up); ready(true); };
+        b.addEventListener('pointermove', mv); b.addEventListener('pointerup', up); });
+      b.addEventListener('keydown', e => { if (!e.altKey) return; if (e.key === 'ArrowUp' && b.previousElementSibling) { flip(() => box.insertBefore(b, b.previousElementSibling)); b.focus(); ready(true); } if (e.key === 'ArrowDown' && b.nextElementSibling) { flip(() => box.insertBefore(b.nextElementSibling, b)); b.focus(); ready(true); } });
+    });
+  }
+  function setupMatch(s) {
+    const L = $$('.stack:first-of-type .mitem', s), R = $$('.stack:last-of-type .mitem', s), svg = $('[data-links]', s); let pick = null, done = 0;
+    [...L, ...R].forEach(m => { m.className = m.className.replace(/ ?is-(done|picked|wrong)/g, ''); m.onclick = () => {
+      if (!pick) { pick = m; m.classList.add('is-picked'); return; }
+      if (pick === m) { m.classList.remove('is-picked'); pick = null; return; }
+      const sameSide = L.includes(pick) === L.includes(m); if (sameSide) { pick.classList.remove('is-picked'); pick = m; m.classList.add('is-picked'); return; }
+      if (pick.dataset.m === m.dataset.m) { [pick, m].forEach(x => { x.classList.remove('is-picked'); x.classList.add('is-done'); }); link(pick, m); G.burst(m, { count: 8, spread: 40 }); done++; if (done === 4) ready(true); }
+      else { [pick, m].forEach(x => { x.classList.remove('is-picked'); x.classList.remove('is-wrong'); void x.offsetWidth; x.classList.add('is-wrong'); }); G.nosi(nosi, 'oops'); }
+      pick = null; }; });
+    const link = (a, b) => { const o = svg.getBoundingClientRect(), r1 = a.getBoundingClientRect(), r2 = b.getBoundingClientRect(); const [l, r] = L.includes(a) ? [r1, r2] : [r2, r1];
+      const x1 = l.right - o.left, y1 = l.top + l.height / 2 - o.top, x2 = r.left - o.left, y2 = r.top + r.height / 2 - o.top;
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', `M${x1} ${y1} C${x1 + 20} ${y1} ${x2 - 20} ${y2} ${x2} ${y2}`); svg.appendChild(p);
+      const len = p.getTotalLength(); p.animate([{ strokeDashoffset: len, strokeDasharray: `${len}` }, { strokeDashoffset: 0, strokeDasharray: `${len}` }], { duration: 400, easing: G.ease.out }).finished.then(() => p.style.strokeDasharray = '4 5'); };
+    svg.innerHTML = '';
+  }
+
+  /* ---- check ---- */
+  function evaluate(s) {
+    const t = s.dataset.type;
+    if (t === 'choice') { const ok = +s.dataset.pick === +s.dataset.answer; const cs = $$('.choice', s); cs.forEach((c, k) => { if (k === +s.dataset.pick) c.classList.add(ok ? 'is-right' : 'is-wrong'); else if (ok) c.classList.add('is-dim'); }); return ok; }
+    if (t === 'bug') { const ok = +s.dataset.pick === +s.dataset.answer; $$('.bugline', s)[+s.dataset.pick - 1].classList.add(ok ? 'is-right' : 'is-wrong'); return ok; }
+    if (t === 'fill') { const exp = s.dataset.expected.split(','); let ok = true; $$('[data-slot]', s).forEach((sl, k) => { const r = sl.dataset.v === exp[k]; sl.classList.add(r ? 'is-right' : 'is-wrong'); ok = ok && r; }); return ok; }
+    if (t === 'parsons') { const bs = $$('.pblock', s); let ok = true; bs.forEach((b, k) => { const r = +b.dataset.id === k + 1; b.classList.add(r ? 'is-right' : 'is-wrong'); ok = ok && r; }); return ok; }
+    if (t === 'slider') return +$('[data-slider]', s).value === +s.dataset.target;
+    if (t === 'match') return true;
+  }
+  const PRAISE = ['Mantap!', 'Tepat sekali!', 'Keren!', 'Betul!'];
+  function check() {
+    const s = q(); attempts++; const ok = evaluate(s);
+    const explain = $('template[data-explain]', s).innerHTML;
+    if (ok) {
+      phase = 'next'; correctCount++; if (attempts === 1) firstTry++;
+      $('[data-ok-title]').textContent = PRAISE[i % PRAISE.length]; $('[data-ok-body]').innerHTML = explain;
+      G.correct({ foot, button: btn, nosi, xpEl, xp: attempts === 1 ? 10 : 5 });
+      btn.textContent = i === qs.length - 1 ? 'Selesaikan Perkuat' : 'Lanjut'; btn.disabled = false;
+    } else {
+      phase = 'retry'; hintLvl = Math.min(3, hintLvl + 1); setHL();
+      $('[data-no-body]').innerHTML = ($('template[data-hint]', s) || {}).innerHTML || 'Coba lihat lagi pelan-pelan.';
+      G.wrong({ foot, target: s.querySelector('.choices,.bugcode,.slot-code,.parsons,.slider-box,.match'), nosi });
+      btn.textContent = 'Coba lagi'; btn.className = 'btn btn-no btn-xl btn-press'; btn.disabled = false;
+      // Adaptive: a wrong answer on a flagged item queues one similar item right after it
+      if (s.dataset.similar && !inserted && adaptive) { inserted = true; qs.splice(i + 1, 0, adaptive); window.gnosiaToast({ kind: 'accent', icon: 'repeat', title: 'Soal serupa ditambahkan', body: 'Satu latihan ekstra untuk konsep ini.' }); }
+    }
+    window.gnosiaIcons();
+  }
+  function retry() { const s = q(); phase = 'answer'; G.resetFoot(foot); btn.textContent = 'Periksa'; btn.className = 'btn btn-ok btn-xl btn-press';
+    $$('.is-wrong,.is-right,.is-dim', s).forEach(x => x.classList.remove('is-wrong', 'is-right', 'is-dim'));
+    if (s.dataset.type === 'fill') { $$('[data-slot]', s).forEach(sl => { if (sl._src) sl._src.classList.remove('is-used'); sl.dataset.v = ''; sl.innerHTML = ''; sl.classList.remove('is-filled'); }); btn.disabled = true; }
+    else if (s.dataset.type === 'choice' || s.dataset.type === 'bug') { $$('.is-picked', s).forEach(x => x.classList.remove('is-picked')); btn.disabled = true; }
+    G.nosi(nosi, 'think'); }
+  function finish() {
+    const d = $('[data-done]'); d.hidden = false; $('[data-pbar]').style.setProperty('--v', '100%');
+    G.nosi($('[data-done-nosi]'), 'cheer'); G.confetti(); G.sound('done');
+    G.ticker($('[data-d-acc]'), Math.round((firstTry / qs.length) * 100) || 88, { from: 0 }); G.ticker($('[data-d-first]'), firstTry || 7, { from: 0 }); G.ticker($('[data-d-xp]'), 75, { from: 0, dur: 1200 });
+    setTimeout(() => { const g = $('[data-gate]'); g.classList.add('is-open'); $('.lock', g).innerHTML = '<i data-lucide="lock-open"></i>'; $('[data-gate-text]').textContent = 'terbuka · lulus minimal 70%'; window.gnosiaIcons(); G.burst($('.lock', g), { count: 10, spread: 60 }); }, 1100);
+    window.gnosiaIcons();
+  }
+  function hint() { const s = q(); hintLvl = Math.min(3, hintLvl + 1); setHL(); const row = $('[data-hint-row]'); row.hidden = false;
+    s.after(row); $('[data-balloon]').innerHTML = `<span class="lvl">Petunjuk · L${hintLvl + 2}</span>` + (($('template[data-hint]', s) || {}).innerHTML || ''); G.nosi($('.nosi', row), 'think'); }
+
+  document.addEventListener('gnosia:ready', () => {
+    btn.addEventListener('click', () => { if (phase === 'answer') check(); else if (phase === 'retry') retry(); else if (i < qs.length - 1) show(i + 1); else finish(); });
+    $('[data-hint-btn]').addEventListener('click', hint);
+    document.addEventListener('keydown', e => { if (e.target.closest('input')) return; const s = q();
+      if (e.key === 'Enter' && !btn.disabled) btn.click();
+      if (/^[1-4]$/.test(e.key) && s.dataset.type === 'choice' && phase === 'answer') $$('.choice', s)[+e.key - 1]?.click(); });
+    const handle = st => { if (st === 'done') { finish(); return; } $('[data-done]').hidden = true; const map = { q1: 0, q2: 1, q4: 3, q5: 4, q6: 5, q7: 6 }; show(map[st] ?? 0); };
+    document.addEventListener('gnosia:state', e => handle(e.detail));
+    handle(new URLSearchParams(location.search).get('state') || 'q1');
+  });
+})();
+</script>
+</body>
+</html>

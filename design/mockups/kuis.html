@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuis · Variabel · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .quiz-top { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+  .quiz-top .grow { display: flex; flex-direction: column; gap: 8px; }
+  .score-chip { font-family: var(--font-mono); font-weight: 700; font-size: 18px; min-width: 70px; text-align: right; }
+  .choice .key.abcd { font-family: var(--font-sans); font-weight: 700; }
+  .countdown { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 80%, transparent); }
+  .countdown span { font-family: var(--font-serif); font-size: 180px; line-height: 1; color: var(--kuis-ink); }
+  .intro-rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; }
+  .intro-rules div { padding: 16px; border-radius: 16px; background: var(--kuis-soft); border: 1px solid var(--kuis-line); }
+  .intro-rules b { display: block; font-family: var(--font-serif); font-weight: 400; font-size: 30px; color: var(--kuis-ink); }
+  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 24px; }
+  .result-grid div { padding: 14px; border-radius: 14px; background: var(--surface-sunken); text-align: center; }
+  .result-grid b { display: block; font-family: var(--font-serif); font-size: 28px; font-weight: 400; }
+  .review-item { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 14px 0; border-top: 1px solid var(--divider); }
+  .review-item .ri { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; }
+  .review-item.ok .ri { background: var(--perkuat-soft); color: var(--perkuat-ink); }
+  .review-item.no .ri { background: var(--uji-soft); color: var(--uji-ink); }
+  .trivia-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--kuis-ink); }
+  .meter-pass { position: relative; height: 12px; border-radius: 99px; background: var(--viz-track); margin-top: 26px; }
+  .meter-pass > span { position: absolute; inset: 0 auto 0 0; border-radius: inherit; background: var(--kuis-fill); width: 0; transition: width 1.2s var(--spring-gentle); }
+  .meter-pass .mark { position: absolute; left: 70%; top: -8px; bottom: -8px; width: 2px; background: var(--text); border-radius: 2px; }
+  .meter-pass .mark::after { content: "lulus 70%"; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); white-space: nowrap; }
+  @media (max-width: 760px) { .intro-rules, .result-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6px; } .intro-rules b { font-size: 22px; } .countdown span { font-size: 120px; } }
+</style>
+</head>
+<body>
+<div class="player" data-phase="kuis">
+  <div class="aura" aria-hidden="true"><i></i><i></i></div>
+  <header class="player-top">
+    <a href="bab.html" class="btn btn-ghost btn-icon" aria-label="Keluar"><i data-lucide="x" class="i-20"></i></a>
+    <div class="phasebar">
+      <div class="seg is-done" data-phase="pahami"><span class="lbl"><i data-lucide="check"></i><span>1 · Pahami</span></span><div class="trk"><span style="--v:100%"></span></div></div>
+      <div class="seg is-done" data-phase="perkuat"><span class="lbl"><i data-lucide="check"></i><span>2 · Perkuat</span></span><div class="trk"><span style="--v:100%"></span></div></div>
+      <div class="seg is-now" data-phase="kuis"><span class="lbl"><i data-lucide="zap"></i><span>3 · Kuis</span></span><div class="trk"><span data-pbar style="--v:0%"></span></div></div>
+      <div class="seg" data-phase="uji"><span class="lbl"><i data-lucide="lock"></i><span>4 · Uji</span></span><div class="trk"><span></span></div></div>
+    </div>
+    <div class="row gap-3 pt-right"><span class="stat-chip"><i data-lucide="zap" style="color:var(--xp)"></i><span data-xp>465</span></span><span class="nosi nosi-sm" data-nosi></span></div>
+  </header>
+
+  <main class="stage-wrap"><div class="stage">
+
+    <!-- INTRO -->
+    <section class="scene" data-show-in="intro">
+      <div class="row gap-6" style="align-items:center">
+        <div class="grow">
+          <span class="phase-tag">Kuis · Fase 3</span>
+          <h1>Siap diuji cepat?</h1>
+          <p class="lead">10 soal trivia tentang variabel. Jawab cepat untuk combo. Nilai minimal <b>70%</b> membuka fase Uji.</p>
+        </div>
+        <span class="nosi nosi-lg hide-sm" data-mood="cheer"></span>
+      </div>
+      <div class="intro-rules">
+        <div><b>10</b><span class="t-sm t-muted">soal</span></div>
+        <div><b>20<span style="font-size:18px">s</span></b><span class="t-sm t-muted">per soal</span></div>
+        <div><b>×3</b><span class="t-sm t-muted">combo maksimum</span></div>
+      </div>
+      <div class="callout mt-6"><i data-lucide="info"></i><div class="t-sm">Petunjuk <b>tidak tersedia</b> selama kuis. Pembahasan lengkap muncul di akhir, benar ataupun salah.</div></div>
+      <button class="btn btn-phase btn-xl btn-press w-full mt-6" data-start>Mulai kuis<i data-lucide="play"></i></button>
+    </section>
+
+    <!-- QUESTION -->
+    <section data-show-in="play" hidden>
+      <div class="quiz-top">
+        <div class="qtimer" data-qtimer><svg width="56" height="56"><circle class="t-trk" cx="28" cy="28" r="24"/><circle class="t-arc" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0" data-tarc/></svg><span class="t-num" data-tnum>20</span></div>
+        <div class="grow"><div class="qdots" data-qdots></div><span class="t-xs t-faint" data-qlabel>Soal 1 dari 10</span></div>
+        <span class="combo" data-combo hidden><i data-lucide="flame" class="i-14"></i>×<span data-combo-n>2</span></span>
+        <span class="score-chip" data-score>0</span>
+      </div>
+      <div class="scene" data-qcard>
+        <div data-trivia hidden class="trivia-tag mb-2"><i data-lucide="sparkles" class="i-14"></i>Fakta seru</div>
+        <h2 class="q-title" data-qtext style="margin-top:0"></h2>
+        <div data-qcode></div>
+        <div class="choices cols-2" data-choices></div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="scene" data-show-in="pass fail" hidden>
+      <div class="t-center">
+        <span class="nosi nosi-lg" data-res-nosi data-mood="cheer"></span>
+        <div class="eyebrow mt-3" data-res-eyebrow>Hasil kuis</div>
+        <div class="score-num mt-2"><span data-res-pct>0</span><span style="font-size:.4em" class="t-faint">%</span></div>
+        <p class="t-muted mt-2" data-res-msg></p>
+      </div>
+      <div class="meter-pass"><span data-res-bar></span><i class="mark"></i></div>
+      <div class="result-grid"><div><b data-res-right>0</b><span class="t-xs t-faint">benar</span></div><div><b>×<span data-res-combo>0</span></b><span class="t-xs t-faint">combo terbaik</span></div><div><b style="color:var(--xp)">+<span data-res-xp>0</span></b><span class="t-xs t-faint">XP</span></div></div>
+      <div class="gate mt-6" data-res-gate><span class="lock"><i data-lucide="lock"></i></span><div class="grow"><div class="t-h4">Uji · Ulangan atau Challenge</div><div class="t-xs t-faint" data-res-gate-text>terkunci</div></div></div>
+      <div class="row gap-2 mt-6 wrap" data-res-actions></div>
+      <details class="mt-8" data-review open>
+        <summary class="t-h4" style="cursor:pointer">Pembahasan · 10 soal</summary>
+        <div data-review-list class="mt-2"></div>
+      </details>
+    </section>
+  </div></main>
+</div>
+
+<div class="countdown" data-countdown-ov hidden><span data-cd>3</span></div>
+
+<div class="mock-states" data-page-states><span>state</span><button data-page-state="intro">intro</button><button data-page-state="play">soal</button><button data-page-state="pass">lulus 80%</button><button data-page-state="fail">belum lulus 60%</button></div>
+
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+/* Kuis round (mockup). Real app: <QuizRound questions=[…] perQuestionSec={20} passPct={70} /> */
+(function () {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const Q = [
+    { t: 'Kata kunci untuk variabel yang isinya <b>tidak boleh</b> diganti?', o: ['let', 'const', 'var', 'fix'], a: 1, e: '<span class="t-mono">const</span> mengunci isinya.' },
+    { t: 'Berapa nilai <span class="ic">x</span> di akhir?', c: 'let x = 3;\nx = x * 2;', o: ['3', '6', '32', 'x * 2'], a: 1, e: 'Kanan dihitung dulu: 3 × 2 = 6.' },
+    { t: 'Nama variabel mana yang <b>valid</b>?', o: ['2total', 'total-harga', '_total', 'let'], a: 2, e: 'Boleh diawali <span class="t-mono">_</span>. Tidak boleh angka, tanda minus, atau kata kunci.' },
+    { t: 'JavaScript versi pertama dibuat dalam waktu sekitar…', trivia: true, o: ['10 hari', '6 bulan', '2 tahun', '1 minggu'], a: 0, e: 'Brendan Eich membuatnya sekitar 10 hari di tahun 1995.' },
+    { t: 'Apa yang terjadi?', c: 'const a = 1;\na = 2;', o: ['a menjadi 2', 'a tetap 1, tanpa pesan', 'TypeError', 'a menjadi 12'], a: 2, e: 'Mengganti isi <span class="t-mono">const</span> memunculkan TypeError.' },
+    { t: 'Di JavaScript, tanda <span class="ic">=</span> berarti…', o: ['sama dengan', 'masukkan nilai', 'bandingkan', 'tambah'], a: 1, e: '<span class="t-mono">=</span> adalah assignment. Untuk membandingkan dipakai <span class="t-mono">===</span>.' },
+    { t: 'Isi <span class="ic">nama</span> sekarang?', c: 'let nama = "Ana";\nnama = "Budi";', o: ['"Ana"', '"Budi"', '"AnaBudi"', 'error'], a: 1, e: 'Nilai lama diganti. Kotak hanya memegang satu nilai.' },
+    { t: 'Gaya penamaan <i>camelCase</i> yang benar?', trivia: true, o: ['JumlahSiswa', 'jumlah_siswa', 'jumlahSiswa', 'JUMLAH_SISWA'], a: 2, e: 'Kata pertama kecil, kata berikutnya diawali huruf besar.' },
+    { t: 'Berapa nilai <span class="ic">b</span>?', c: 'let a = 2;\nlet b = a;\na = 5;', o: ['2', '5', '7', 'undefined'], a: 0, e: '<span class="t-mono">b</span> menyalin <b>nilai</b> 2 saat dibuat. Mengubah <span class="t-mono">a</span> nanti tidak mengubah <span class="t-mono">b</span>.' },
+    { t: 'Apa yang dicetak?', c: 'let s;\nconsole.log(s);', o: ['0', 'null', '""', 'undefined'], a: 3, e: 'Variabel tanpa nilai awal berisi <span class="t-mono">undefined</span>.' },
+  ];
+  const N = Q.length, PER = 20, C = 150.8;
+  let k = 0, score = 0, combo = 1, best = 1, right = 0, answers = [], timer = null, left = PER, locked = false;
+  const nosi = $('[data-nosi]');
+
+  function dots() { $('[data-qdots]').innerHTML = Q.map((_, j) => `<i class="${j < k ? (answers[j] ? 'ok' : 'no') : j === k ? 'now' : ''}"></i>`).join(''); }
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function render() {
+    const q = Q[k]; locked = false; left = PER;
+    $('[data-qtext]').innerHTML = q.t; $('[data-trivia]').hidden = !q.trivia;
+    $('[data-qcode]').innerHTML = q.c ? `<div class="codecard mt-4"><div class="cc-body">${q.c.split('\n').map((l, j) => `<div class="cc-line"><span class="cc-ln">${j + 1}</span>${esc(l)}</div>`).join('')}</div></div>` : '';
+    $('[data-choices]').innerHTML = q.o.map((o, j) => `<button class="choice"><span class="key abcd">${'ABCD'[j]}</span><span class="code">${esc(o)}</span></button>`).join('');
+    $$('[data-choices] .choice').forEach((b, j) => (b.onclick = () => pick(j, b)));
+    $('[data-qlabel]').textContent = `Soal ${k + 1} dari ${N}`; $('[data-pbar]').style.setProperty('--v', (k / N) * 100 + '%'); dots();
+    const card = $('[data-qcard]'); card.classList.remove('scene-enter'); void card.offsetWidth; card.classList.add('scene-enter');
+    G.nosi(nosi, 'think'); tickStart();
+  }
+  function tickStart() { clearInterval(timer); upd(); timer = setInterval(() => { left--; upd(); if (left <= 0) { clearInterval(timer); pick(-1); } }, 1000); }
+  function upd() { $('[data-tnum]').textContent = left; $('[data-tarc]').setAttribute('stroke-dashoffset', C * (1 - left / PER)); $('[data-qtimer]').classList.toggle('is-low', left <= 5); }
+  function pick(j, b) {
+    if (locked) return; locked = true; clearInterval(timer);
+    const q = Q[k], ok = j === q.a, cs = $$('[data-choices] .choice'); answers[k] = ok;
+    cs.forEach((c, x) => { if (x === q.a) c.classList.add('is-right'); else if (x === j) c.classList.add('is-wrong'); else c.classList.add('is-dim'); });
+    $('[data-choices]').classList.add('is-locked');
+    if (ok) { right++; const pts = 100 * combo + left * 5; score += pts; G.ticker($('[data-score]'), score); G.burst(b); G.xpFloat($('[data-score]'), `+${pts}`); G.nosi(nosi, 'happy'); G.sound('ok');
+      if (combo < 3) combo++; best = Math.max(best, combo); const cb = $('[data-combo]'); cb.hidden = combo < 2; $('[data-combo-n]').textContent = combo; cb.classList.remove('is-bump'); void cb.offsetWidth; cb.classList.add('is-bump'); }
+    else { combo = 1; $('[data-combo]').hidden = true; G.shake($('[data-qcard]')); G.nosi(nosi, 'oops'); G.sound('no'); }
+    dots(); window.gnosiaIcons();
+    setTimeout(() => { $('[data-choices]').classList.remove('is-locked'); k < N - 1 ? (k++, render()) : results(); }, 1300);
+  }
+  function results(forced) {
+    clearInterval(timer);
+    if (forced) { answers = Q.map((_, j) => forced === 'pass' ? j !== 3 && j !== 8 : ![3, 4, 8, 9].includes(j)); right = answers.filter(Boolean).length; best = forced === 'pass' ? 3 : 2; }
+    const pct = Math.round((right / N) * 100), pass = pct >= 70;
+    window.gnosiaState(pass ? 'pass' : 'fail');
+    $('[data-pbar]').style.setProperty('--v', '100%');
+    G.ticker($('[data-res-pct]'), pct, { from: 0, dur: 1200 }); G.ticker($('[data-res-right]'), right, { from: 0 }); $('[data-res-combo]').textContent = best; G.ticker($('[data-res-xp]'), pass ? 60 : 20, { from: 0 });
+    setTimeout(() => ($('[data-res-bar]').style.width = pct + '%'), 60);
+    $('[data-res-eyebrow]').textContent = pass ? 'Lulus kuis' : 'Belum lulus, belum masalah';
+    $('[data-res-msg]').innerHTML = pass ? 'Fase Uji terbuka. Pilih <b>Ulangan</b> atau <b>Challenge</b>.' : 'Butuh 70% untuk membuka Uji. Kuis ulang memakai soal yang diacak, dan Perkuat mini dulu biasanya membantu.';
+    G.nosi($('[data-res-nosi]'), pass ? 'cheer' : 'think');
+    const gate = $('[data-res-gate]'); gate.classList.toggle('is-open', false);
+    if (pass) { setTimeout(() => { gate.classList.add('is-open'); $('.lock', gate).innerHTML = '<i data-lucide="lock-open"></i>'; $('[data-res-gate-text]').textContent = 'terbuka'; window.gnosiaIcons(); G.confetti(); G.sound('done'); }, 1300); }
+    else { $('.lock', gate).innerHTML = '<i data-lucide="lock"></i>'; $('[data-res-gate-text]').textContent = `terkunci · kurang ${70 - pct}%`; }
+    $('[data-res-actions]').innerHTML = pass
+      ? '<a class="btn btn-phase btn-xl btn-press grow" data-phase="uji" href="ulangan.html"><i data-lucide="timer"></i>Ulangan</a><a class="btn btn-phase btn-xl btn-press grow" data-phase="uji" href="challenge.html"><i data-lucide="swords"></i>Challenge</a>'
+      : '<a class="btn btn-ok btn-xl btn-press grow" href="perkuat.html"><i data-lucide="dumbbell"></i>Perkuat mini · 3 soal</a><button class="btn btn-secondary btn-xl btn-press grow" data-retry><i data-lucide="rotate-ccw"></i>Ulangi kuis</button>';
+    $('[data-review-list]').innerHTML = Q.map((q, j) => `<div class="review-item ${answers[j] ? 'ok' : 'no'}"><span class="ri"><i data-lucide="${answers[j] ? 'check' : 'x'}" class="i-14"></i></span><div><div class="t-sm">${q.t}</div><div class="t-xs mt-1"><span class="t-faint">Jawaban:</span> <span class="t-mono">${esc(q.o[q.a])}</span></div><div class="t-sm t-muted mt-1">${q.e}</div></div></div>`).join('');
+    window.gnosiaIcons();
+  }
+  function start() {
+    const ov = $('[data-countdown-ov]'), cd = $('[data-cd]'); ov.hidden = false; let n = 3; cd.textContent = n; G.pop(cd);
+    const t = setInterval(() => { n--; if (n === 0) { clearInterval(t); ov.hidden = true; k = 0; score = 0; combo = 1; right = 0; answers = []; $('[data-score]').textContent = 0; $('[data-combo]').hidden = true; render(); window.gnosiaState('play'); return; } cd.textContent = n; G.pop(cd); G.sound('tick'); }, G.motion === 'off' ? 1 : 700);
+  }
+  document.addEventListener('gnosia:ready', () => {
+    $('[data-start]').addEventListener('click', start);
+    document.addEventListener('click', e => { if (e.target.closest('[data-retry]')) { window.gnosiaState('intro'); } });
+    document.addEventListener('keydown', e => { if (/^[1-4a-dA-D]$/.test(e.key) && document.body.dataset.state === 'play') { const j = '1234'.includes(e.key) ? +e.key - 1 : 'abcd'.indexOf(e.key.toLowerCase()); $$('[data-choices] .choice')[j]?.click(); } });
+    document.addEventListener('gnosia:state', e => { if (e.detail === 'play' && !$('[data-choices]').children.length) { k = 3; score = 780; combo = 3; right = 3; answers = [true, true, true]; $('[data-score]').textContent = score; $('[data-combo]').hidden = false; $('[data-combo-n]').textContent = 3; render(); } });
+    const st = new URLSearchParams(location.search).get('state');
+    if (st === 'pass' || st === 'fail') results(st);
+    if (st === 'play') { k = 3; score = 780; combo = 3; right = 3; answers = [true, true, true]; $('[data-score]').textContent = score; $('[data-combo]').hidden = false; $('[data-combo-n]').textContent = 3; render(); }
+  });
+  // Mock state buttons for results
+  document.addEventListener('click', e => { const b = e.target.closest('[data-page-state]'); if (b && (b.dataset.pageState === 'pass' || b.dataset.pageState === 'fail')) setTimeout(() => results(b.dataset.pageState), 0); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentor · Ringkasan kelas · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .kpi { padding: 18px 20px; border-radius: 18px; background: var(--surface); border: 1px solid var(--border); }
+  .kpi .stat-value { font-size: 40px; }
+  .kpi.is-warn { background: var(--uji-soft); border-color: var(--uji-line); }
+  .kpi.is-warn .stat-value { color: var(--uji-ink); }
+  .attn { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 20px; border-radius: 18px; background: var(--surface); border: 1px solid var(--border); transition: border-color var(--dur-200), transform var(--dur-320) var(--spring-gentle); }
+  .attn:hover { border-color: var(--border-strong); transform: translateX(3px); }
+  .attn .why { font-size: 15px; font-weight: 500; }
+  .attn .meta { font-size: 12px; color: var(--text-faint); margin-top: 4px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .funnel { display: flex; height: 56px; border-radius: 14px; overflow: hidden; margin-top: 16px; }
+  .funnel > div { display: flex; flex-direction: column; justify-content: center; padding: 0 12px; color: #fff; font-size: 12px; font-weight: 600; min-width: 0; transition: flex-grow var(--dur-600) var(--spring-gentle); }
+  :root[data-theme="ink"] .funnel > div { color: #16171B; }
+  .funnel > div b { font-family: var(--font-serif); font-weight: 400; font-size: 22px; line-height: 1; }
+  .hard { display: grid; grid-template-columns: 1fr 140px 44px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--divider); font-size: 14px; }
+  .two { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+  @media (max-width: 1000px) { .kpis { grid-template-columns: 1fr 1fr; } .two { grid-template-columns: 1fr; } .attn { grid-template-columns: 44px 1fr; } .attn > .row { grid-column: 1 / -1; } }
+</style>
+</head>
+<body>
+<header data-nav="mentor" data-active="mentor"></header>
+<main class="page page-wide">
+  <div class="page-head">
+    <div><div class="eyebrow">Mentor · Dimas Rahardjo</div><h1 class="big-serif mt-2" style="font-size:44px">Kelas <em>XII RPL</em></h1><p class="t-muted mt-2">32 siswa · JavaScript Dasar · minggu ke-6</p></div>
+    <div class="row gap-2"><select class="select" style="width:180px" aria-label="Kelas"><option>XII RPL</option><option>XI RPL 1</option></select><button class="btn btn-primary btn-lg btn-press"><i data-lucide="clipboard-plus"></i>Beri tugas</button></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><span class="eyebrow">Siswa aktif minggu ini</span><div class="stat-value mt-2"><span data-tick="29">0</span><small>/ 32</small></div></div>
+    <div class="kpi is-warn"><span class="eyebrow" style="color:var(--uji-ink)">Perlu perhatian</span><div class="stat-value mt-2" data-tick="4">0</div></div>
+    <div class="kpi"><span class="eyebrow">Kemungkinan macet</span><div class="stat-value mt-2" data-tick="3">0</div><div class="t-xs t-faint">tidak maju > 3 hari</div></div>
+    <div class="kpi"><span class="eyebrow">Menunggu review</span><div class="stat-value mt-2" data-tick="2">0</div><div class="t-xs t-faint">challenge &amp; proyek</div></div>
+  </div>
+
+  <div class="section-head section"><h2 class="big-serif" style="font-size:28px;margin:0">Perlu perhatian sekarang</h2><span class="t-sm t-faint">diurutkan dari yang paling butuh bantuan</span></div>
+  <div class="stack gap-3">
+    <div class="attn" data-rise="0"><span class="avatar avatar-lg a4">AL</span><div><div class="why">Alex salah <b>4×</b> di Perkuat · Array · soal susun kode</div><div class="meta"><span class="phase-tag" data-phase="perkuat">Perkuat</span><span class="attempts"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span><span>urutan <span class="t-mono">for</span> dan <span class="t-mono">let total</span> tertukar setiap kali</span><span>· 2 jam lalu</span></div></div><div class="row gap-2"><a class="btn btn-secondary btn-press" href="siswa.html">Lihat jawaban</a><button class="btn btn-primary btn-press" data-toast="accent|send|Pesan terkirim ke Alex|Termasuk tautan ke scene Pahami: urutan baris">Kirim bantuan</button></div></div>
+    <div class="attn" data-rise="1"><span class="avatar avatar-lg a3">RS</span><div><div class="why">Rizky gagal gerbang <b>Kuis</b> Variabel dua kali (60%, 50%)</div><div class="meta"><span class="phase-tag" data-phase="kuis">Kuis</span><span>soal “salinan nilai” selalu salah</span><span>· kemarin</span></div></div><div class="row gap-2"><a class="btn btn-secondary btn-press" href="siswa.html">Lihat jawaban</a><button class="btn btn-primary btn-press">Buka Perkuat mini</button></div></div>
+    <div class="attn" data-rise="2"><span class="avatar avatar-lg a5">MP</span><div><div class="why">Maya membuka semua petunjuk dalam &lt; 30 detik di 3 soal terakhir</div><div class="meta"><span class="phase-tag" data-phase="perkuat">Perkuat</span><span>pola: melompat ke petunjuk</span><span>· hari ini</span></div></div><div class="row gap-2"><a class="btn btn-secondary btn-press" href="siswa.html">Lihat pola</a><button class="btn btn-primary btn-press">Batasi petunjuk ke L3</button></div></div>
+    <div class="attn" data-rise="3"><span class="avatar avatar-lg">BY</span><div><div class="why">Bayu tidak maju dari <b>Pahami · scene 4</b> selama 5 hari</div><div class="meta"><span class="phase-tag" data-phase="pahami">Pahami</span><span>terakhir aktif Senin</span></div></div><div class="row gap-2"><button class="btn btn-secondary btn-press">Kirim pengingat</button></div></div>
+  </div>
+
+  <div class="two mt-12">
+    <section class="card card-pad">
+      <div class="row between"><h2 class="t-h3">Posisi kelas · Bab 2 Variabel</h2><span class="t-xs t-faint">32 siswa</span></div>
+      <div class="funnel" role="img" aria-label="Pahami 5, Perkuat 14, Kuis 8, Uji 5">
+        <div style="flex-grow:5;background:var(--pahami-fill)"><b>5</b>Pahami</div>
+        <div style="flex-grow:14;background:var(--perkuat-fill)"><b>14</b>Perkuat</div>
+        <div style="flex-grow:8;background:var(--kuis-fill)"><b>8</b>Kuis</div>
+        <div style="flex-grow:5;background:var(--uji-fill)"><b>5</b>Uji</div>
+      </div>
+      <div class="callout callout-warning mt-4"><i data-lucide="triangle-alert"></i><div class="t-sm"><b>Penumpukan di Perkuat.</b> 14 siswa ada di sini, rata-rata 2,6 hari. Soal “temukan bug const” paling sering salah (58%).</div></div>
+    </section>
+    <section class="card card-pad">
+      <h2 class="t-h3">Konsep tersulit minggu ini</h2>
+      <div class="mt-3">
+        <div class="hard"><span>Salinan nilai (<span class="t-mono">let b = a</span>)</span><div class="progress is-danger"><span style="--value:58%"></span></div><span class="t-mono t-xs">58%</span></div>
+        <div class="hard"><span>const vs let</span><div class="progress is-warning"><span style="--value:41%"></span></div><span class="t-mono t-xs">41%</span></div>
+        <div class="hard"><span><span class="t-mono">=</span> vs <span class="t-mono">===</span></span><div class="progress is-warning"><span style="--value:33%"></span></div><span class="t-mono t-xs">33%</span></div>
+        <div class="hard"><span>Penamaan valid</span><div class="progress"><span style="--value:12%"></span></div><span class="t-mono t-xs">12%</span></div>
+      </div>
+      <p class="t-xs t-faint mt-2">% jawaban salah di percobaan pertama, dari Perkuat, Kuis, dan Uji.</p>
+    </section>
+  </div>
+
+  <section class="card mt-6" id="students" style="overflow:hidden">
+    <div class="p-5 row between wrap gap-3"><h2 class="t-h3">Semua siswa</h2><div class="row gap-2"><div class="input-group" style="width:240px"><i data-lucide="search"></i><input placeholder="Cari siswa"></div><div class="row gap-1" data-single><button class="chip" aria-pressed="true">Semua</button><button class="chip" aria-pressed="false">Macet</button><button class="chip" aria-pressed="false">Review</button></div></div></div>
+    <div style="overflow-x:auto"><table class="table">
+      <thead><tr><th>Siswa</th><th>Bab</th><th>Fase</th><th>Penguasaan</th><th>Aktivitas</th><th>Sinyal</th></tr></thead>
+      <tbody>
+        <tr><td><a class="row" href="siswa.html"><span class="avatar avatar-sm a4">AL</span>Alex Lim</a></td><td>4 · Array</td><td><span class="phase-tag" data-phase="perkuat">Perkuat 2/8</span></td><td><span class="mastery is-weak" data-tier="2"><i></i><i></i><i></i><i></i><i></i></span></td><td class="t-sm t-muted">2 jam lalu</td><td><span class="badge badge-danger">salah 4×</span></td></tr>
+        <tr><td><a class="row" href="siswa.html"><span class="avatar avatar-sm">NA</span>Nadia Azzahra</a></td><td>2 · Variabel</td><td><span class="phase-tag" data-phase="perkuat">Perkuat 3/8</span></td><td><span class="mastery" data-tier="3"><i></i><i></i><i></i><i></i><i></i></span></td><td class="t-sm t-muted">12 menit lalu</td><td><span class="badge badge-success">streak 12</span></td></tr>
+        <tr><td><a class="row" href="siswa.html"><span class="avatar avatar-sm a3">RS</span>Rizky Saputra</a></td><td>2 · Variabel</td><td><span class="phase-tag" data-phase="kuis">Kuis · gagal 2×</span></td><td><span class="mastery is-weak" data-tier="2"><i></i><i></i><i></i><i></i><i></i></span></td><td class="t-sm t-muted">kemarin</td><td><span class="badge badge-warning">gerbang</span></td></tr>
+        <tr><td><a class="row" href="siswa.html"><span class="avatar avatar-sm a2">SP</span>Salsa Putri</a></td><td>3 · Tipe Data</td><td><span class="phase-tag" data-phase="uji">Uji · challenge</span></td><td><span class="mastery" data-tier="4"><i></i><i></i><i></i><i></i><i></i></span></td><td class="t-sm t-muted">1 jam lalu</td><td><span class="badge badge-accent">minta review</span></td></tr>
+        <tr><td><a class="row" href="siswa.html"><span class="avatar avatar-sm a5">BY</span>Bayu Yudha</a></td><td>2 · Variabel</td><td><span class="phase-tag" data-phase="pahami">Pahami 4/7</span></td><td><span class="mastery" data-tier="1"><i></i><i></i><i></i><i></i><i></i></span></td><td class="t-sm t-muted">5 hari lalu</td><td><span class="badge">tidak aktif</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+</main>
+<script src="vendor/lucide.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>document.addEventListener('gnosia:ready', () => document.querySelectorAll('[data-tick]').forEach(el => G.ticker(el, +el.dataset.tick, { from: 0, dur: 1000 })));</script>
+</body>
+</html>

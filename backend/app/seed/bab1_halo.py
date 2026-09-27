@@ -1,0 +1,195 @@
+"""Bab 1 · Halo, JavaScript — console.log, komentar, urutan perintah.
+
+Written in the same format and tone as Bab 2 (the design mockups only cover Bab 2).
+"""
+from .bab2_variabel import ic, mono
+
+SCENES = [
+    {
+        "id": "s1", "kicker": "",
+        "title": "Program adalah <em>daftar perintah</em> untuk komputer.",
+        "lead": "Komputer tidak menebak. Ia menjalankan perintah yang kamu tulis, satu per satu, dari atas ke bawah. Perintah pertamamu: menampilkan tulisan.",
+        "visual": {
+            "type": "intro", "side": {"kind": "bubble", "text": "Halo, dunia!"},
+            "objectives_label": "Setelah bagian ini kamu bisa",
+            "objectives": [f"Menampilkan tulisan dan angka dengan {ic('console.log')}", "Menulis komentar yang tidak dijalankan",
+                           "Membaca urutan perintah dari atas ke bawah"],
+        },
+        "advance": "free", "concepts": ["consolelog"],
+    },
+    {
+        "id": "s2", "kicker": "Perintah pertama", "title": "Satu baris, satu perintah.",
+        "say": "Ketuk tiap bagian kode untuk melihat apa tugasnya. Perhatikan layar output di kanan.",
+        "visual": {
+            "type": "tokens",
+            "tokens": [
+                {"text": "console", "cls": "p", "key": "console", "explain": "Kotak alat bawaan untuk <b>menampilkan</b> sesuatu ke layar output.", "effect": "pop"},
+                {"text": ".", "cls": "pn", "key": "dot", "explain": f"Titik artinya “ambil alat di dalamnya”. {mono('console.log')} = alat <b>log</b> milik console.", "effect": "none"},
+                {"text": "log", "cls": "f", "key": "log", "explain": "Perintahnya: <b>tampilkan</b> apa pun yang ada di dalam kurung.", "effect": "tag"},
+                {"text": '("Halo")', "cls": "s", "key": "arg", "explain": "Isi yang ditampilkan. Teks ditulis di antara tanda kutip.", "effect": "fly"},
+            ],
+            "suffix": ";", "target": {"kind": "output", "tag": "output", "val": "Halo", "type": "layar output"},
+            "start": "Mulai dari <b>console</b>.",
+        },
+        "advance": "all_tokens", "concepts": ["consolelog"],
+    },
+    {
+        "id": "s3", "kicker": "Angka juga bisa", "title": "Komputer juga <em>menghitung</em>.",
+        "say": "Tanpa tanda kutip, angka dihitung dulu baru ditampilkan. <b>Geser angka bergaris titik</b> ke kiri atau kanan.",
+        "visual": {
+            "type": "livecode", "file": "hitung.js", "status": "live",
+            "lines": ["console.log(2 + {{knob}});", 'console.log("2 + {{knob}}");'], "lit": [1],
+            "knob": {"min": 0, "max": 50, "step": 1, "value": 3, "label": "angka kedua"},
+            "outputs": ["{{2 + v}}", "2 + {{v}}"],
+            "note": "Baris 1 menghitung. Baris 2 memakai tanda kutip, jadi ditampilkan apa adanya.",
+        },
+        "advance": "free", "concepts": ["consolelog"],
+    },
+    {
+        "id": "s4", "kicker": "Komentar", "title": f"Tulisan setelah {ic('//')} tidak dijalankan.",
+        "say": "Komentar adalah catatan untuk manusia. Komputer melewatinya.",
+        "visual": {
+            "type": "cards",
+            "cards": [
+                {"label": "Dijalankan", "code": 'console.log("Hai");', "tone": "ok", "note": f"Menampilkan {mono('Hai')}."},
+                {"label": "Dilewati", "code": '// console.log("Hai");', "tone": "muted", "note": f"Diawali {mono('//')}, jadi hanya catatan."},
+                {"label": "Error", "code": "console.log(Hai);", "tone": "bad", "note": f"Tanpa kutip, {mono('Hai')} dianggap nama yang belum dibuat."},
+            ],
+        },
+        "reveals": [{"q": f"Cek cepat: berapa baris yang tampil dari {ic('// satu')} lalu {ic('console.log(&quot;dua&quot;)')}?",
+                     "a": f"<b>Satu baris</b>, yaitu {mono('dua')}. Baris pertama hanya komentar."}],
+        "advance": "free", "concepts": ["komentar"],
+    },
+    {
+        "id": "s5", "kicker": "Urutan", "title": "Perintah dijalankan <em>dari atas</em>.",
+        "say": "Output muncul dalam urutan yang sama dengan kodenya. Ubah urutan kode, urutan output ikut berubah.",
+        "visual": {"type": "code", "file": "urutan.js", "lines": ['console.log("Satu");', 'console.log("Dua");', 'console.log("Tiga");'],
+                   "outputs": ["Satu", "Dua", "Tiga"]},
+        "reveals": [{"q": "Kalau baris 3 dipindah ke paling atas, apa yang tampil pertama?",
+                     "a": f"{mono('Tiga')}. Komputer selalu mulai dari baris paling atas."}],
+        "advance": "free", "concepts": ["urutan"],
+    },
+    {
+        "id": "s6", "kicker": "Ringkasan", "title": "Yang perlu kamu ingat.",
+        "visual": {
+            "type": "summary",
+            "cards": [
+                {"icon": "terminal", "title": f"{mono('console.log')} menampilkan", "body": "Isi di dalam kurung muncul di output."},
+                {"icon": "quote", "title": "Teks pakai kutip", "body": f"{mono('&quot;Halo&quot;')} tampil apa adanya."},
+                {"icon": "calculator", "title": "Angka dihitung", "body": f"{mono('2 + 3')} menampilkan 5."},
+                {"icon": "message-square", "title": f"{mono('//')} komentar", "body": "Catatan untuk manusia, dilewati komputer."},
+            ],
+            "callout": {"icon": "arrow-right-circle", "html": "<b>Berikutnya: Perkuat.</b> 7 latihan pendek. Salah itu wajar, dan soal akan menyesuaikan."},
+        },
+        "advance": "free", "concepts": [],
+    },
+]
+
+ITEMS = [
+    {"id": "b1", "type": "choice", "label": "Tampilkan Halo", "title": "Baris mana yang menampilkan tulisan <b>Halo</b>?",
+     "choices": ['console.log("Halo");', 'console("Halo");', 'log.console("Halo");', "console.log(Halo);"], "answer": 0,
+     "hints": {"l3": f"Alatnya {mono('console')}, perintahnya {mono('log')}, dan teks butuh tanda kutip.",
+               "l4": "Coret pilihan yang urutannya terbalik atau tidak memakai kutip.", "l5": f"Contoh: {mono('console.log(&quot;Pagi&quot;);')}"},
+     "l6": f"Jawabannya {mono('console.log(&quot;Halo&quot;);')}.",
+     "explain": f"{mono('console.log')} + teks di dalam kutip. Tanpa kutip, Halo dianggap nama variabel.", "concepts": ["consolelog"]},
+    {"id": "b2", "type": "predict", "label": "Tebak 4 + 6", "title": "Apa yang dicetak?", "code": "console.log(4 + 6);",
+     "choices": ["4 + 6", "10", "46", '"10"'], "cols": 2, "answer": 1,
+     "hints": {"l3": "Tidak ada tanda kutip, jadi angkanya <b>dihitung</b> dulu.", "l4": "4 + 6 = ?"},
+     "l6": "Jawabannya 10.", "explain": "Tanpa kutip, 4 + 6 dihitung jadi 10.", "concepts": ["consolelog"]},
+    {"id": "b3", "type": "fill", "label": "Lengkapi console.log", "title": "Lengkapi supaya program menampilkan <b>Selamat pagi</b>.",
+     "help": "Seret potongan ke kotak kosong, atau ketuk potongan untuk mengisi kotak berikutnya.",
+     "code": '{{slot}}.{{slot}}("Selamat pagi");',
+     "tray": [{"val": "console", "label": "console"}, {"val": "print", "label": "print"}, {"val": "log", "label": "log"},
+              {"val": "Console", "label": "Console"}, {"val": "show", "label": "show"}],
+     "answer": ["console", "log"],
+     "hints": {"l3": "Nama alatnya ditulis huruf kecil semua.", "l4": f"Pola: {mono('alat.perintah(isi)')}."},
+     "l6": f"{mono('console.log(&quot;Selamat pagi&quot;);')}", "explain": f"{mono('console')} lalu {mono('log')}. Huruf besar-kecil berpengaruh.",
+     "concepts": ["consolelog"]},
+    {"id": "b4", "type": "parsons", "label": "Susun Satu Dua Tiga", "title": "Susun supaya output-nya: Satu, Dua, Tiga.",
+     "help": "Seret baris naik atau turun. Pakai keyboard: fokus, lalu <kbd>Alt</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd>.",
+     "lines": [{"id": "3", "code": 'console.log("Tiga");'}, {"id": "1", "code": 'console.log("Satu");'}, {"id": "2", "code": 'console.log("Dua");'}],
+     "answer": ["1", "2", "3"], "hints": {"l3": "Baris paling atas dijalankan <b>pertama</b>."},
+     "explain": "Output mengikuti urutan baris dari atas.", "concepts": ["urutan"]},
+    {"id": "b5", "type": "bug", "label": "temukan bug kutip", "title": "Program ini error. Ketuk baris penyebabnya.",
+     "lines": ["// sapa pengunjung", 'console.log("Halo");', "console.log(Selamat datang);"],
+     "error": "SyntaxError: missing ) after argument list", "answer": 3, "similar_id": "b5b",
+     "hints": {"l3": "Teks harus diapit tanda kutip. Baris mana yang lupa?", "l4": "Baris komentar tidak pernah dijalankan, jadi tidak mungkin error."},
+     "l6": f"Baris 3. Perbaikannya: {mono('console.log(&quot;Selamat datang&quot;);')}",
+     "explain": "Baris 3 lupa tanda kutip, jadi JavaScript bingung membaca dua kata itu.", "concepts": ["consolelog"]},
+    {"id": "b5b", "type": "bug", "adaptive": True, "label": "temukan bug (serupa)", "title": "Satu lagi yang mirip. Baris mana yang error?",
+     "lines": ['console.log("Pagi");', "console.log(Siang);", "// console.log(Malam);"], "error": "ReferenceError: Siang is not defined", "answer": 2,
+     "hints": {"l3": "Cari teks yang tidak diapit kutip. Komentar tidak dihitung."},
+     "explain": f"Baris 2: {mono('Siang')} tanpa kutip dianggap nama variabel. Baris 3 hanya komentar.", "concepts": ["consolelog", "komentar"]},
+    {"id": "b6", "type": "match", "label": "Pasangkan hasil", "title": "Pasangkan kode dengan hasilnya.",
+     "left": [{"key": "a", "text": 'console.log("2 + 2")'}, {"key": "b", "text": "console.log(2 + 2)"},
+              {"key": "c", "text": "// console.log(2)"}, {"key": "d", "text": 'console.log("Hai")'}],
+     "right": [{"key": "b", "text": "4"}, {"key": "d", "text": "Hai"}, {"key": "a", "text": "2 + 2"}, {"key": "c", "text": "(tidak tampil apa-apa)"}],
+     "left_code": True, "hints": {"l3": "Kutip = apa adanya. Tanpa kutip = dihitung. // = dilewati."},
+     "explain": "Semua pasangan tepat.", "concepts": ["consolelog", "komentar"]},
+    {"id": "b7", "type": "choice", "label": "Fungsi //", "title": f"Apa fungsi {ic('//')} di awal baris?",
+     "choices": ["Menjalankan baris dua kali", "Membuat baris jadi komentar", "Membagi angka", "Menampilkan garis miring"], "answer": 1,
+     "hints": {"l3": "Ingat kartu “Dilewati” di Pahami."}, "explain": "Semua setelah // pada baris itu adalah komentar.", "concepts": ["komentar"]},
+]
+
+BANK = [
+    {"id": "h1", "t": "Perintah untuk menampilkan sesuatu ke output?", "o": ["print()", "console.log()", "show()", "echo"], "a": 1, "e": f"Di JavaScript: {mono('console.log()')}.", "concepts": ["consolelog"]},
+    {"id": "h2", "t": "Apa yang dicetak?", "c": "console.log(3 + 4);", "o": ["3 + 4", "7", "34", '"7"'], "a": 1, "e": "Tanpa kutip, dihitung: 7.", "concepts": ["consolelog"]},
+    {"id": "h3", "t": "Apa yang dicetak?", "c": 'console.log("3 + 4");', "o": ["7", "3 + 4", '"3 + 4"', "error"], "a": 1, "e": "Di dalam kutip, ditampilkan apa adanya (tanpa kutipnya).", "concepts": ["consolelog"]},
+    {"id": "h4", "t": "Baris mana yang <b>tidak</b> dijalankan?", "o": ["console.log(1);", "// console.log(2);", 'console.log("//");', "console.log(3); // tiga"], "a": 1, "e": "Baris yang diawali // seluruhnya komentar.", "concepts": ["komentar"]},
+    {"id": "h5", "t": "Urutan output dari kode ini?", "c": 'console.log("B");\nconsole.log("A");', "o": ["A lalu B", "B lalu A", "AB", "hanya A"], "a": 1, "e": "Dari atas ke bawah: B dulu, lalu A.", "concepts": ["urutan"]},
+    {"id": "h6", "t": "JavaScript pertama kali muncul di browser bernama…", "trivia": True, "o": ["Netscape Navigator", "Chrome", "Firefox", "Safari"], "a": 0, "e": "Tahun 1995, di Netscape Navigator.", "concepts": []},
+    {"id": "h7", "t": "Tanda untuk mengapit teks adalah…", "o": ["kurung ( )", 'kutip " "', "kurawal { }", "titik koma ;"], "a": 1, "e": "Teks (string) diapit tanda kutip.", "concepts": ["consolelog"]},
+    {"id": "h8", "t": "Apa yang dicetak?", "c": "console.log(10 - 2 * 3);", "o": ["24", "4", "10 - 6", "8"], "a": 1, "e": "Kali dulu: 2 × 3 = 6, lalu 10 − 6 = 4.", "concepts": ["consolelog"]},
+    {"id": "h9", "t": "Kenapa kode ini error?", "c": "console.log(Halo);", "o": ["Kurang titik koma", "Halo tanpa tanda kutip", "console salah ketik", "log harus huruf besar"], "a": 1, "e": "Tanpa kutip, Halo dianggap nama variabel yang belum dibuat.", "concepts": ["consolelog"]},
+    {"id": "h10", "t": "Komentar berguna untuk…", "o": ["mempercepat program", "memberi catatan untuk manusia", "menampilkan output", "menghapus baris"], "a": 1, "e": "Komentar adalah catatan; komputer melewatinya.", "concepts": ["komentar"]},
+    {"id": "h11", "t": "Pencipta JavaScript adalah…", "trivia": True, "o": ["Brendan Eich", "Linus Torvalds", "Guido van Rossum", "Tim Berners-Lee"], "a": 0, "e": "Brendan Eich, saat bekerja di Netscape.", "concepts": []},
+    {"id": "h12", "t": "Berapa baris output?", "c": 'console.log("a");\n// console.log("b");\nconsole.log("c");', "o": ["1", "2", "3", "0"], "a": 1, "e": "Baris tengah komentar, jadi hanya a dan c.", "concepts": ["komentar"]},
+    {"id": "h13", "t": "Apa yang dicetak?", "c": 'console.log("Nilai:", 90);', "o": ["Nilai: 90", "Nilai:90", '"Nilai:", 90', "error"], "a": 0, "e": "Beberapa isi dipisah koma ditampilkan dengan spasi di antaranya.", "concepts": ["consolelog"]},
+    {"id": "h14", "t": "Huruf besar-kecil di JavaScript…", "o": ["tidak berpengaruh", "berpengaruh: Console ≠ console", "hanya berpengaruh di teks", "hanya berpengaruh di angka"], "a": 1, "e": "JavaScript membedakan huruf besar dan kecil.", "concepts": ["consolelog"]},
+    {"id": "h15", "t": "Baris pertama yang dijalankan adalah…", "o": ["baris paling bawah", "baris paling atas", "baris terpanjang", "baris acak"], "a": 1, "e": "Program dibaca dari atas.", "concepts": ["urutan"]},
+    {"id": "h16", "t": "Apa yang dicetak?", "c": "console.log(5);\nconsole.log(5 + 5);", "o": ["5 lalu 10", "10 lalu 5", "5 lalu 5 + 5", "55"], "a": 0, "e": "Berurutan: 5, lalu hasil 5 + 5.", "concepts": ["urutan"]},
+    {"id": "h17", "t": "Mana komentar yang benar di JavaScript?", "o": ["/ catatan", "// catatan", "# catatan", "-- catatan"], "a": 1, "e": "Dua garis miring.", "concepts": ["komentar"]},
+    {"id": "h18", "t": "Apa yang dicetak?", "c": "console.log(2 * 5 + 1);", "o": ["11", "12", "2 * 5 + 1", "16"], "a": 0, "e": "2 × 5 = 10, tambah 1 = 11.", "concepts": ["consolelog"]},
+    {"id": "h19", "t": f"Tanda {ic(';')} di akhir baris disebut…", "trivia": True, "o": ["titik dua", "titik koma", "koma", "kurung"], "a": 1, "e": "Titik koma menandai akhir sebuah perintah.", "concepts": []},
+    {"id": "h20", "t": f"Apa yang terjadi jika {ic('console.log()')} dipanggil tanpa isi?", "o": ["error", "mencetak baris kosong", "mencetak undefined", "program berhenti"], "a": 1, "e": "Tanpa isi, yang tampil hanya baris kosong.", "concepts": ["consolelog"]},
+]
+
+EXAM = [
+    {"id": "v1", "label": "Perintah output", "t": "Perintah untuk menampilkan output?", "type": "choice", "o": ["console.log", "print", "echo", "write"], "pts": 15, "answer": 0, "concepts": ["consolelog"]},
+    {"id": "v2", "label": "Tebak 6 * 2", "t": "Apa yang dicetak?", "code": "console.log(6 * 2);", "type": "choice", "o": ["6 * 2", "12", "62", '"12"'], "pts": 15, "answer": 1, "concepts": ["consolelog"]},
+    {"id": "v3", "label": "Tanda komentar", "t": "Lengkapi agar baris ini menjadi komentar.", "type": "short", "pre": "____ ini catatan", "accept": ["//"], "pts": 15, "concepts": ["komentar"]},
+    {"id": "v4", "label": "Urutan output", "t": "Urutan output?", "code": 'console.log("pagi");\nconsole.log("siang");', "type": "choice", "o": ["siang, pagi", "pagi, siang", "pagisiang", "hanya siang"], "pts": 15, "answer": 1, "concepts": ["urutan"]},
+    {"id": "v5", "label": "Tulis kode: dua baris", "t": "Tulis kode yang menampilkan <b>Halo, GNOSIA</b> lalu angka <b>2025</b> di baris berikutnya.", "type": "code", "pts": 25, "concepts": ["consolelog", "urutan"],
+     "tests": [{"id": "l1", "kind": "stdout_line", "line": 1, "equals": "Halo, GNOSIA", "fail": "baris 1 belum sesuai"},
+               {"id": "l2", "kind": "stdout_line", "line": 2, "equals": "2025", "fail": "baris 2 belum sesuai"}]},
+    {"id": "v6", "label": "Kenapa error", "t": f"Kenapa {ic('console.log(Selamat)')} error?", "type": "choice",
+     "o": ["Kurang titik koma", "Selamat tidak diapit kutip", "console harus huruf besar", "log salah"], "pts": 15, "answer": 1, "concepts": ["consolelog"]},
+]
+
+CHALLENGE = {
+    "title": "Kartu perkenalan", "minutes": 8, "difficulty": "mudah", "filename": "kenalan.js",
+    "art": {"kind": "board", "title": "KARTU KENALAN", "name": "Nosi", "value": "15"},
+    "story": "Kelasmu membuat papan kenalan digital. Setiap siswa menulis program kecil yang menampilkan kartu perkenalan. Kali ini kamu membuatkan kartu untuk Nosi.",
+    "steps": [f"Tampilkan {ic('Halo, aku Nosi')}.", f"Tampilkan umur Nosi dengan <b>menghitung</b> {ic('2025 - 2010')}, bukan mengetik 15.",
+              "Pastikan output persis 2 baris."],
+    "starter": "// Kartu perkenalan Nosi\n// 1. Tampilkan: Halo, aku Nosi\n// 2. Tampilkan hasil hitungan 2025 - 2010\n\n",
+    "tests": [
+        {"id": "t1", "name": f"Baris 1: {mono('Halo, aku Nosi')}", "kind": "stdout_line", "line": 1, "equals": "Halo, aku Nosi", "fail": 'baris 1: "${__logs[0]}"', "hidden": False, "weight": 1},
+        {"id": "t2", "name": "Umur dihitung, bukan diketik", "kind": "source_regex", "pattern": r"2025\s*-\s*2010", "fail": "tidak ada hitungan 2025 - 2010", "hidden": False, "weight": 1},
+        {"id": "t3", "name": "Baris 2 adalah 15", "kind": "stdout_line", "line": 2, "equals": "15", "fail": 'baris 2: "${__logs[1]}"', "hidden": False, "weight": 1},
+        {"id": "t4", "name": "Output persis 2 baris", "kind": "stdout_count", "equals": 2, "fail": "ada ${__logs.length} baris output", "hidden": True, "weight": 1},
+    ],
+    "assist": "L1", "related_scene": "s3", "concepts": ["consolelog"],
+}
+
+CONTENT = {
+    "minutes": {"pahami": 5, "perkuat": 7, "kuis": 4, "uji": 8},
+    "concepts": ["consolelog", "komentar", "urutan"],
+    "cheatsheet": 'console.log("Halo");   // tampilkan teks\nconsole.log(2 + 3);    // tampilkan 5\n// komentar: dilewati komputer',
+    "pahami": {"scenes": SCENES},
+    "perkuat": {"items": ITEMS},
+    "kuis": {"round_size": 10, "seconds": 20, "pass_pct": 70, "combo_max": 3, "bank": BANK},
+    "ulangan": {"minutes": 20, "pass_mark": 75, "questions": EXAM},
+    "challenge": CHALLENGE,
+    "uji_mode": "any",
+}

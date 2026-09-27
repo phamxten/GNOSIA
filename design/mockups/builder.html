@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Builder · Bab 2 Variabel · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .b-top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px; height: 60px; padding: 0 24px; border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 92%, transparent); }
+  .b-grid { display: grid; grid-template-columns: 280px minmax(0, 1fr) 380px; min-height: calc(100vh - 60px); }
+  .b-outline { border-right: 1px solid var(--border); padding: 16px; overflow-y: auto; }
+  .b-edit { padding: 24px 28px 80px; overflow-y: auto; }
+  .b-prev { border-left: 1px solid var(--border); background: var(--surface-sunken); padding: 20px; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
+  .o-phase { margin-top: 14px; }
+  .o-phase > .o-head { display: flex; align-items: center; gap: 8px; padding: 6px 8px; font-size: 13px; font-weight: 600; color: var(--ph-ink); }
+  .o-phase > .o-head .dot { background: var(--ph-fill); }
+  .o-item { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px 0 24px; border-radius: 8px; font-size: 13px; color: var(--text-muted); cursor: pointer; }
+  .o-item:hover { background: var(--surface-hover); color: var(--text); }
+  .o-item.is-sel { background: var(--surface); color: var(--text); box-shadow: inset 0 0 0 1px var(--ph-line), inset 3px 0 0 var(--ph-fill); font-weight: 500; }
+  .o-item .handle { margin-left: -18px; opacity: 0; } .o-item:hover .handle { opacity: 1; }
+  .o-item .ty { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); }
+  .step { display: grid; grid-template-columns: 22px 30px minmax(0, 1fr) 130px 32px; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 8px; }
+  .step .sn { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--pahami-soft); color: var(--pahami-ink); font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+  .types { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .types button { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--surface); font-size: 12px; text-align: left; transition: all var(--dur-200) var(--spring-bouncy); }
+  .types button svg.lucide { width: 18px; height: 18px; color: var(--perkuat-ink); }
+  .types button[aria-pressed="true"] { border-color: var(--perkuat-fill); background: var(--perkuat-soft); }
+  .pl-row { display: grid; grid-template-columns: 22px 28px minmax(0, 1fr) 90px; gap: 10px; align-items: center; margin-bottom: 6px; }
+  .pl-row .input { font-family: var(--font-mono); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .b-sec { margin-top: 26px; }
+  .b-sec > .eyebrow { display: block; margin-bottom: 10px; }
+  .prev-frame { border-radius: 20px; border: 1px solid var(--border); background: var(--bg); overflow: hidden; }
+  .prev-frame .pbar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 12px; }
+  .prev-frame .pbar i { height: 5px; border-radius: 3px; background: var(--viz-track); }
+  .prev-frame .pscene { margin: 0 12px 12px; padding: 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+  .tc-table td .input { height: 30px; font-family: var(--font-mono); font-size: 12px; }
+  @media (max-width: 1280px) { .b-grid { grid-template-columns: 240px minmax(0, 1fr); } .b-prev { display: none; } }
+  @media (max-width: 860px) { .b-grid { grid-template-columns: 1fr; } .b-outline { display: none; } .types { grid-template-columns: 1fr 1fr; } .form-grid { grid-template-columns: 1fr; } .step { grid-template-columns: 30px 1fr; } .step > :nth-child(1), .step > :nth-child(4), .step > :nth-child(5) { display: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-admin-sidebar data-active="builder"></aside>
+  <main class="main">
+    <div class="b-top">
+      <div class="crumbs t-sm t-muted"><a href="admin.html">Konten</a> / JavaScript Dasar / <b style="color:var(--text)">Bab 2 · Variabel</b></div>
+      <span class="badge badge-success">Terbit · v3</span><span class="save-state"><i data-lucide="cloud-check" class="i-14"></i>Draft v4 tersimpan</span>
+      <div class="grow"></div>
+      <a class="btn btn-secondary btn-press" href="pahami.html" target="_blank"><i data-lucide="eye"></i><span class="hide-sm">Pratinjau sebagai siswa</span></a>
+      <button class="btn btn-primary btn-press" data-publish><i data-lucide="upload"></i>Terbitkan v4</button>
+    </div>
+    <div class="b-grid">
+      <!-- OUTLINE -->
+      <nav class="b-outline" aria-label="Struktur bab">
+        <div class="eyebrow">Struktur bab</div>
+        <div class="o-phase" data-phase="pahami"><div class="o-head"><span class="dot"></span>1 · Pahami<span class="t-xs t-faint" style="margin-left:auto;font-weight:400">7 scene</span></div>
+          <div class="o-item" data-go="scene"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span>Pengantar<span class="ty">scene</span></div>
+          <div class="o-item is-sel" data-go="scene"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span>Satu baris, empat bagian<span class="ty">scene</span></div>
+          <div class="o-item" data-go="scene"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span>Mengubah isi<span class="ty">kode hidup</span></div>
+          <div class="o-item" data-go="scene"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span>let dan const<span class="ty">scene</span></div>
+          <div class="o-item" data-go="scene" style="color:var(--text-faint)"><i data-lucide="plus" class="i-14"></i>Tambah scene</div>
+        </div>
+        <div class="o-phase" data-phase="perkuat"><div class="o-head"><span class="dot"></span>2 · Perkuat<span class="t-xs t-faint" style="margin-left:auto;font-weight:400">8 + 3 serupa</span></div>
+          <div class="o-item" data-go="soal">Pilih: let untuk skor<span class="ty">pilih</span></div>
+          <div class="o-item" data-go="soal">Lengkapi umur<span class="ty">isi</span></div>
+          <div class="o-item" data-go="soal">Susun total belanja<span class="ty">susun</span></div>
+          <div class="o-item" data-go="soal"><i data-lucide="triangle-alert" class="i-14" style="color:var(--uji-ink)"></i>Temukan bug const<span class="ty">bug</span></div>
+        </div>
+        <div class="o-phase" data-phase="kuis"><div class="o-head"><span class="dot"></span>3 · Kuis<span class="t-xs t-faint" style="margin-left:auto;font-weight:400">bank 24</span></div>
+          <div class="o-item" data-go="kuis">Bank soal · 10 per ronde<span class="ty">kuis</span></div></div>
+        <div class="o-phase" data-phase="uji"><div class="o-head"><span class="dot"></span>4 · Uji</div>
+          <div class="o-item" data-go="challenge">Challenge · Papan Skor<span class="ty">kode</span></div>
+          <div class="o-item" data-go="challenge">Ulangan · 8 soal<span class="ty">ujian</span></div></div>
+      </nav>
+
+      <!-- EDITOR -->
+      <section class="b-edit">
+        <!-- SCENE EDITOR -->
+        <div data-show-in="scene">
+          <div class="row gap-2"><span class="phase-tag" data-phase="pahami">Pahami · scene 2</span><span class="t-xs t-faint">avg 58 detik · 3% berhenti di sini</span></div>
+          <input class="input input-lg mt-3" style="font-family:var(--font-serif);font-size:26px;height:54px" value="Satu baris, empat bagian." aria-label="Judul scene">
+          <div class="b-sec"><span class="eyebrow">Narasi</span><textarea class="textarea" style="min-height:70px">Ketuk tiap bagian kode untuk melihat apa tugasnya. Perhatikan kotak di kanan.</textarea></div>
+          <div class="b-sec"><span class="eyebrow">Visual</span>
+            <div class="types" data-single>
+              <button aria-pressed="true"><i data-lucide="box" style="color:var(--pahami-ink)"></i><b>Kotak variabel</b></button><button aria-pressed="false"><i data-lucide="layout-list" style="color:var(--pahami-ink)"></i><b>Rak array</b></button><button aria-pressed="false"><i data-lucide="code-xml" style="color:var(--pahami-ink)"></i><b>Kode hidup</b></button><button aria-pressed="false"><i data-lucide="layers" style="color:var(--pahami-ink)"></i><b>Tumpukan panggilan</b></button>
+            </div>
+          </div>
+          <div class="b-sec"><span class="eyebrow">Kode yang dijelaskan · token bisa diklik</span><input class="input" style="font-family:var(--font-mono)" value="let skor = 10;"></div>
+          <div class="b-sec"><div class="row between"><span class="eyebrow" style="margin:0">Langkah animasi</span><button class="btn btn-ghost btn-sm" data-add-step><i data-lucide="plus"></i>Langkah</button></div>
+            <div class="mt-2" data-steps>
+              <div class="step"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span><span class="sn">1</span><input class="input" value="Klik token let → kotak kosong muncul (pop)"><select class="select"><option>saat klik token</option><option>otomatis</option></select><button class="btn btn-ghost btn-icon btn-sm" aria-label="Putar langkah" data-play-step="1"><i data-lucide="play"></i></button></div>
+              <div class="step"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span><span class="sn">2</span><input class="input" value="Klik skor → label “skor” menempel"><select class="select"><option>saat klik token</option></select><button class="btn btn-ghost btn-icon btn-sm" aria-label="Putar langkah" data-play-step="2"><i data-lucide="play"></i></button></div>
+              <div class="step"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span><span class="sn">3</span><input class="input" value="Klik 10 → nilai terbang masuk ke kotak"><select class="select"><option>saat klik token</option></select><button class="btn btn-ghost btn-icon btn-sm" aria-label="Putar langkah" data-play-step="3"><i data-lucide="play"></i></button></div>
+            </div></div>
+          <div class="b-sec form-grid"><div class="field"><label class="field-label">Syarat lanjut</label><select class="select"><option>Semua token sudah diklik</option><option>Bebas</option></select></div><div class="field"><label class="field-label">Cek cepat (opsional)</label><select class="select"><option>Tidak ada</option><option>Tap untuk buka</option></select></div></div>
+        </div>
+
+        <!-- PERKUAT QUESTION EDITOR -->
+        <div data-show-in="soal" hidden>
+          <div class="row gap-2"><span class="phase-tag" data-phase="perkuat">Perkuat · soal 5</span><span class="badge badge-danger">58% salah di percobaan 1</span></div>
+          <div class="b-sec"><span class="eyebrow">Tipe soal</span>
+            <div class="types" data-single>
+              <button aria-pressed="false"><i data-lucide="list"></i><b>Pilih</b></button><button aria-pressed="false"><i data-lucide="puzzle"></i><b>Lengkapi</b></button><button aria-pressed="false"><i data-lucide="terminal"></i><b>Tebak output</b></button><button aria-pressed="false"><i data-lucide="arrow-down-up"></i><b>Susun baris</b></button>
+              <button aria-pressed="true"><i data-lucide="bug"></i><b>Temukan bug</b></button><button aria-pressed="false"><i data-lucide="sliders-horizontal"></i><b>Atur nilai</b></button><button aria-pressed="false"><i data-lucide="link"></i><b>Pasangkan</b></button><button aria-pressed="false" style="border-style:dashed"><i data-lucide="plus"></i><b>Tipe baru…</b></button>
+            </div></div>
+          <div class="b-sec"><span class="eyebrow">Pertanyaan</span><input class="input input-lg" value="Program ini error. Ketuk baris penyebabnya."></div>
+          <div class="b-sec"><span class="eyebrow">Baris kode · tandai jawaban benar</span>
+            <div class="pl-row"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span><span class="t-mono t-xs t-faint">1</span><input class="input" value="const nyawa = 3;"><label class="check t-xs"><input type="radio" name="bug">bug</label></div>
+            <div class="pl-row"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span><span class="t-mono t-xs t-faint">2</span><input class="input" value="nyawa = nyawa - 1;" style="border-color:var(--perkuat-fill)"><label class="check t-xs"><input type="radio" name="bug" checked>bug</label></div>
+            <div class="pl-row"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span><span class="t-mono t-xs t-faint">3</span><input class="input" value='console.log("Sisa:", nyawa);'><label class="check t-xs"><input type="radio" name="bug">bug</label></div>
+          </div>
+          <div class="b-sec"><span class="eyebrow">Petunjuk bertingkat</span>
+            <div class="stack gap-2"><div class="row gap-2"><span class="badge badge-warning" style="width:36px;justify-content:center">L3</span><input class="input grow" value="Pesan errornya menyebut constant. Di mana isi const diganti?"></div><div class="row gap-2"><span class="badge badge-warning" style="width:36px;justify-content:center">L4</span><input class="input grow" value="Lihat baris yang memakai = setelah deklarasi."></div><div class="row gap-2"><span class="badge badge-warning" style="width:36px;justify-content:center">L5</span><input class="input grow" placeholder="Contoh terkait (opsional)"></div></div></div>
+          <div class="b-sec form-grid"><div class="field"><label class="field-label">Penjelasan setelah benar</label><textarea class="textarea">Baris 2 mengganti isi const. Perbaikannya: let nyawa = 3;</textarea></div><div class="field"><label class="field-label">Jika salah, sisipkan soal serupa</label><select class="select"><option>Temukan bug · kota Bandung</option><option>Tidak</option></select><span class="field-help">Adaptif: dimunculkan sekali, langsung setelah soal ini.</span></div></div>
+          <div class="callout callout-warning mt-6"><i data-lucide="lightbulb"></i><div class="t-sm"><b>Saran dari data:</b> 46% siswa yang salah memilih baris 1. Mungkin mereka mengira bug ada di deklarasi. Pertimbangkan ubah instruksi menjadi “baris yang <i>memicu</i> error”.</div></div>
+        </div>
+
+        <!-- KUIS BANK -->
+        <div data-show-in="kuis" hidden>
+          <div class="row between"><span class="phase-tag" data-phase="kuis">Kuis · bank soal</span><button class="btn btn-secondary btn-sm btn-press"><i data-lucide="plus"></i>Soal</button></div>
+          <div class="b-sec form-grid"><div class="field"><label class="field-label">Soal per ronde</label><input class="input" value="10"></div><div class="field"><label class="field-label">Waktu per soal (detik)</label><input class="input" value="20"></div><div class="field"><label class="field-label">Nilai lulus gerbang</label><input class="input" value="70%"></div><div class="field"><label class="field-label">Combo maksimum</label><select class="select"><option>×3</option><option>×2</option><option>tanpa combo</option></select></div></div>
+          <div class="card mt-6" style="overflow:hidden"><table class="table"><thead><tr><th>Soal</th><th>Tipe</th><th class="t-right">Benar</th><th></th></tr></thead><tbody>
+            <tr><td class="t-sm">Kata kunci untuk nilai tetap?</td><td><span class="badge">konsep</span></td><td class="num">92%</td><td><i data-lucide="pencil" class="i-14 t-faint"></i></td></tr>
+            <tr><td class="t-sm">JavaScript dibuat dalam berapa hari?</td><td><span class="badge badge-warning"><i data-lucide="sparkles"></i>trivia</span></td><td class="num">41%</td><td><i data-lucide="pencil" class="i-14 t-faint"></i></td></tr>
+            <tr><td class="t-sm">Nilai b setelah <span class="t-mono">let b = a; a = 5</span>?</td><td><span class="badge">tebak output</span></td><td class="num t-danger">42%</td><td><i data-lucide="pencil" class="i-14 t-faint"></i></td></tr>
+            <tr><td class="t-sm">typeof null?</td><td><span class="badge">konsep</span></td><td class="num t-danger">9%</td><td><span class="badge badge-danger">tinjau</span></td></tr>
+          </tbody></table></div>
+        </div>
+
+        <!-- CHALLENGE EDITOR -->
+        <div data-show-in="challenge" hidden>
+          <span class="phase-tag" data-phase="uji">Uji · Challenge</span>
+          <div class="b-sec form-grid"><div class="field"><label class="field-label">Judul</label><input class="input" value="Papan skor lomba"></div><div class="field"><label class="field-label">Tingkat</label><div class="segmented"><button aria-pressed="false">Mudah</button><button aria-pressed="true">Sedang</button><button aria-pressed="false">Sulit</button></div></div>
+            <div class="field" style="grid-column:1/-1"><label class="field-label">Cerita &amp; langkah (markdown)</label><textarea class="textarea" style="min-height:90px">Panitia lomba cerdas cermat butuh papan skor sederhana…
+1. Simpan nama tim "Garuda" (tidak akan berubah)</textarea></div>
+            <div class="field"><label class="field-label">Batas waktu</label><select class="select"><option>Tanpa batas</option><option>15 menit</option></select></div><div class="field"><label class="field-label">Nilai lulus</label><input class="input" value="4 / 4 tes"></div>
+            <div class="field"><label class="field-label">Bantuan maksimum</label><select class="select"><option>L1 · penanda baris</option><option>L0 · tanpa bantuan</option></select></div><div class="field"><label class="field-label">Terkait scene</label><select class="select"><option>Pahami · let dan const</option></select></div></div>
+          <div class="b-sec"><span class="eyebrow">Kode awal</span><div class="codecard"><div class="cc-body"><div class="cc-line"><span class="c">// Papan skor lomba</span></div><div class="cc-line"><span class="c">// 1. Simpan nama tim "Garuda" (tidak akan berubah)</span></div></div></div></div>
+          <div class="b-sec"><div class="row between"><span class="eyebrow" style="margin:0">Tes (robot penguji)</span><button class="btn btn-ghost btn-sm"><i data-lucide="plus"></i>Tes</button></div>
+            <div class="card mt-2" style="overflow:hidden"><table class="table tc-table"><thead><tr><th>Nama untuk siswa</th><th>Pemeriksaan</th><th>Tersembunyi</th><th>Bobot</th></tr></thead><tbody>
+              <tr><td><input class="input" value="Nama tim disimpan dengan const"></td><td><input class="input" value="ast: const namaTim"></td><td><label class="switch"><input type="checkbox"></label></td><td class="num">1</td></tr>
+              <tr><td><input class="input" value="Skor disimpan dengan let"></td><td><input class="input" value="ast: let skor"></td><td><label class="switch"><input type="checkbox"></label></td><td class="num">1</td></tr>
+              <tr><td><input class="input" value="Nilai akhir skor adalah 6"></td><td><input class="input" value="expect(skor).toBe(6)"></td><td><label class="switch"><input type="checkbox"></label></td><td class="num">1</td></tr>
+              <tr><td><input class="input" value="Output persis Garuda: 6"></td><td><input class="input" value='stdout.trimEnd() === "Garuda: 6"'></td><td><label class="switch"><input type="checkbox" checked></label></td><td class="num">1</td></tr>
+            </tbody></table></div>
+            <p class="t-xs t-faint mt-2">Tes #4 memakai <span class="t-mono">trimEnd()</span> untuk menangani 12 laporan spasi di akhir baris.</p></div>
+        </div>
+      </section>
+
+      <!-- LIVE PREVIEW -->
+      <aside class="b-prev" aria-label="Pratinjau">
+        <div class="row between"><span class="eyebrow">Pratinjau langsung</span><div class="segmented"><button aria-pressed="true"><i data-lucide="monitor" class="i-14"></i></button><button aria-pressed="false"><i data-lucide="smartphone" class="i-14"></i></button></div></div>
+        <div class="prev-frame mt-3" data-phase="pahami">
+          <div class="pbar"><i style="background:var(--pahami-fill)"></i><i></i><i></i><i></i></div>
+          <div class="pscene">
+            <span class="phase-tag">Pahami</span>
+            <div class="big-serif mt-2" style="font-size:22px">Satu baris, empat bagian.</div>
+            <div class="row between mt-4" style="align-items:center">
+              <div class="t-mono" style="font-size:17px"><span class="k" data-pv-tok="1">let</span> <span data-pv-tok="2">skor</span> <span class="pn">=</span> <span class="n" data-pv-tok="3">10</span>;</div>
+              <div class="vbox" style="transform:scale(.72);transform-origin:right center"><span class="tag" data-pv-tag style="opacity:0">skor</span><div class="box" data-pv-box><span class="val" data-pv-val style="opacity:0">10</span></div></div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-press w-full mt-3" data-play-all><i data-lucide="play"></i>Putar semua langkah</button>
+        <div class="callout mt-4"><i data-lucide="info"></i><div class="t-xs">Pratinjau memakai komponen yang sama dengan aplikasi siswa, jadi yang kamu lihat di sini sama dengan yang dilihat siswa.</div></div>
+      </aside>
+    </div>
+  </main>
+</div>
+<div class="mock-states" data-page-states><span>editor</span><button data-page-state="scene">scene</button><button data-page-state="soal">soal Perkuat</button><button data-page-state="kuis">bank Kuis</button><button data-page-state="challenge">challenge</button></div>
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
+  const reset = () => { $('[data-pv-tag]').style.opacity = 0; $('[data-pv-val]').style.opacity = 0; };
+  const steps = {
+    1: () => G.pop($('[data-pv-box]')),
+    2: () => { const t = $('[data-pv-tag]'); t.style.opacity = 1; G.pop(t); },
+    3: () => G.flyTo($('[data-pv-tok="3"]'), $('[data-pv-box]')).then(() => { $('[data-pv-val]').style.opacity = 1; G.pop($('[data-pv-box]')); }),
+  };
+  document.addEventListener('click', e => {
+    const s = e.target.closest('[data-play-step]'); if (s) { const n = +s.dataset.playStep; if (n === 1) reset(); steps[n](); $$('[data-pv-tok]').forEach(t => t.classList.toggle('hl', +t.dataset.pvTok === n)); }
+    if (e.target.closest('[data-play-all]')) { reset(); [1, 2, 3].forEach((n, i) => setTimeout(() => steps[n](), i * 800)); }
+    const o = e.target.closest('[data-go]'); if (o) { $$('.o-item').forEach(x => x.classList.toggle('is-sel', x === o)); gnosiaState(o.dataset.go); }
+    if (e.target.closest('[data-publish]')) { G.burst(e.target.closest('[data-publish]')); window.gnosiaToast({ kind: 'success', icon: 'upload', title: 'Bab 2 v4 diterbitkan', body: 'Siswa yang sedang di tengah fase tetap memakai v3 sampai fase selesai.' }); }
+    if (e.target.closest('[data-add-step]')) { const n = $$('[data-steps] .step').length + 1; $('[data-steps]').insertAdjacentHTML('beforeend', `<div class="step"><span class="handle"><i data-lucide="grip-vertical" class="i-14"></i></span><span class="sn">${n}</span><input class="input" placeholder="Apa yang terjadi di langkah ini?"><select class="select"><option>saat klik Lanjut</option></select><button class="btn btn-ghost btn-icon btn-sm"><i data-lucide="play"></i></button></div>`); G.rise($('[data-steps]').lastElementChild); window.gnosiaIcons(); }
+  });
+})();
+</script>
+</body>
+</html>

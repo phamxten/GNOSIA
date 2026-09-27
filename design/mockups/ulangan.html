@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ulangan · Variabel · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .exam { display: grid; grid-template-columns: 240px minmax(0, 760px); gap: 28px; justify-content: center; padding: 8px 24px 140px; position: relative; z-index: 1; }
+  .qnav { position: sticky; top: 88px; align-self: start; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; }
+  .qgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
+  .qn { position: relative; aspect-ratio: 1; border-radius: 12px; border: 1.5px solid var(--border); border-bottom-width: 3px; display: grid; place-items: center; font-family: var(--font-mono); font-weight: 600; font-size: 14px; background: var(--surface); transition: all var(--dur-200) var(--spring-bouncy); }
+  .qn:hover { transform: translateY(-2px); }
+  .qn.is-answered { background: var(--uji-soft); border-color: var(--uji-line); color: var(--uji-ink); }
+  .qn.is-current { border-color: var(--uji-fill); box-shadow: 0 0 0 3px var(--uji-soft); }
+  .qn.is-flag::after { content: ""; position: absolute; top: -4px; right: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--kuis-fill); box-shadow: 0 0 0 2px var(--surface); }
+  .legend { display: grid; gap: 6px; margin-top: 16px; font-size: 12px; color: var(--text-muted); }
+  .legend span { display: flex; align-items: center; gap: 8px; }
+  .legend i { width: 12px; height: 12px; border-radius: 4px; border: 1.5px solid var(--border); }
+  .timer-big { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); font-family: var(--font-mono); font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .timer-big.is-low { background: var(--kuis-soft); border-color: var(--kuis-line); color: var(--kuis-ink); }
+  .timer-big.is-critical { background: var(--uji-soft); border-color: var(--uji-line); color: var(--uji-ink); animation: pulse-s 1s ease-in-out infinite; }
+  .short-input { width: 100%; height: 52px; padding: 0 16px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--editor-bg); font-family: var(--font-mono); font-size: 16px; }
+  .short-input:focus { outline: none; border-color: var(--uji-fill); box-shadow: 0 0 0 4px var(--uji-soft); }
+  .mini-code { width: 100%; min-height: 150px; padding: 16px 18px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--editor-bg); font-family: var(--font-mono); font-size: 14px; line-height: 1.7; resize: vertical; color: var(--syn-text); }
+  .mini-code:focus { outline: none; border-color: var(--uji-fill); box-shadow: 0 0 0 4px var(--uji-soft); }
+  .conn { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 14px; background: var(--kuis-soft); border: 1px solid var(--kuis-line); color: var(--kuis-ink); font-size: 13px; margin-bottom: 14px; }
+  .res-row { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--divider); }
+  .res-row .ri { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; }
+  .res-row.ok .ri { background: var(--perkuat-soft); color: var(--perkuat-ink); } .res-row.no .ri { background: var(--uji-soft); color: var(--uji-ink); }
+  @media (max-width: 1000px) { .exam { grid-template-columns: 1fr; padding: 8px 12px 140px; } .qnav { position: static; } .qgrid { grid-template-columns: repeat(8, 1fr); } .legend { display: none; } }
+</style>
+</head>
+<body>
+<div class="player" data-phase="uji">
+  <div class="aura" aria-hidden="true"><i></i><i></i></div>
+  <header class="player-top">
+    <a href="bab.html" class="btn btn-ghost btn-icon" aria-label="Keluar"><i data-lucide="x" class="i-20"></i></a>
+    <div class="row gap-3" style="justify-self:center"><span class="phase-tag"><i data-lucide="lock" class="i-14"></i>Ulangan<span class="hide-sm">&nbsp;· Bab 2 Variabel</span></span><span class="t-sm t-faint hide-sm">8 soal · lulus ≥ 75</span></div>
+    <div class="row gap-3" data-show-in="work low offline"><span class="timer-big" data-countdown="1421"><i data-lucide="timer" class="i-20"></i><span class="tval">23:41</span></span></div>
+  </header>
+
+  <!-- IN PROGRESS -->
+  <div class="exam" data-show-in="work low offline">
+    <aside class="qnav" aria-label="Navigasi soal">
+      <div class="row between"><span class="eyebrow">Soal</span><span class="t-xs t-mono t-faint" data-answered>5 / 8 dijawab</span></div>
+      <div class="qgrid" data-qgrid></div>
+      <div class="legend"><span><i style="background:var(--uji-soft);border-color:var(--uji-line)"></i>Dijawab</span><span><i style="border-color:var(--uji-fill)"></i>Sekarang</span><span><i style="background:var(--kuis-fill);border-radius:50%;border:0"></i>Ditandai untuk dicek</span></div>
+      <hr style="margin:18px 0">
+      <div class="t-xs t-muted" style="line-height:1.6"><i data-lucide="shield" class="i-14" style="display:inline;vertical-align:-2px"></i> Mode ulangan: petunjuk dan penjelasan <b>dimatikan</b>. Jawaban tersimpan otomatis.</div>
+    </aside>
+    <main style="min-width:0">
+      <div class="conn" data-show-in="offline" hidden><i data-lucide="wifi-off" class="i-14"></i><span><b>Koneksi terputus.</b> Jawabanmu aman di perangkat ini dan akan dikirim saat tersambung lagi. Waktu tetap berjalan.</span></div>
+      <div class="callout callout-warning mb-4" data-show-in="low" hidden><i data-lucide="alarm-clock"></i><div class="t-sm"><b>Sisa 5 menit.</b> Soal 3 dan 7 masih kosong.</div></div>
+      <section class="scene" data-qcard>
+        <div class="row between"><span class="eyebrow" data-qhead>Soal 3 dari 8 · 15 poin</span><button class="btn btn-ghost btn-sm" data-flag><i data-lucide="flag"></i>Tandai</button></div>
+        <h2 class="q-title" data-qtext></h2>
+        <div data-qbody></div>
+      </section>
+      <div class="row between mt-4"><button class="btn btn-secondary btn-lg btn-press" data-prevq><i data-lucide="arrow-left"></i>Sebelumnya</button><span class="save-state t-xs" data-saved><i data-lucide="check" class="i-14"></i>Tersimpan</span><button class="btn btn-secondary btn-lg btn-press" data-nextq>Berikutnya<i data-lucide="arrow-right"></i></button></div>
+    </main>
+  </div>
+
+  <!-- RESULT -->
+  <div class="stage-wrap" data-show-in="result" hidden><div class="stage">
+    <section class="scene">
+      <div class="t-center">
+        <span class="nosi nosi-lg" data-res-nosi data-mood="cheer"></span>
+        <div class="eyebrow mt-3">Ulangan terkirim · 18:12 digunakan</div>
+        <div class="score-num mt-2"><span data-res>0</span><span class="t-faint" style="font-size:.35em">/100</span></div>
+        <span class="badge badge-success mt-3" style="height:26px;font-size:13px"><i data-lucide="check"></i>Lulus · minimal 75</span>
+      </div>
+      <div class="mt-8">
+        <div class="res-row ok"><span class="ri"><i data-lucide="check" class="i-14"></i></span><span class="t-sm">1 · Kata kunci untuk nilai tetap</span><span class="t-mono t-xs">10/10</span></div>
+        <div class="res-row ok"><span class="ri"><i data-lucide="check" class="i-14"></i></span><span class="t-sm">2 · Tebak nilai akhir</span><span class="t-mono t-xs">10/10</span></div>
+        <div class="res-row ok"><span class="ri"><i data-lucide="check" class="i-14"></i></span><span class="t-sm">3 · Lengkapi deklarasi</span><span class="t-mono t-xs">15/15</span></div>
+        <div class="res-row no"><span class="ri"><i data-lucide="x" class="i-14"></i></span><span class="t-sm">4 · Salinan nilai (<span class="t-mono">let b = a</span>)<div class="t-xs t-faint mt-1">Kamu menjawab 5, seharusnya 2. Konsep ini ditambahkan ke <b>Perlu diulang</b>.</div></span><span class="t-mono t-xs">0/10</span></div>
+        <div class="res-row ok"><span class="ri"><i data-lucide="check" class="i-14"></i></span><span class="t-sm">5 · Tulis kode: harga diskon</span><span class="t-mono t-xs">20/20</span></div>
+        <div class="res-row ok"><span class="ri"><i data-lucide="check" class="i-14"></i></span><span class="t-sm">6–8 · Tiga soal lainnya</span><span class="t-mono t-xs">30/35</span></div>
+      </div>
+      <div class="row gap-2 mt-8"><a class="btn btn-secondary btn-xl btn-press grow" href="progress.html">Lihat progres</a><a class="btn btn-primary btn-xl btn-press grow" href="peta.html">Kembali ke peta<i data-lucide="arrow-right"></i></a></div>
+    </section>
+  </div></div>
+
+  <footer class="player-foot" data-show-in="work low offline">
+    <div class="inner"><div class="fb-idle"><i data-lucide="info" class="i-14"></i><span>Kamu bisa kembali ke soal mana pun sebelum mengumpulkan.</span></div><button class="btn btn-no btn-xl btn-press" data-submit>Kumpulkan<i data-lucide="send"></i></button></div>
+  </footer>
+</div>
+
+<!-- Confirm submit -->
+<div data-confirm hidden>
+  <div class="scrim"></div>
+  <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="cf-t">
+    <div class="modal-head"><h3 id="cf-t" class="t-h3">Kumpulkan ulangan?</h3></div>
+    <div class="modal-body"><p><b style="color:var(--text)">2 soal belum dijawab</b> (3 dan 7), dan 1 soal ditandai. Setelah dikumpulkan, jawaban tidak bisa diubah.</p></div>
+    <div class="modal-foot"><button class="btn btn-ghost" data-cancel>Cek lagi</button><button class="btn btn-no btn-press" data-confirm-go>Ya, kumpulkan</button></div>
+  </div>
+</div>
+
+<div class="mock-states" data-page-states><span>state</span><button data-page-state="work">mengerjakan</button><button data-page-state="low">5 menit lagi</button><button data-page-state="offline">terputus</button><button data-page-state="result">hasil 85</button></div>
+
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const QS = [
+    { t: 'Kata kunci untuk nilai yang tidak boleh berubah?', type: 'choice', o: ['let', 'const', 'var', 'static'], pts: 10, ans: 1 },
+    { t: 'Berapa nilai akhir <span class="ic">total</span>?', code: 'let total = 10;\ntotal = total - 4;', type: 'choice', o: ['10', '4', '6', '14'], pts: 10, ans: 2 },
+    { t: 'Lengkapi agar <span class="ic">poin</span> bisa bertambah nanti.', type: 'short', pre: '____ poin = 0;', pts: 15 },
+    { t: 'Berapa nilai <span class="ic">b</span>?', code: 'let a = 2;\nlet b = a;\na = 5;', type: 'choice', o: ['2', '5', '7', 'error'], pts: 10, ans: 1 },
+    { t: 'Tulis kode: simpan <span class="ic">harga</span> 50000 dan <span class="ic">diskon</span> 10000, lalu cetak harga setelah diskon.', type: 'code', pts: 20, ans: 'const harga = 50000;\nconst diskon = 10000;\nconsole.log(harga - diskon);' },
+    { t: 'Nama variabel mana yang tidak valid?', type: 'choice', o: ['nilaiAkhir', '$harga', 'nilai-akhir', '_id'], pts: 10, ans: 0 },
+    { t: 'Apa isi variabel yang dibuat tanpa nilai awal?', type: 'choice', o: ['0', 'null', 'undefined', '""'], pts: 10 },
+    { t: 'Mengapa <span class="ic">const</span> sebaiknya dipakai lebih dulu?', type: 'choice', o: ['Lebih cepat dijalankan', 'Mencegah nilai berubah tanpa sengaja', 'Wajib di JavaScript', 'Agar bisa diubah'], pts: 15, ans: 1 },
+  ];
+  let cur = 2; const flags = new Set([5]);
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  function grid() {
+    $('[data-qgrid]').innerHTML = QS.map((q, j) => `<button class="qn ${q.ans !== undefined ? 'is-answered' : ''} ${j === cur ? 'is-current' : ''} ${flags.has(j) ? 'is-flag' : ''}" data-go="${j}" aria-label="Soal ${j + 1}">${j + 1}</button>`).join('');
+    $('[data-answered]').textContent = `${QS.filter(q => q.ans !== undefined).length} / 8 dijawab`;
+  }
+  function render() {
+    const q = QS[cur]; $('[data-qhead]').textContent = `Soal ${cur + 1} dari 8 · ${q.pts} poin`; $('[data-qtext]').innerHTML = q.t;
+    let b = q.code ? `<div class="codecard mt-4"><div class="cc-body">${q.code.split('\n').map((l, j) => `<div class="cc-line"><span class="cc-ln">${j + 1}</span>${esc(l)}</div>`).join('')}</div></div>` : '';
+    if (q.type === 'choice') b += `<div class="choices mt-2">${q.o.map((o, j) => `<button class="choice ${q.ans === j ? 'is-picked' : ''}" data-ch="${j}"><span class="key">${'ABCD'[j]}</span><span class="code">${esc(o)}</span></button>`).join('')}</div>`;
+    if (q.type === 'short') b += `<div class="mt-6"><div class="t-mono t-sm t-faint mb-2">${esc(q.pre)}</div><input class="short-input" placeholder="ketik kata yang hilang" value="${q.ans || ''}" data-short aria-label="Jawaban"></div>`;
+    if (q.type === 'code') b += `<textarea class="mini-code mt-6" spellcheck="false" data-mcode aria-label="Kode">${esc(q.ans || '')}</textarea><p class="t-xs t-faint mt-2">Kode diuji otomatis setelah dikumpulkan. Tidak ada tombol jalankan selama ulangan.</p>`;
+    $('[data-qbody]').innerHTML = b; $('[data-flag]').classList.toggle('btn-secondary', flags.has(cur));
+    const c = $('[data-qcard]'); c.classList.remove('scene-enter'); void c.offsetWidth; c.classList.add('scene-enter'); grid(); window.gnosiaIcons();
+  }
+  const saved = () => { const s = $('[data-saved]'); s.innerHTML = '<i data-lucide="loader-circle" class="i-14"></i>Menyimpan…'; window.gnosiaIcons(); setTimeout(() => { s.innerHTML = '<i data-lucide="check" class="i-14"></i>Tersimpan'; window.gnosiaIcons(); G.pop(s); }, 500); };
+  document.addEventListener('click', e => {
+    const g = e.target.closest('[data-go]'); if (g) { cur = +g.dataset.go; render(); }
+    const ch = e.target.closest('[data-ch]'); if (ch) { QS[cur].ans = +ch.dataset.ch; $$('[data-ch]').forEach(x => x.classList.toggle('is-picked', x === ch)); G.pop(ch); grid(); saved(); }
+    if (e.target.closest('[data-flag]')) { flags.has(cur) ? flags.delete(cur) : flags.add(cur); render(); }
+    if (e.target.closest('[data-prevq]') && cur > 0) { cur--; render(); }
+    if (e.target.closest('[data-nextq]') && cur < 7) { cur++; render(); }
+    if (e.target.closest('[data-submit]')) $('[data-confirm]').hidden = false;
+    if (e.target.closest('[data-cancel]')) $('[data-confirm]').hidden = true;
+    if (e.target.closest('[data-confirm-go]')) { $('[data-confirm]').hidden = true; window.gnosiaState('result'); }
+  });
+  document.addEventListener('input', e => { if (e.target.matches('[data-short]')) { QS[cur].ans = e.target.value || undefined; grid(); } if (e.target.matches('[data-mcode]')) { QS[cur].ans = e.target.value || undefined; grid(); } });
+  document.addEventListener('gnosia:state', e => { if (e.detail === 'result') showResult(); const t = $('[data-countdown]'); if (e.detail === 'low') t._left = 298; else if (t._left < 300) t._left = 1421; });
+  function showResult() { G.ticker($('[data-res]'), 85, { from: 0, dur: 1400 }); G.nosi($('[data-res-nosi]'), 'cheer'); setTimeout(() => { G.confetti(); G.sound('done'); }, 900); window.gnosiaIcons(); }
+  document.addEventListener('gnosia:ready', () => { render(); const st = new URLSearchParams(location.search).get('state'); if (st === 'result') showResult(); if (st === 'low') $('[data-countdown]')._left = 298; });
+})();
+</script>
+</body>
+</html>

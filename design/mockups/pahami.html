@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pahami · Variabel · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .tok { display: inline-block; padding: 2px 6px; margin: 0 1px; border-radius: 8px; cursor: pointer; border: 1.5px solid transparent; transition: background var(--dur-200), border-color var(--dur-200), transform var(--dur-200) var(--spring-bouncy); }
+  .tok:hover { background: var(--ph-soft); transform: translateY(-2px); }
+  .tok.is-on { background: var(--ph-soft); border-color: var(--ph-fill); transform: translateY(-2px); }
+  .bigcode { font-family: var(--font-mono); font-size: 30px; letter-spacing: -.01em; }
+  .explain-box { margin-top: 22px; min-height: 76px; padding: 14px 18px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); display: flex; gap: 14px; align-items: center; }
+  .explain-box .ek { font-family: var(--font-mono); font-weight: 600; font-size: 18px; color: var(--ph-ink); min-width: 64px; }
+  .obj-list { display: grid; gap: 10px; margin-top: 24px; }
+  .obj { display: flex; gap: 12px; align-items: center; padding: 12px 16px; border-radius: 14px; background: var(--surface-sunken); border: 1px solid var(--divider); font-size: 15px; }
+  .obj .n { width: 28px; height: 28px; border-radius: 9px; background: var(--ph-soft); color: var(--ph-ink); display: grid; place-items: center; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+  .boxes { display: flex; gap: 36px; justify-content: center; align-items: flex-end; flex-wrap: wrap; }
+  .op { font-family: var(--font-mono); font-size: 26px; color: var(--text-faint); padding-bottom: 30px; }
+  .err-bubble { display: flex; justify-content: center; margin-top: 18px; }
+  .sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+  .sum-card { padding: 16px 18px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); }
+  .sum-card .ic { margin-bottom: 10px; }
+  /* Completion overlay */
+  .done { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 86%, transparent); animation: fade-in 300ms var(--ease-out); padding: 16px; }
+  .done-card { width: min(560px, 100%); text-align: center; padding: 40px 36px 32px; border-radius: 28px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-modal); animation: rise 600ms var(--spring-bouncy) both; }
+  .unlock-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 24px; }
+  .unlock-row .arrow { color: var(--text-faint); }
+  @media (max-width: 760px) { .bigcode { font-size: 20px; } .sum-grid { grid-template-columns: 1fr; } .boxes { gap: 16px; } .vbox .box { width: 100px; height: 76px; } }
+</style>
+</head>
+<body>
+<div class="player" data-phase="pahami" id="player">
+  <div class="aura" aria-hidden="true"><i></i><i></i></div>
+
+  <header class="player-top">
+    <a href="bab.html" class="btn btn-ghost btn-icon" aria-label="Keluar ke halaman bab"><i data-lucide="x" class="i-20"></i></a>
+    <div class="phasebar" aria-label="Kemajuan bab">
+      <div class="seg is-now" data-phase="pahami"><span class="lbl"><i data-lucide="book-open"></i><span>1 · Pahami</span></span><div class="trk"><span data-pbar style="--v:14%"></span></div></div>
+      <div class="seg" data-phase="perkuat"><span class="lbl"><i data-lucide="lock"></i><span>2 · Perkuat</span></span><div class="trk"><span style="--v:0%"></span></div></div>
+      <div class="seg" data-phase="kuis"><span class="lbl"><i data-lucide="lock"></i><span>3 · Kuis</span></span><div class="trk"><span style="--v:0%"></span></div></div>
+      <div class="seg" data-phase="uji"><span class="lbl"><i data-lucide="lock"></i><span>4 · Uji</span></span><div class="trk"><span style="--v:0%"></span></div></div>
+    </div>
+    <div class="row gap-3 pt-right"><span class="stat-chip"><i data-lucide="zap" style="color:var(--xp)"></i><span data-xp>340</span></span><span class="nosi nosi-sm" data-nosi></span></div>
+  </header>
+
+  <main class="stage-wrap">
+    <div class="stage" data-stage>
+
+      <!-- 1 · Intro -->
+      <section class="scene" data-scene="1">
+        <div class="scene-kicker"><span class="phase-tag">Pahami</span><span class="t-faint">Bab 2 · Variabel · ±6 menit</span></div>
+        <div class="row gap-6 mt-4" style="align-items:center">
+          <div class="grow">
+            <h1>Variabel adalah <em style="color:var(--ph-ink)">kotak berlabel</em> untuk menyimpan nilai.</h1>
+            <p class="lead">Program perlu mengingat sesuatu, misalnya skor, nama, atau harga. Variabel adalah cara memberi nama pada ingatan itu.</p>
+          </div>
+          <div class="vbox hide-sm" data-intro-box style="transform:scale(1.15)"><span class="tag">skor</span><div class="box"><span class="val">10</span></div><span class="type">number</span></div>
+        </div>
+        <div class="t-label mt-8">Setelah bagian ini kamu bisa</div>
+        <div class="obj-list">
+          <div class="obj" data-rise="1"><span class="n">1</span>Membuat variabel dengan <span class="ic">let</span> dan <span class="ic">const</span></div>
+          <div class="obj" data-rise="2"><span class="n">2</span>Mengubah isi variabel, dan tahu kapan tidak bisa</div>
+          <div class="obj" data-rise="3"><span class="n">3</span>Memakai variabel dalam hitungan</div>
+        </div>
+      </section>
+
+      <!-- 2 · Anatomy: tap each token -->
+      <section class="scene" data-scene="2" hidden>
+        <div class="scene-kicker"><span class="phase-tag">Pahami</span><span class="t-faint">Membuat variabel</span></div>
+        <h1>Satu baris, empat bagian.</h1>
+        <p class="say mt-3">Ketuk tiap bagian kode untuk melihat apa tugasnya. Perhatikan kotak di kanan.</p>
+        <div class="viz viz-dots mt-6">
+          <div class="row between wrap gap-6" style="align-items:center">
+            <div class="bigcode" role="group" aria-label="let skor = 10;">
+              <span class="tok k" data-tok="let">let</span><span class="tok" data-tok="name">skor</span><span class="tok pn" data-tok="eq">=</span><span class="tok n" data-tok="val">10</span><span class="pn">;</span>
+            </div>
+            <div class="vbox" data-anat-box><span class="tag" data-anat-tag style="opacity:0">skor</span><div class="box" data-anat-slot><span class="val" data-anat-val style="opacity:0">10</span></div><span class="type">kotak baru</span></div>
+          </div>
+          <div class="explain-box" aria-live="polite" data-explain><span class="ek" data-ek>?</span><span class="t-muted" data-ev>Mulai dari <b>let</b>.</span></div>
+        </div>
+        <div class="row gap-2 mt-4 t-sm t-faint" data-tok-progress>Bagian dipahami: <span class="hint-ladder"><i></i><i></i><i></i><i></i></span></div>
+      </section>
+
+      <!-- 3 · Reassign + scrubbable number -->
+      <section class="scene" data-scene="3" hidden>
+        <div class="scene-kicker"><span class="phase-tag">Pahami</span><span class="t-faint">Mengubah isi</span></div>
+        <h1>Isi kotak <span class="ic" style="font-size:.7em">let</span> boleh diganti.</h1>
+        <p class="say mt-3">Tanpa <span class="ic">let</span> lagi. Cukup tulis nama, <span class="ic">=</span>, lalu nilai baru. Nilai lama dibuang. <b>Geser angka bergaris titik</b> ke kiri atau kanan.</p>
+        <div class="grid grid-2 mt-6" style="align-items:center;gap:28px">
+          <div class="codecard">
+            <div class="cc-head"><span class="cc-file"><span class="lang">JS</span>skor.js</span><span class="t-xs t-faint" style="margin-left:auto">live</span></div>
+            <div class="cc-body">
+              <div class="cc-line"><span class="cc-ln">1</span><span class="k">let</span> skor <span class="pn">=</span> <span class="n">10</span><span class="pn">;</span></div>
+              <div class="cc-line is-lit"><span class="cc-ln">2</span>skor <span class="pn">=</span> <span class="knob" data-knob data-min="0" data-max="100" tabindex="0" role="slider" aria-label="nilai skor baru" aria-valuenow="25">25</span><span class="pn">;</span></div>
+              <div class="cc-line"><span class="cc-ln">3</span><span class="p">console</span><span class="pn">.</span><span class="f">log</span><span class="pn">(</span>skor<span class="pn">);</span></div>
+            </div>
+            <div class="cc-out"><span class="out-bubble" data-knob-out><span class="p">›</span><span data-knob-val>25</span></span></div>
+          </div>
+          <div class="t-center">
+            <div class="vbox"><span class="tag">skor</span><div class="box" data-knob-box><span class="val" data-knob-boxval>25</span></div><span class="type">number</span></div>
+            <p class="t-xs t-faint mt-6">Nilai <span class="t-mono">10</span> sudah diganti. Kotak hanya memegang <b>satu</b> nilai.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 · let vs const -->
+      <section class="scene" data-scene="4" hidden>
+        <div class="scene-kicker"><span class="phase-tag">Pahami</span><span class="t-faint">let dan const</span></div>
+        <h1><span class="ic" style="font-size:.7em">const</span> adalah kotak yang digembok.</h1>
+        <p class="say mt-3">Pakai <span class="ic">const</span> untuk nilai yang tidak akan berubah, seperti nama sekolah. Coba ubah keduanya dan lihat apa yang terjadi.</p>
+        <div class="viz viz-dots mt-6" style="min-height:260px">
+          <div class="boxes" style="margin-top:36px">
+            <div class="stack" style="align-items:center;gap:14px"><div class="vbox"><span class="tag">kelas</span><div class="box" data-lv-box><span class="val" data-lv-val>"XI"</span></div><span class="type">let</span></div><button class="btn btn-secondary btn-sm btn-press" data-try="let"><i data-lucide="pencil"></i>kelas = "XII"</button></div>
+            <div class="stack" style="align-items:center;gap:14px"><div class="vbox"><span class="tag">sekolah</span><div class="box is-const" data-cv-box><span class="val" style="font-size:15px">"SMK SIG"</span></div><span class="type">const</span></div><button class="btn btn-secondary btn-sm btn-press" data-try="const"><i data-lucide="pencil"></i>sekolah = "SMA 1"</button></div>
+          </div>
+          <div class="err-bubble" data-const-err hidden><span class="out-bubble is-err"><i data-lucide="circle-x" class="i-14"></i>TypeError: Assignment to constant variable.</span></div>
+        </div>
+        <div class="reveal mt-4" role="button" tabindex="0"><div class="rv-q"><i data-lucide="help-circle" class="t-accent"></i>Jadi kapan pakai yang mana?</div><div class="rv-a">Mulai dengan <b>const</b>. Ganti ke <b>let</b> hanya kalau nilainya memang perlu berubah, misalnya skor yang bertambah. Dengan begitu kesalahan “tidak sengaja mengubah” tertangkap lebih awal.</div></div>
+      </section>
+
+      <!-- 5 · Naming -->
+      <section class="scene" data-scene="5" hidden>
+        <div class="scene-kicker"><span class="phase-tag">Pahami</span><span class="t-faint">Memberi nama</span></div>
+        <h1>Nama yang baik menjelaskan isinya.</h1>
+        <div class="grid grid-3 mt-6" style="gap:12px">
+          <div class="card card-pad" data-tilt><div class="t-label">Boleh</div><div class="t-mono mt-2" style="font-size:17px">totalHarga</div><p class="t-sm t-muted mt-2">Huruf, angka, <span class="t-mono">_</span> atau <span class="t-mono">$</span>. Gaya <i>camelCase</i>.</p></div>
+          <div class="card card-pad" data-tilt><div class="t-label">Tidak boleh</div><div class="t-mono mt-2 t-danger" style="font-size:17px">2skor</div><p class="t-sm t-muted mt-2">Tidak boleh diawali angka.</p></div>
+          <div class="card card-pad" data-tilt><div class="t-label">Tidak boleh</div><div class="t-mono mt-2 t-danger" style="font-size:17px">nama siswa</div><p class="t-sm t-muted mt-2">Tidak boleh ada spasi.</p></div>
+        </div>
+        <div class="reveal" role="button" tabindex="0"><div class="rv-q"><i data-lucide="help-circle" class="t-accent"></i>Cek cepat: apakah <span class="ic">let class = "XI";</span> boleh?</div><div class="rv-a"><b>Tidak.</b> <span class="t-mono">class</span> adalah <i>kata kunci</i> JavaScript, sama seperti <span class="t-mono">let</span> dan <span class="t-mono">const</span>. Pakai <span class="t-mono">kelas</span> atau <span class="t-mono">namaKelas</span>.</div></div>
+      </section>
+
+      <!-- 6 · Variables in calculations (two knobs) -->
+      <section class="scene" data-scene="6" hidden>
+        <div class="scene-kicker"><span class="phase-tag">Pahami</span><span class="t-faint">Variabel dalam hitungan</span></div>
+        <h1>Variabel bisa dipakai untuk menghitung variabel lain.</h1>
+        <p class="say mt-3">Geser <b>harga</b> atau <b>jumlah</b>. Perhatikan <span class="ic">total</span> ikut berubah.</p>
+        <div class="codecard mt-6">
+          <div class="cc-head"><span class="cc-file"><span class="lang">JS</span>kantin.js</span></div>
+          <div class="cc-body">
+            <div class="cc-line"><span class="cc-ln">1</span><span class="k">const</span> harga <span class="pn">=</span> <span class="knob" data-k2="harga" data-min="1000" data-max="20000" data-step="500" tabindex="0" role="slider" aria-label="harga">5000</span><span class="pn">;</span></div>
+            <div class="cc-line"><span class="cc-ln">2</span><span class="k">let</span> jumlah <span class="pn">=</span> <span class="knob" data-k2="jumlah" data-min="1" data-max="12" data-step="1" tabindex="0" role="slider" aria-label="jumlah">3</span><span class="pn">;</span></div>
+            <div class="cc-line is-lit"><span class="cc-ln">3</span><span class="k">const</span> total <span class="pn">=</span> harga <span class="pn">*</span> jumlah<span class="pn">;</span></div>
+            <div class="cc-line"><span class="cc-ln">4</span><span class="p">console</span><span class="pn">.</span><span class="f">log</span><span class="pn">(</span><span class="s">"Bayar:"</span><span class="pn">,</span> total<span class="pn">);</span></div>
+          </div>
+          <div class="cc-out"><span class="out-bubble"><span class="p">›</span>Bayar: <b data-k2-total>15000</b></span></div>
+        </div>
+        <div class="boxes mt-8">
+          <div class="vbox"><span class="tag">harga</span><div class="box"><span class="val" data-k2-v="harga" style="font-size:17px">5000</span></div></div>
+          <span class="op">×</span>
+          <div class="vbox"><span class="tag">jumlah</span><div class="box"><span class="val" data-k2-v="jumlah">3</span></div></div>
+          <span class="op">=</span>
+          <div class="vbox"><span class="tag" style="background:var(--perkuat-fill)">total</span><div class="box" data-k2-totalbox style="border-color:var(--perkuat-line);box-shadow:inset 0 -10px 0 var(--perkuat-soft)"><span class="val" data-k2-total2 style="font-size:17px">15000</span></div></div>
+        </div>
+      </section>
+
+      <!-- 7 · Summary -->
+      <section class="scene" data-scene="7" hidden>
+        <div class="scene-kicker"><span class="phase-tag">Pahami</span><span class="t-faint">Ringkasan</span></div>
+        <h1>Yang perlu kamu ingat.</h1>
+        <div class="sum-grid">
+          <div class="sum-card" data-rise="1"><i data-lucide="box" class="ic t-accent i-20"></i><div class="t-h4">Variabel = kotak berlabel</div><p class="t-sm t-muted mt-1">Punya nama dan menyimpan satu nilai.</p></div>
+          <div class="sum-card" data-rise="2"><i data-lucide="pencil" class="ic t-accent i-20"></i><div class="t-h4"><span class="t-mono">let</span> bisa diubah</div><p class="t-sm t-muted mt-1"><span class="t-mono">skor = 25</span> mengganti nilai lama.</p></div>
+          <div class="sum-card" data-rise="3"><i data-lucide="lock" class="ic t-accent i-20"></i><div class="t-h4"><span class="t-mono">const</span> dikunci</div><p class="t-sm t-muted mt-1">Mengubahnya memunculkan TypeError.</p></div>
+          <div class="sum-card" data-rise="4"><i data-lucide="calculator" class="ic t-accent i-20"></i><div class="t-h4">Bisa dihitung</div><p class="t-sm t-muted mt-1"><span class="t-mono">harga * jumlah</span> menghasilkan nilai baru.</p></div>
+        </div>
+        <div class="callout callout-accent mt-6"><i data-lucide="arrow-right-circle"></i><div class="t-sm"><b>Berikutnya: Perkuat.</b> 8 latihan pendek untuk mengikat pemahamanmu. Salah itu wajar, dan soal akan menyesuaikan.</div></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="player-foot" data-foot>
+    <div class="inner">
+      <button class="btn btn-ghost btn-lg" data-prev aria-label="Kembali"><i data-lucide="arrow-left"></i><span class="hide-sm">Kembali</span></button>
+      <div class="fb-idle"><span class="kbdhint hide-sm"><kbd>↵</kbd> lanjut · <kbd>←</kbd> kembali</span><span class="grow"></span><span class="t-mono t-xs" data-count>1 / 7</span></div>
+      <button class="btn btn-primary btn-xl btn-press" data-next style="min-width:180px">Lanjut<i data-lucide="arrow-right"></i></button>
+    </div>
+  </footer>
+</div>
+
+<!-- Phase complete -->
+<div class="done" data-done hidden role="dialog" aria-modal="true" aria-labelledby="done-t">
+  <div class="done-card">
+    <span class="nosi nosi-xl" data-done-nosi data-mood="cheer"></span>
+    <div class="eyebrow mt-4">Fase 1 dari 4 selesai</div>
+    <h2 id="done-t" class="big-serif mt-2" style="font-size:44px">Kamu sudah <em>paham</em>.</h2>
+    <p class="t-muted mt-3">7 scene · 6 menit · <b style="color:var(--xp)">+<span data-done-xp>0</span> XP</b></p>
+    <div class="unlock-row">
+      <span class="pring" data-ring="1,0,0,0" data-size="84" data-stroke="8"><span class="pring-center"><i data-lucide="check" class="i-20 t-accent"></i></span></span>
+      <i data-lucide="chevrons-right" class="arrow"></i>
+      <div class="gate" data-gate style="text-align:left"><span class="lock"><i data-lucide="lock" data-gate-icon></i></span><div><div class="t-h4">Perkuat</div><div class="t-xs t-faint" data-gate-text>terkunci</div></div></div>
+    </div>
+    <a class="btn btn-ok btn-xl btn-press w-full mt-8" href="perkuat.html">Mulai Perkuat<i data-lucide="arrow-right"></i></a>
+    <a class="btn btn-ghost mt-2" href="bab.html">Nanti saja</a>
+  </div>
+</div>
+
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+/* Pahami player controller (mockup). Real app: <LessonPlayer phase="pahami" scenes=[…]/> */
+(function () {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const scenes = $$('[data-scene]'), N = scenes.length;
+  const nosi = $('[data-nosi]'); let cur = 1;
+
+  const TOKENS = {
+    let: ['let', 'Kata kunci: <b>buat kotak baru</b> yang isinya boleh diganti.'],
+    name: ['skor', 'Nama atau <b>label</b> kotaknya. Dipakai untuk memanggil isinya nanti.'],
+    eq: ['=', 'Bukan “sama dengan”. Artinya <b>masukkan</b> nilai di kanan ke kotak di kiri.'],
+    val: ['10', '<b>Nilai</b> yang disimpan. Di sini sebuah angka (number).'],
+  };
+  const seen = new Set();
+
+  const onEnter = {
+    2() { seen.clear(); $$('.tok').forEach(t => t.classList.remove('is-on')); $('[data-anat-tag]').style.opacity = 0; $('[data-anat-val]').style.opacity = 0; syncTok(); },
+    3() { knobInit($('[data-knob]'), v => { $('[data-knob-val]').textContent = v; const bv = $('[data-knob-boxval]'); bv.textContent = v; G.pop($('[data-knob-box]')); }); },
+    6() { $$('[data-k2]').forEach(k => knobInit(k, () => calc())); calc(); },
+  };
+  function calc() {
+    const h = +$('[data-k2="harga"]').textContent, j = +$('[data-k2="jumlah"]').textContent, t = h * j;
+    $('[data-k2-v="harga"]').textContent = h; $('[data-k2-v="jumlah"]').textContent = j;
+    $('[data-k2-total]').textContent = t; $('[data-k2-total2]').textContent = t;
+  }
+  function syncTok() {
+    const pips = $$('[data-tok-progress] .hint-ladder i');
+    pips.forEach((p, i) => p.classList.toggle('on', i < seen.size));
+    if (seen.size === 4) { nosi && G.nosi(nosi, 'happy'); }
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.tok'); if (!t) return;
+    $$('.tok').forEach(x => x.classList.toggle('is-on', x === t));
+    const [k, v] = TOKENS[t.dataset.tok]; $('[data-ek]').textContent = k; $('[data-ev]').innerHTML = v;
+    G.rise($('[data-explain]'));
+    if (t.dataset.tok === 'name') { const tag = $('[data-anat-tag]'); tag.style.opacity = 1; G.pop(tag); }
+    if (t.dataset.tok === 'val' || t.dataset.tok === 'eq') { const v2 = $('[data-anat-val]'); if (v2.style.opacity !== '1') G.flyTo(t, $('[data-anat-slot]')).then(() => { v2.style.opacity = 1; G.pop($('[data-anat-slot]')); }); }
+    if (t.dataset.tok === 'let') G.pop($('[data-anat-slot]'));
+    seen.add(t.dataset.tok); syncTok();
+  });
+
+  // let vs const demo
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-try]'); if (!b) return;
+    if (b.dataset.try === 'let') { const v = $('[data-lv-val]'); v.textContent = v.textContent === '"XI"' ? '"XII"' : '"XI"'; G.pop($('[data-lv-box]')); G.burst($('[data-lv-box]'), { count: 8, spread: 50 }); $('[data-const-err]').hidden = true; G.nosi(nosi, 'happy'); }
+    else { G.shake($('[data-cv-box]')); const er = $('[data-const-err]'); er.hidden = false; G.rise(er); G.nosi(nosi, 'oops'); window.gnosiaIcons(); }
+  });
+
+  // Scrubbable number: drag horizontally, or ←/→ keys when focused
+  function knobInit(el, onChange) {
+    if (el.dataset.ready) return; el.dataset.ready = 1;
+    const min = +el.dataset.min, max = +el.dataset.max, step = +el.dataset.step || 1;
+    const set = v => { v = Math.max(min, Math.min(max, Math.round(v / step) * step)); if (+el.textContent !== v) { el.textContent = v; el.setAttribute('aria-valuenow', v); onChange(v); } };
+    el.addEventListener('pointerdown', e => { e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add('is-drag'); const sx = e.clientX, sv = +el.textContent;
+      const mv = ev => set(sv + Math.round((ev.clientX - sx) / 6) * step);
+      const up = () => { el.classList.remove('is-drag'); el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); };
+      el.addEventListener('pointermove', mv); el.addEventListener('pointerup', up); });
+    el.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { set(+el.textContent + step); e.preventDefault(); } if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { set(+el.textContent - step); e.preventDefault(); } });
+  }
+
+  function show(n, dir = 1) {
+    const from = scenes[cur - 1], to = scenes[n - 1];
+    if (from && from !== to) { from.hidden = true; }
+    to.hidden = false; to.classList.remove('scene-enter'); void to.offsetWidth;
+    to.style.setProperty('--dir', dir); to.classList.add('scene-enter');
+    $$('[data-rise]', to).forEach((el, i) => G.rise(el, 150 + i * 90));
+    cur = n;
+    $('[data-pbar]').style.setProperty('--v', Math.round((n / N) * 100) + '%');
+    $('[data-count]').textContent = `${n} / ${N}`;
+    $('[data-prev]').disabled = n === 1;
+    const next = $('[data-next]'); next.innerHTML = n === N ? 'Selesaikan Pahami<i data-lucide="check"></i>' : 'Lanjut<i data-lucide="arrow-right"></i>';
+    G.nosi(nosi, n === N ? 'cheer' : 'think'); onEnter[n] && onEnter[n](); window.gnosiaIcons();
+    scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function finish() {
+    const d = $('[data-done]'); d.hidden = false; G.nosi($('[data-done-nosi]'), 'cheer');
+    $$('.pring', d).forEach(G.ring); G.confetti(); G.sound('done');
+    G.ticker($('[data-done-xp]'), 50, { from: 0, dur: 1200 });
+    setTimeout(() => { const g = $('[data-gate]'); g.classList.add('is-open'); $('[data-gate-text]').textContent = 'terbuka · 8 latihan'; const ic = g.querySelector('.lock'); ic.innerHTML = '<i data-lucide="lock-open"></i>'; window.gnosiaIcons(); G.burst(ic, { count: 10, spread: 60 }); }, 1100);
+    window.gnosiaIcons();
+  }
+  document.addEventListener('gnosia:ready', () => {
+    $('[data-next]').addEventListener('click', e => { G.pop(e.currentTarget); cur < N ? show(cur + 1, 1) : finish(); });
+    $('[data-prev]').addEventListener('click', () => cur > 1 && show(cur - 1, -1));
+    document.addEventListener('keydown', e => { if (e.target.closest('input,textarea,[contenteditable],.knob')) return; if (e.key === 'Enter') $('[data-next]').click(); if (e.key === 'ArrowLeft') $('[data-prev]').click(); });
+    const q = new URLSearchParams(location.search); show(+(q.get('scene') || 1)); if (q.get('state') === 'done') finish();
+  });
+})();
+</script>
+</body>
+</html>

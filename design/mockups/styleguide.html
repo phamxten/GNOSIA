@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System · GNOSIA</title>
+<script>(function(){var q=new URLSearchParams(location.search).get('theme'),t=q;try{t=t||localStorage.getItem('gnosia-theme')}catch(e){}t=t||(matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper');document.documentElement.dataset.theme=t})()</script>
+<link rel="stylesheet" href="components.css">
+<style>
+  .sg { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; }
+  .sg-nav { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 20px 14px; border-right: 1px solid var(--border); }
+  .sg-nav a:not(.logo) { display: block; padding: 6px 10px; border-radius: 8px; font-size: 13px; color: var(--text-muted); }
+  .sg-nav a:not(.logo):hover { background: var(--surface-hover); color: var(--text); }
+  .sg-main { max-width: 1060px; padding: 40px 48px 120px; }
+  .sg-sec { padding-top: 72px; }
+  .sg-sec > h2 { font-family: var(--font-serif); font-weight: 400; font-size: 34px; margin: 6px 0 8px; }
+  .sg-sec > p.lead { color: var(--text-muted); max-width: 66ch; line-height: 1.6; margin-bottom: 24px; }
+  .demo { padding: 22px; border-radius: 18px; border: 1px solid var(--border); background: var(--surface); }
+  .demo-label { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-bottom: 12px; }
+  .pal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .pal .col { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+  .pal .col div { height: 44px; display: flex; align-items: center; padding: 0 12px; font-family: var(--font-mono); font-size: 11px; }
+  .pal .col .name { height: auto; padding: 12px; font-family: var(--font-serif); font-size: 20px; }
+  .neutral { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .neutral div { border-radius: 12px; border: 1px solid var(--border); overflow: hidden; font-size: 11px; }
+  .neutral div i { display: block; height: 48px; }
+  .neutral div span { display: block; padding: 8px; font-family: var(--font-mono); color: var(--text-muted); }
+  .spec { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--divider); }
+  .spec .t-mono { font-size: 11px; color: var(--text-faint); line-height: 1.6; }
+  .fx-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .fx { padding: 18px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .fx .t-mono { font-size: 11px; color: var(--text-faint); }
+  .foot-demo { position: static; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .foot-demo .inner { min-height: 72px; }
+  @media (max-width: 900px) { .sg { grid-template-columns: 1fr; } .sg-nav { display: none; } .sg-main { padding: 24px 16px 100px; } .pal, .fx-grid { grid-template-columns: 1fr 1fr; } .neutral { grid-template-columns: repeat(3, 1fr); } .spec { grid-template-columns: 1fr; gap: 6px; } }
+</style>
+</head>
+<body>
+<div class="sg">
+  <nav class="sg-nav">
+    <a class="logo" href="index.html" style="padding:4px 10px 14px"><span class="logo-glyph"></span><span class="logo-word">gnosia</span></a>
+    <div class="eyebrow" style="padding:0 10px 8px">Design system v2</div>
+    <a href="#konsep">Konsep 4 fase</a><a href="#warna">Warna</a><a href="#tipo">Tipografi</a><a href="#bentuk">Radius, spasi, elevasi</a><a href="#motion">Motion &amp; efek</a><a href="#nosi">Nosi</a><a href="#tombol">Tombol</a><a href="#fase">Komponen fase</a><a href="#soal">Tipe soal</a><a href="#kode">Kode</a><a href="#kuis">Kuis</a><a href="#jangan">Jangan</a>
+    <button class="btn btn-secondary btn-sm mt-6" data-theme-toggle style="margin-left:10px"><i data-lucide="sun-moon"></i>Tema: <span data-theme-label></span></button>
+  </nav>
+  <main class="sg-main">
+    <div class="eyebrow">GNOSIA · Design system v2</div>
+    <h1 class="big-serif mt-3" style="font-size:64px">Soft <em>playful</em> intellect.</h1>
+    <p class="t-lg t-muted mt-4" style="max-width:62ch;line-height:1.6">Kertas hangat, tinta indigo, dan empat warna fase. Setiap animasi punya arti: kamu paham, kamu benar, kamu belum tepat, atau kamu naik level.</p>
+
+    <section class="sg-sec" id="konsep"><span class="eyebrow">01 · Konsep</span><h2>Jalan Pemahaman</h2><p class="lead">Setiap bab adalah perjalanan 4 fase yang tidak bisa dilompati. Warna fase adalah bahasa visual utama: dipakai di progress bar, cincin, tag, tombol aksi, dan aura latar.</p>
+      <div class="phase-steps">
+        <div class="pstep is-done" data-phase="pahami"><span class="pnum">01 · fundamental</span><span class="pname">Pahami</span><span class="t-xs t-muted">Scene beranimasi, kode hidup</span><span class="bar"><span style="--v:100%"></span></span></div>
+        <div class="pstep is-now" data-phase="perkuat"><span class="pnum">02 · penguatan</span><span class="pname">Perkuat</span><span class="t-xs t-muted">7 tipe soal, adaptif</span><span class="bar"><span style="--v:40%"></span></span></div>
+        <div class="pstep" data-phase="kuis"><span class="pnum">03 · trivia</span><span class="pname">Kuis</span><span class="t-xs t-muted">timer, combo, gerbang 70%</span><span class="bar"><span></span></span></div>
+        <div class="pstep is-locked" data-phase="uji"><span class="pnum">04 · penugasan</span><span class="pname">Uji</span><span class="t-xs t-muted">ulangan atau challenge</span><span class="bar"><span></span></span></div>
+      </div></section>
+
+    <section class="sg-sec" id="warna"><span class="eyebrow">02 · Warna</span><h2>Empat fase, satu kertas</h2><p class="lead">Tiap fase punya 4 token: <span class="t-mono">-ink</span> untuk teks (≥ 4.5:1), <span class="t-mono">-fill</span> untuk bentuk (≥ 3:1), <span class="t-mono">-soft</span> untuk latar, dan <span class="t-mono">-line</span> untuk border. Warna ikut tema aktif.</p>
+      <div class="pal">
+        <div class="col" data-phase="pahami"><div class="name" style="color:var(--ph-ink)">Pahami</div><div style="background:var(--ph-fill);color:#fff">fill</div><div style="background:var(--ph-soft);color:var(--ph-ink)">soft · ink</div><div style="background:var(--surface);color:var(--ph-ink);border-top:2px solid var(--ph-line)">line</div></div>
+        <div class="col" data-phase="perkuat"><div class="name" style="color:var(--ph-ink)">Perkuat</div><div style="background:var(--ph-fill);color:#fff">fill</div><div style="background:var(--ph-soft);color:var(--ph-ink)">soft · ink</div><div style="background:var(--surface);color:var(--ph-ink);border-top:2px solid var(--ph-line)">line</div></div>
+        <div class="col" data-phase="kuis"><div class="name" style="color:var(--ph-ink)">Kuis</div><div style="background:var(--ph-fill);color:#fff">fill</div><div style="background:var(--ph-soft);color:var(--ph-ink)">soft · ink</div><div style="background:var(--surface);color:var(--ph-ink);border-top:2px solid var(--ph-line)">line</div></div>
+        <div class="col" data-phase="uji"><div class="name" style="color:var(--ph-ink)">Uji</div><div style="background:var(--ph-fill);color:#fff">fill</div><div style="background:var(--ph-soft);color:var(--ph-ink)">soft · ink</div><div style="background:var(--surface);color:var(--ph-ink);border-top:2px solid var(--ph-line)">line</div></div>
+      </div>
+      <div class="neutral mt-4"><div><i style="background:var(--bg)"></i><span>--bg</span></div><div><i style="background:var(--surface)"></i><span>--surface</span></div><div><i style="background:var(--surface-sunken)"></i><span>--sunken</span></div><div><i style="background:var(--border-strong)"></i><span>--border</span></div><div><i style="background:var(--text-muted)"></i><span>--text-muted</span></div><div><i style="background:var(--text)"></i><span>--text</span></div></div>
+      <div class="callout mt-4"><i data-lucide="info"></i><div class="t-sm">Benar = <b style="color:var(--perkuat-ink)">sage</b> (warna Perkuat) dan salah = <b style="color:var(--uji-ink)">coral</b> (warna Uji), di fase mana pun. Status selalu disertai ikon dan teks, tidak pernah hanya warna.</div></div></section>
+
+    <section class="sg-sec" id="tipo"><span class="eyebrow">03 · Tipografi</span><h2>Serif untuk berpikir, sans untuk bertindak</h2>
+      <div class="spec"><div class="t-mono">Display · Newsreader 400<br>64–80 / 1.05</div><div class="big-serif" style="font-size:56px">Pahami <em>dulu</em>.</div></div>
+      <div class="spec"><div class="t-mono">Scene title · Newsreader<br>36 / 1.15</div><div class="big-serif" style="font-size:36px">Satu baris, empat bagian.</div></div>
+      <div class="spec"><div class="t-mono">Question · Newsreader<br>28 / 1.25</div><div class="q-title" style="margin:0">Baris mana yang tepat?</div></div>
+      <div class="spec"><div class="t-mono">Say · Geist 400<br>17 / 1.65</div><p style="font-size:17px;line-height:1.65">Ketuk tiap bagian kode untuk melihat apa tugasnya.</p></div>
+      <div class="spec"><div class="t-mono">UI · Geist 500<br>14 / 1.45</div><div>Lanjut Perkuat · ±5 menit lagi</div></div>
+      <div class="spec"><div class="t-mono">Eyebrow · JetBrains Mono<br>11 · uppercase · .08em</div><div class="eyebrow">Fase 1 dari 4 selesai</div></div>
+      <div class="spec"><div class="t-mono">Code · JetBrains Mono<br>14–15 / 1.75 · no ligatures</div><div class="t-mono" style="font-size:15px"><span class="k">let</span> skor <span class="pn">=</span> <span class="n">10</span>; skor <span class="pn">==</span> <span class="n">10</span></div></div>
+      <div class="spec"><div class="t-mono">Score · Newsreader<br>96 / tabular</div><div class="score-num" style="font-size:72px">85<span class="t-faint" style="font-size:.4em">/100</span></div></div></section>
+
+    <section class="sg-sec" id="bentuk"><span class="eyebrow">04 · Bentuk</span><h2>Membulat, tapi tidak lembek</h2>
+      <div class="row gap-3 wrap"><div class="demo t-xs t-center" style="border-radius:6px">6<br><span class="t-faint">input</span></div><div class="demo t-xs t-center" style="border-radius:10px">10–12<br><span class="t-faint">tombol</span></div><div class="demo t-xs t-center" style="border-radius:14px">14<br><span class="t-faint">pilihan jawaban</span></div><div class="demo t-xs t-center" style="border-radius:16px">16<br><span class="t-faint">code card</span></div><div class="demo t-xs t-center" style="border-radius:20px">20<br><span class="t-faint">scene</span></div><div class="demo t-xs t-center" style="border-radius:28px">28<br><span class="t-faint">modal selebrasi</span></div></div>
+      <p class="t-sm t-muted mt-4">Spasi berbasis 4px. Elevasi: kartu statis hanya memakai border. Scene di player melayang dengan bayangan lembut. Modal dan popover memakai <span class="t-mono">--shadow-modal</span>. Latar kertas punya grain 3.5%.</p></section>
+
+    <section class="sg-sec" id="motion"><span class="eyebrow">05 · Motion</span><h2>Efek yang bisa kamu coba</h2><p class="lead">Semua efek dari <span class="t-mono">motion.js</span> (di React memakai <span class="t-mono">motion</span>). Intensitas diatur siswa: Penuh, Kalem, atau Mati.</p>
+      <div class="segmented mb-4" data-single><button aria-pressed="true" data-int="full">Penuh</button><button aria-pressed="false" data-int="calm">Kalem</button><button aria-pressed="false" data-int="off">Mati</button></div>
+      <div class="fx-grid">
+        <div class="fx"><span class="t-mono">G.pop · 380ms bouncy</span><button class="btn btn-secondary btn-press" data-fx="pop">Pop</button></div>
+        <div class="fx"><span class="t-mono">G.shake · 380ms · salah</span><button class="btn btn-secondary btn-press" data-fx="shake">Shake</button></div>
+        <div class="fx"><span class="t-mono">G.burst · 14 partikel · benar</span><button class="btn btn-ok btn-press" data-fx="burst">Burst</button></div>
+        <div class="fx"><span class="t-mono">G.confetti · hanya selesai fase</span><button class="btn btn-secondary btn-press" data-fx="confetti">Konfeti</button></div>
+        <div class="fx"><span class="t-mono">G.ticker · 900ms</span><div class="row gap-3"><span class="stat-value" style="font-size:32px" data-fx-t>0</span><button class="btn btn-secondary btn-press" data-fx="ticker">Hitung</button></div></div>
+        <div class="fx"><span class="t-mono">G.flyTo · 700ms</span><div class="row gap-4"><span class="t-mono n" data-fx-src style="font-size:20px">10</span><div class="vbox" style="transform:scale(.6);transform-origin:left"><div class="box" data-fx-dst><span class="val" data-fx-v style="opacity:0">10</span></div></div><button class="btn btn-secondary btn-press" data-fx="fly">Terbang</button></div></div>
+        <div class="fx"><span class="t-mono">G.ring · 900ms gentle, stagger 160</span><div class="row gap-3"><span class="pring" data-ring="1,.6,.3,0" data-size="64" data-stroke="6" data-fx-ring></span><button class="btn btn-secondary btn-press" data-fx="ring">Isi ulang</button></div></div>
+        <div class="fx"><span class="t-mono">G.xpFloat</span><button class="btn btn-secondary btn-press" data-fx="xp">+10 XP</button></div>
+        <div class="fx" data-tilt><span class="t-mono">[data-tilt] · maks 3°</span><span class="t-sm">Gerakkan kursor di atas kartu ini.</span></div>
+      </div>
+      <table class="table card mt-6" style="overflow:hidden"><thead><tr><th>Token</th><th>Nilai</th><th>Dipakai untuk</th></tr></thead><tbody>
+        <tr><td class="t-mono">--spring-gentle</td><td class="t-mono t-xs">stiffness 170 · damping 22</td><td>scene masuk, cincin, progress, kartu</td></tr>
+        <tr><td class="t-mono">--spring-bouncy</td><td class="t-mono t-xs">stiffness 300 · damping 14</td><td>pop, feedback bar, combo, gembok terbuka</td></tr>
+        <tr><td class="t-mono">--spring-snappy</td><td class="t-mono t-xs">stiffness 500 · damping 30</td><td>tombol, chip, drag-drop menetap</td></tr>
+        <tr><td class="t-mono">--dur-120/200/320/600</td><td class="t-mono t-xs">ms</td><td>hover / state / overlay / selebrasi</td></tr>
+      </tbody></table></section>
+
+    <section class="sg-sec" id="nosi"><span class="eyebrow">06 · Maskot</span><h2>Nosi, burung hantu dari kurung kurawal</h2><p class="lead">Nosi dibuat dari SVG, bukan emoji. Matanya mengikuti kursor dan berkedip setiap 5 detik. Nosi selalu bereaksi pada kejadian, tidak pernah tiba-tiba menyela.</p>
+      <div class="row gap-6 wrap">
+        <div class="t-center"><span class="nosi nosi-lg" data-mood="think"></span><div class="t-xs t-muted">think · menunggu jawaban</div></div>
+        <div class="t-center"><span class="nosi nosi-lg" data-mood="happy"></span><div class="t-xs t-muted">happy · benar</div></div>
+        <div class="t-center"><span class="nosi nosi-lg" data-mood="cheer"></span><div class="t-xs t-muted">cheer · fase selesai</div></div>
+        <div class="t-center"><span class="nosi nosi-lg" data-mood="oops"></span><div class="t-xs t-muted">oops · belum tepat</div></div>
+      </div>
+      <div class="hint-row"><span class="nosi" data-mood="think"></span><div class="balloon"><span class="lvl">Petunjuk · L3</span>Nilainya <b>akan berubah</b>. Kotak mana yang tidak digembok?</div></div></section>
+
+    <section class="sg-sec" id="tombol"><span class="eyebrow">07 · Tombol</span><h2>Tombol yang terasa ditekan</h2><p class="lead">Aksi utama di player memakai <span class="t-mono">.btn-press</span>, dengan bibir bawah 3px yang hilang saat ditekan. Satu tombol utama per layar.</p>
+      <div class="demo row gap-3 wrap"><button class="btn btn-primary btn-xl btn-press">Lanjut</button><button class="btn btn-ok btn-xl btn-press">Periksa</button><button class="btn btn-no btn-xl btn-press">Coba lagi</button><button class="btn btn-phase btn-xl btn-press" data-phase="kuis">Mulai kuis</button><button class="btn btn-secondary btn-lg btn-press">Sekunder</button><button class="btn btn-ghost btn-lg"><i data-lucide="lightbulb"></i>Petunjuk</button><button class="btn btn-primary btn-lg is-loading">Memuat</button></div></section>
+
+    <section class="sg-sec" id="fase"><span class="eyebrow">08 · Komponen fase</span><h2>Cincin, bar, tag, gerbang</h2>
+      <div class="grid grid-2">
+        <div class="demo"><span class="demo-label">PhaseRing · 4 busur</span><div class="row gap-4"><span class="pring" data-ring="1,1,1,1" data-size="84" data-stroke="7"></span><span class="pring" data-ring="1,.38,0,0" data-size="84" data-stroke="7"></span><span class="pring" data-ring="0,0,0,0" data-size="84" data-stroke="7"></span></div></div>
+        <div class="demo"><span class="demo-label">PhaseTag</span><div class="row gap-2 wrap"><span class="phase-tag" data-phase="pahami">Pahami</span><span class="phase-tag" data-phase="perkuat">Perkuat</span><span class="phase-tag" data-phase="kuis">Kuis</span><span class="phase-tag" data-phase="uji">Uji</span><span class="phase-tag is-locked">Terkunci</span></div></div>
+        <div class="demo" style="grid-column:1/-1"><span class="demo-label">PhaseBar · di atas player</span><div class="phasebar" style="max-width:none"><div class="seg is-done" data-phase="pahami"><span class="lbl"><i data-lucide="check"></i>1 · Pahami</span><div class="trk"><span style="--v:100%"></span></div></div><div class="seg is-now" data-phase="perkuat"><span class="lbl"><i data-lucide="dumbbell"></i>2 · Perkuat</span><div class="trk"><span style="--v:45%"></span></div></div><div class="seg" data-phase="kuis"><span class="lbl"><i data-lucide="lock"></i>3 · Kuis</span><div class="trk"><span></span></div></div><div class="seg" data-phase="uji"><span class="lbl"><i data-lucide="lock"></i>4 · Uji</span><div class="trk"><span></span></div></div></div></div>
+        <div class="demo"><span class="demo-label">Gate · terkunci / terbuka</span><div class="stack gap-2"><div class="gate"><span class="lock"><i data-lucide="lock"></i></span><div><div class="t-h4">Uji</div><div class="t-xs t-faint">kurang 10%</div></div></div><div class="gate is-open"><span class="lock"><i data-lucide="lock-open"></i></span><div><div class="t-h4">Uji</div><div class="t-xs t-faint">terbuka</div></div></div></div></div>
+        <div class="demo"><span class="demo-label">Mastery · Dilihat → Dikuasai</span><div class="stack gap-2"><span class="mastery mastery-lg" data-tier="1"><i></i><i></i><i></i><i></i><i></i></span><span class="mastery mastery-lg" data-tier="3"><i></i><i></i><i></i><i></i><i></i></span><span class="mastery mastery-lg is-weak" data-tier="2"><i></i><i></i><i></i><i></i><i></i></span><span class="mastery mastery-lg" data-tier="5"><i></i><i></i><i></i><i></i><i></i></span></div></div>
+      </div>
+      <span class="demo-label mt-6">FeedbackBar · netral / benar / salah</span>
+      <div class="stack gap-2">
+        <div class="player-foot foot-demo"><div class="inner"><button class="btn btn-ghost btn-lg"><i data-lucide="lightbulb"></i>Petunjuk</button><div class="fb-idle">pilih jawaban</div><button class="btn btn-ok btn-xl btn-press" disabled>Periksa</button></div></div>
+        <div class="player-foot foot-demo is-ok"><div class="inner"><div class="fb fb-ok"><span class="fb-icon"><i data-lucide="check"></i></span><div><div class="fb-title">Mantap!</div><div class="fb-body t-muted">Nilainya berubah, jadi pakai let.</div></div></div><button class="btn btn-ok btn-xl btn-press">Lanjut</button></div></div>
+        <div class="player-foot foot-demo is-no"><div class="inner"><div class="fb fb-no"><span class="fb-icon"><i data-lucide="rotate-ccw"></i></span><div><div class="fb-title">Belum tepat, tidak apa-apa.</div><div class="fb-body t-muted">Kotak mana yang tidak digembok?</div></div></div><button class="btn btn-no btn-xl btn-press">Coba lagi</button></div></div>
+      </div></section>
+
+    <section class="sg-sec" id="soal"><span class="eyebrow">09 · Tipe soal Perkuat</span><h2>Tujuh cara berlatih</h2>
+      <div class="grid grid-2">
+        <div class="demo" data-phase="perkuat"><span class="demo-label">1 · Pilih · state: normal / dipilih / benar / salah</span><div class="choices" style="margin:0"><button class="choice"><span class="key">1</span>normal</button><button class="choice is-picked"><span class="key">2</span>dipilih</button><button class="choice is-right"><span class="key">3</span>benar</button><button class="choice is-wrong"><span class="key">4</span>salah</button></div></div>
+        <div class="demo" data-phase="perkuat"><span class="demo-label">2 · Lengkapi · slot &amp; token</span><div class="slot-code" style="padding:12px 14px"><span class="slot is-filled"><span class="token">let</span></span> umur <span class="slot"></span> <span class="n">16</span>;</div><div class="token-tray"><span class="token">=</span><span class="token">==</span><span class="token is-used">let</span></div></div>
+        <div class="demo" data-phase="perkuat"><span class="demo-label">4 · Susun baris (Parsons)</span><div class="parsons" style="margin:0"><div class="pblock"><span class="grip"><i data-lucide="grip-vertical"></i></span><span class="pcode">const harga = 3000;</span></div><div class="pblock is-drag" style="transform:rotate(-1deg)"><span class="grip"><i data-lucide="grip-vertical"></i></span><span class="pcode">let jumlah = 2;</span></div><div class="pblock is-wrong"><span class="grip"><i data-lucide="grip-vertical"></i></span><span class="pcode">console.log(total);</span></div></div></div>
+        <div class="demo" data-phase="perkuat"><span class="demo-label">5 · Temukan bug</span><div class="bugcode" style="margin:0"><div class="bugline"><span class="ln-no">1</span>const nyawa = 3;</div><div class="bugline is-right"><span class="ln-no">2</span>nyawa = nyawa - 1;</div></div><span class="demo-label mt-4">6 · Atur nilai</span><input class="range" type="range" value="50" style="--p:50%" aria-label="contoh"><span class="demo-label mt-4">3 · Tebak output · 7 · Pasangkan (lihat perkuat.html)</span></div>
+      </div></section>
+
+    <section class="sg-sec" id="kode"><span class="eyebrow">10 · Kode</span><h2>Code Card, bukan IDE</h2><p class="lead">Kode selalu tampil di kartu satu-file dengan sudut membulat. Tidak ada file tree, tab, atau status bar. Angka bergaris titik bisa digeser. Output muncul sebagai gelembung. Tes ditampilkan sebagai robot penguji.</p>
+      <div class="grid grid-2">
+        <div class="codecard" data-phase="pahami"><div class="cc-head"><span class="cc-file"><span class="lang">JS</span>kantin.js</span></div><div class="cc-body"><div class="cc-line"><span class="k">const</span> harga = <span class="knob">5000</span>;</div><div class="cc-line is-lit"><span class="k">const</span> total = harga * <span class="n">3</span>;</div></div><div class="cc-out"><span class="out-bubble"><span class="p">›</span>15000</span><span class="out-bubble is-err"><i data-lucide="circle-x" class="i-14"></i>TypeError: Assignment to constant variable.</span></div></div>
+        <div class="robots"><div class="robot is-pass"><span class="rb"><i data-lucide="check"></i></span><span>lulus</span><span class="rmeta">4 ms</span></div><div class="robot is-run"><span class="rb"><i data-lucide="loader-circle"></i></span><span>sedang mengecek</span><span class="rmeta">…</span></div><div class="robot is-fail"><span class="rb"><i data-lucide="x"></i></span><span>gagal</span><span class="rmeta">gagal</span><span class="rdiff">skor akhir 3, seharusnya 6</span></div><div class="robot"><span class="rb"><i data-lucide="bot"></i></span><span>menunggu</span><span class="rmeta">antre</span></div></div>
+      </div></section>
+
+    <section class="sg-sec" id="kuis"><span class="eyebrow">11 · Kuis</span><h2>Timer, combo, titik soal</h2>
+      <div class="demo row gap-6 wrap" data-phase="kuis"><div class="qtimer"><svg width="56" height="56"><circle class="t-trk" cx="28" cy="28" r="24"/><circle class="t-arc" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="50"/></svg><span class="t-num">14</span></div><div class="qtimer is-low"><svg width="56" height="56"><circle class="t-trk" cx="28" cy="28" r="24"/><circle class="t-arc" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="125"/></svg><span class="t-num">4</span></div><span class="combo"><i data-lucide="flame" class="i-14"></i>×3</span><div class="qdots"><i class="ok"></i><i class="ok"></i><i class="no"></i><i class="now"></i><i></i><i></i></div></div></section>
+
+    <section class="sg-sec" id="jangan"><span class="eyebrow">12 · Jangan</span><h2>Ramai boleh, asal ada artinya</h2>
+      <div class="grid grid-2"><div class="demo stack gap-2 t-sm"><div class="row"><i data-lucide="x" class="t-danger"></i>Konfeti di setiap jawaban benar (hanya saat fase selesai)</div><div class="row"><i data-lucide="x" class="t-danger"></i>Gradien ungu-biru, glassmorphism, orb AI</div><div class="row"><i data-lucide="x" class="t-danger"></i>Emoji sebagai ikon</div><div class="row"><i data-lucide="x" class="t-danger"></i>Nyawa/heart yang habis, atau hukuman karena salah</div></div>
+        <div class="demo stack gap-2 t-sm"><div class="row"><i data-lucide="x" class="t-danger"></i>Layout mirip IDE: file tree, tab, status bar</div><div class="row"><i data-lucide="x" class="t-danger"></i>Soal sebelum konsep dijelaskan</div><div class="row"><i data-lucide="x" class="t-danger"></i>Chatbot mengambang</div><div class="row"><i data-lucide="x" class="t-danger"></i>Animasi yang tetap jalan saat intensitas “Mati”</div></div></div></section>
+  </main>
+</div>
+<script src="vendor/lucide.min.js"></script>
+<script src="vendor/confetti.browser.min.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+<script>
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-fx]'); const i = e.target.closest('[data-int]');
+  if (i) G.setMotion(i.dataset.int);
+  if (!b) return; const q = s => document.querySelector(s);
+  ({ pop: () => G.pop(b), shake: () => G.shake(b), burst: () => G.burst(b), confetti: () => G.confetti(), ticker: () => G.ticker(q('[data-fx-t]'), Math.round(Math.random() * 900) + 100),
+     fly: () => { q('[data-fx-v]').style.opacity = 0; G.flyTo(q('[data-fx-src]'), q('[data-fx-dst]')).then(() => { q('[data-fx-v]').style.opacity = 1; G.pop(q('[data-fx-dst]')); }); },
+     ring: () => G.ring(q('[data-fx-ring]')), xp: () => G.xpFloat(b) })[b.dataset.fx]();
+});
+</script>
+</body>
+</html>
